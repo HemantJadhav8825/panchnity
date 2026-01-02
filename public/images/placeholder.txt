@@ -1,0 +1,26 @@
+IMAGE PLACEHOLDERS
+
+1. Brand Profile Image:
+   - Path: public/images/brand-profile.jpg
+   - Recommended size: 512x512px or larger (square)
+   - This image appears on the homepage in the brand intro section
+   - If not provided, a fallback with the brand initial will be shown
+
+2. Product Images:
+   - Path: public/images/products/
+   - Add product images matching the paths specified in lib/products.ts
+   - Example: /images/products/gold-ganesh-1.jpg
+   - Recommended size: 1200x1200px or larger (square)
+   - If images are missing, a placeholder will be shown
+
+3. 3D Models (Optional):
+   - Path: public/models/
+   - Add .glb or .gltf files matching the paths in lib/products.ts
+   - Example: /models/gold-ganesh.glb
+   - If 3D models are not provided, the product detail page will show images only
+
+4. Open Graph Images (Optional):
+   - public/images/og-home.jpg (1200x630px)
+   - public/images/og-products.jpg (1200x630px)
+   - These are used for social media sharing
+
