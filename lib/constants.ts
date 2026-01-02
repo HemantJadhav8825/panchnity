@@ -1,4 +1,4 @@
-export const BRAND_NAME = 'PANChNITY JEWELLERS'
+export const BRAND_NAME = 'PANCHANITY JEWELLERS'
 export const BRAND_SUBTITLE = 'KARIGAR'
 export const TAGLINE = 'The art of bhakti and shakti'
 
