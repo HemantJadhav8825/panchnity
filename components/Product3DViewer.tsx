@@ -1,6 +1,7 @@
 'use client'
 
 import { Suspense, useState } from 'react'
+import Image from 'next/image'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Environment, useGLTF } from '@react-three/drei'
 import { Product } from '@/types/product'
@@ -61,11 +62,12 @@ export default function Product3DViewer({ product, className = '' }: Product3DVi
       {!show3D ? (
         <div className="relative bg-gray-100 rounded-lg" style={{ minHeight: '400px' }}>
           {product.images[0] && (
-            <img
+            <Image
               src={product.images[0]}
               alt={product.name}
-              className="w-full h-full object-contain rounded-lg"
-              style={{ minHeight: '400px' }}
+              fill
+              className="object-contain rounded-lg"
+              sizes="(max-width: 768px) 100vw, 800px"
             />
           )}
           <button
