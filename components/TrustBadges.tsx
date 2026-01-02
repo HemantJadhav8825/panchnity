@@ -43,9 +43,9 @@ export default function TrustBadges() {
             return (
               <div
                 key={index}
-                className="text-center group hover:scale-105 transition-transform duration-300"
+                className="text-center group hover:scale-105 transition-transform duration-300 p-4 rounded-lg"
               >
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gold-50 rounded-full mb-3 group-hover:bg-gold-100 transition-colors">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gold-50 rounded-full mb-3 group-hover:bg-gold-100 transition-colors transform group-hover:rotate-6 duration-300">
                   <Icon className="w-8 h-8 text-gold-300" />
                 </div>
                 <h3 className="font-semibold text-gray-900 text-sm mb-1">

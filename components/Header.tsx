@@ -2,12 +2,13 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { BRAND_NAME, BRAND_SUBTITLE } from '@/lib/constants'
-import { Menu, X, ChevronDown } from 'lucide-react'
+import { BRAND_NAME, BRAND_SUBTITLE, WHATSAPP_NUMBER } from '@/lib/constants'
+import { Menu, X, ChevronDown, Phone, Eye, MapPin, Search } from 'lucide-react'
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [categoryMenuOpen, setCategoryMenuOpen] = useState<string | null>(null)
+  const [searchOpen, setSearchOpen] = useState(false)
 
   const categories = [
     {
@@ -37,32 +38,119 @@ export default function Header() {
   ]
 
   return (
-    <header className="bg-white/95 backdrop-blur-md border-b border-gold-200 sticky top-0 z-50 shadow-sm transition-shadow duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          <Link 
-            href="/" 
-            className="flex flex-col group transition-transform duration-300 hover:scale-105"
-          >
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-gold-300 group-hover:text-gold-400 transition-all duration-300">
-              {BRAND_NAME}
-            </h1>
-            <p className="text-xs sm:text-sm text-gold-500 font-sans tracking-wider opacity-80 group-hover:opacity-100 transition-opacity duration-300">
-              {BRAND_SUBTITLE}
-            </p>
+    <header className="relative z-50">
+      {/* Top Bar */}
+      <div className="bg-gray-100 py-2 text-xs text-gray-700 hidden md:block">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-end items-center space-x-6">
+          <a href={`tel:${WHATSAPP_NUMBER}`} className="flex items-center gap-1 hover:text-gold-300 transition-colors">
+            <Phone className="w-3 h-3" />
+            <span>{WHATSAPP_NUMBER}</span>
+          </a>
+          <Link href="#" className="flex items-center gap-1 hover:text-gold-300 transition-colors">
+            <Eye className="w-3 h-3" />
+            <span>Recently Viewed</span>
           </Link>
-          
-          <nav className="hidden lg:flex items-center space-x-8">
-            <Link
-              href="/"
-              className="relative text-gray-700 hover:text-gold-300 font-medium transition-all duration-300 group"
+          <Link href="#" className="flex items-center gap-1 hover:text-gold-300 transition-colors">
+            <MapPin className="w-3 h-3" />
+            <span>Locate Our Store</span>
+          </Link>
+        </div>
+      </div>
+
+      {/* Main Header */}
+      <div className="bg-white/95 backdrop-blur-md border-b border-gold-200 shadow-sm transition-shadow duration-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            <Link 
+              href="/" 
+              className="flex flex-col group transition-transform duration-300 hover:scale-105"
             >
-              <span className="relative z-10">Home</span>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gold-300 group-hover:w-full transition-all duration-300"></span>
+              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-gold-300 group-hover:text-gold-400 transition-all duration-300">
+                {BRAND_NAME}
+              </h1>
+              <p className="text-xs sm:text-sm text-gold-500 font-sans tracking-wider opacity-80 group-hover:opacity-100 transition-opacity duration-300">
+                {BRAND_SUBTITLE}
+              </p>
             </Link>
             
+            {/* Search Input */}
+            <div className="hidden md:block flex-grow max-w-md mx-8">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder="Search for Jewellery"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-300 focus:border-gold-300 outline-none"
+                />
+              </div>
+            </div>
+
+            {/* Utility Icons (Mobile Search, Mobile Menu) */}
+            <div className="flex items-center gap-4">
+              <button
+                type="button"
+                className="md:hidden text-gray-700 hover:text-gold-300 transition-all duration-300 p-2 rounded-lg hover:bg-gold-50 active:scale-95"
+                aria-label="Search"
+                onClick={() => setSearchOpen(!searchOpen)}
+              >
+                <Search className="h-6 w-6" />
+              </button>
+
+              {/* Mobile menu button */}
+              <button
+                type="button"
+                className="lg:hidden text-gray-700 hover:text-gold-300 transition-all duration-300 p-2 rounded-lg hover:bg-gold-50 active:scale-95"
+                aria-label="Menu"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              >
+                <div className="relative w-6 h-6">
+                  <Menu 
+                    className={`absolute inset-0 w-6 h-6 transition-all duration-300 ${
+                      mobileMenuOpen ? 'opacity-0 rotate-90' : 'opacity-100 rotate-0'
+                    }`} 
+                  />
+                  <X 
+                    className={`absolute inset-0 w-6 h-6 transition-all duration-300 ${
+                      mobileMenuOpen ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-90'
+                    }`} 
+                  />
+                </div>
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Search Input */}
+          {searchOpen && (
+            <div className="md:hidden pb-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder="Search for Jewellery"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-300 focus:border-gold-300 outline-none"
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Bottom Navigation Bar (Desktop) */}
+      <nav className="hidden lg:block bg-gold-50 border-b border-gold-200 py-3">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ul className="flex justify-center space-x-8">
+            <li>
+              <Link
+                href="/"
+                className="relative text-gray-700 hover:text-gold-300 font-medium transition-all duration-300 group py-2 block"
+              >
+                <span className="relative z-10">Home</span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gold-300 group-hover:w-full transition-all duration-300"></span>
+              </Link>
+            </li>
+            
             {categories.map((category) => (
-              <div
+              <li
                 key={category.name}
                 className="relative"
                 onMouseEnter={() => setCategoryMenuOpen(category.name)}
@@ -70,7 +158,7 @@ export default function Header() {
               >
                 <Link
                   href={category.href}
-                  className="flex items-center gap-1 text-gray-700 hover:text-gold-300 font-medium transition-all duration-300 group relative"
+                  className="flex items-center gap-1 text-gray-700 hover:text-gold-300 font-medium transition-all duration-300 group relative py-2 block"
                 >
                   <span className="relative z-10">{category.name}</span>
                   <ChevronDown 
@@ -82,7 +170,7 @@ export default function Header() {
                 </Link>
                 
                 <div 
-                  className={`absolute top-full left-0 pt-2 z-50 transition-all duration-300 ${
+                  className={`absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50 transition-all duration-300 ${
                     categoryMenuOpen === category.name 
                       ? 'opacity-100 translate-y-0 pointer-events-auto' 
                       : 'opacity-0 -translate-y-2 pointer-events-none'
@@ -117,94 +205,75 @@ export default function Header() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </li>
             ))}
             
-            <Link
-              href="/products"
-              className="relative text-gray-700 hover:text-gold-300 font-medium transition-all duration-300 group"
-            >
-              <span className="relative z-10">All Products</span>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gold-300 group-hover:w-full transition-all duration-300"></span>
-            </Link>
-          </nav>
+            <li>
+              <Link
+                href="/products"
+                className="relative text-gray-700 hover:text-gold-300 font-medium transition-all duration-300 group py-2 block"
+              >
+                <span className="relative z-10">All Products</span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gold-300 group-hover:w-full transition-all duration-300"></span>
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </nav>
 
-          {/* Mobile menu button */}
-          <button
-            type="button"
-            className="lg:hidden text-gray-700 hover:text-gold-300 transition-all duration-300 p-2 rounded-lg hover:bg-gold-50 active:scale-95"
-            aria-label="Menu"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+      {/* Mobile menu */}
+      <div 
+        className={`lg:hidden border-t border-gold-200 overflow-hidden transition-all duration-300 ${
+          mobileMenuOpen 
+            ? 'max-h-screen opacity-100' 
+            : 'max-h-0 opacity-0'
+        }`}
+      >
+        <nav className="flex flex-col space-y-1 py-4">
+          <Link
+            href="/"
+            className="px-4 py-3 text-gray-700 hover:text-gold-300 hover:bg-gold-50 font-medium transition-all duration-200 rounded-lg transform hover:translate-x-1"
+            onClick={() => setMobileMenuOpen(false)}
           >
-            <div className="relative w-6 h-6">
-              <Menu 
-                className={`absolute inset-0 w-6 h-6 transition-all duration-300 ${
-                  mobileMenuOpen ? 'opacity-0 rotate-90' : 'opacity-100 rotate-0'
-                }`} 
-              />
-              <X 
-                className={`absolute inset-0 w-6 h-6 transition-all duration-300 ${
-                  mobileMenuOpen ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-90'
-                }`} 
-              />
-            </div>
-          </button>
-        </div>
-
-        {/* Mobile menu */}
-        <div 
-          className={`lg:hidden border-t border-gold-200 overflow-hidden transition-all duration-300 ${
-            mobileMenuOpen 
-              ? 'max-h-screen opacity-100' 
-              : 'max-h-0 opacity-0'
-          }`}
-        >
-          <nav className="flex flex-col space-y-1 py-4">
-            <Link
-              href="/"
-              className="px-4 py-3 text-gray-700 hover:text-gold-300 hover:bg-gold-50 font-medium transition-all duration-200 rounded-lg transform hover:translate-x-1"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Home
-            </Link>
-            {categories.map((category, catIndex) => (
-              <div key={category.name} className="space-y-1">
-                <Link
-                  href={category.href}
-                  className="block px-4 py-3 text-gray-700 hover:text-gold-300 hover:bg-gold-50 font-medium transition-all duration-200 rounded-lg transform hover:translate-x-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                  style={{
-                    animationDelay: mobileMenuOpen ? `${(catIndex + 1) * 50}ms` : '0ms'
-                  }}
-                >
-                  {category.name}
-                </Link>
-                <div className="pl-6 space-y-1">
-                  {category.items.map((item, itemIndex) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className="block px-4 py-2 text-sm text-gray-600 hover:text-gold-300 hover:bg-gold-50 transition-all duration-200 rounded-lg transform hover:translate-x-1"
-                      onClick={() => setMobileMenuOpen(false)}
-                      style={{
-                        animationDelay: mobileMenuOpen ? `${(catIndex + 1) * 100 + (itemIndex + 1) * 50}ms` : '0ms'
-                      }}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
+            Home
+          </Link>
+          {categories.map((category, catIndex) => (
+            <div key={category.name} className="space-y-1">
+              <Link
+                href={category.href}
+                className="block px-4 py-3 text-gray-700 hover:text-gold-300 hover:bg-gold-50 font-medium transition-all duration-200 rounded-lg transform hover:translate-x-1"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  animationDelay: mobileMenuOpen ? `${(catIndex + 1) * 50}ms` : '0ms'
+                }}
+              >
+                {category.name}
+              </Link>
+              <div className="pl-6 space-y-1">
+                {category.items.map((item, itemIndex) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="block px-4 py-2 text-sm text-gray-600 hover:text-gold-300 hover:bg-gold-50 transition-all duration-200 rounded-lg transform hover:translate-x-1"
+                    onClick={() => setMobileMenuOpen(false)}
+                    style={{
+                      animationDelay: mobileMenuOpen ? `${(catIndex + 1) * 100 + (itemIndex + 1) * 50}ms` : '0ms'
+                    }}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
               </div>
-            ))}
-            <Link
-              href="/products"
-              className="px-4 py-3 text-gray-700 hover:text-gold-300 hover:bg-gold-50 font-medium transition-all duration-200 rounded-lg transform hover:translate-x-1"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              All Products
-            </Link>
-          </nav>
-        </div>
+            </div>
+          ))}
+          <Link
+            href="/products"
+            className="px-4 py-3 text-gray-700 hover:text-gold-300 hover:bg-gold-50 font-medium transition-all duration-200 rounded-lg transform hover:translate-x-1"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            All Products
+          </Link>
+        </nav>
       </div>
     </header>
   )

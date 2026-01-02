@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
@@ -44,22 +46,40 @@ export default function CategoryShowcase() {
             <Link
               key={category.name}
               href={category.href}
-              className="group relative overflow-hidden rounded-2xl bg-gray-100 aspect-[4/3] hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
+              className="group relative overflow-hidden rounded-2xl bg-gray-100 aspect-[4/3] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
             >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent z-10"></div>
-              <div className="absolute inset-0 flex items-center justify-center z-0">
-                <div className="text-center text-white p-6">
+              {/* Image with overlay */}
+              <div className="absolute inset-0">
+                <Image 
+                  src={category.image} 
+                  alt={category.name} 
+                  fill 
+                  className="object-cover transition-transform duration-350 group-hover:scale-105" 
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement
+                    target.style.display = 'none'
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent z-10"></div>
+              </div>
+              
+              {/* Placeholder if image not found */}
+              <div className="absolute inset-0 flex items-center justify-center z-0 bg-gray-100">
+                <div className="text-center text-gray-400 p-6">
                   <div className="text-6xl mb-4">✨</div>
+                  <div className="text-sm">Image Coming Soon</div>
                 </div>
               </div>
-              <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
+
+              <div className="absolute bottom-0 left-0 right-0 p-6 z-20 animate-slide-up animate-delay-100">
                 <h3 className="text-2xl font-serif font-bold text-white mb-2 group-hover:text-gold-200 transition-colors">
                   {category.name}
                 </h3>
                 <p className="text-gold-100 text-sm mb-3">{category.description}</p>
-                <div className="flex items-center gap-2 text-white group-hover:text-gold-200 transition-colors">
+                <div className="flex items-center gap-2 text-white group-hover:text-gold-200 transition-colors transform group-hover:translate-x-1 duration-300">
                   <span className="text-sm font-medium">{category.count}</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
             </Link>
