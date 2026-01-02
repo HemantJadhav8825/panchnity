@@ -3,10 +3,38 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { BRAND_NAME, BRAND_SUBTITLE } from '@/lib/constants'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, ChevronDown } from 'lucide-react'
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [categoryMenuOpen, setCategoryMenuOpen] = useState<string | null>(null)
+
+  const categories = [
+    {
+      name: 'Idols',
+      href: '/products?category=idol',
+      items: [
+        { name: 'Gold Idols', href: '/products?category=idol&material=gold' },
+        { name: 'Silver Idols', href: '/products?category=idol&material=silver' },
+      ],
+    },
+    {
+      name: 'Pooja Items',
+      href: '/products?category=pooja-item',
+      items: [
+        { name: 'Gold Pooja Items', href: '/products?category=pooja-item&material=gold' },
+        { name: 'Silver Pooja Items', href: '/products?category=pooja-item&material=silver' },
+      ],
+    },
+    {
+      name: 'Jewellery',
+      href: '/products?category=jewellery',
+      items: [
+        { name: 'Gold Jewellery', href: '/products?category=jewellery&material=gold' },
+        { name: 'Silver Jewellery', href: '/products?category=jewellery&material=silver' },
+      ],
+    },
+  ]
 
   return (
     <header className="bg-white border-b border-gold-200 sticky top-0 z-50 shadow-sm">
@@ -21,43 +49,63 @@ export default function Header() {
             </p>
           </Link>
           
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center space-x-6">
             <Link
               href="/"
               className="text-gray-700 hover:text-gold-300 font-medium transition-colors"
             >
               Home
             </Link>
+            
+            {categories.map((category) => (
+              <div
+                key={category.name}
+                className="relative group"
+                onMouseEnter={() => setCategoryMenuOpen(category.name)}
+                onMouseLeave={() => setCategoryMenuOpen(null)}
+              >
+                <Link
+                  href={category.href}
+                  className="flex items-center gap-1 text-gray-700 hover:text-gold-300 font-medium transition-colors"
+                >
+                  {category.name}
+                  <ChevronDown className="w-4 h-4" />
+                </Link>
+                
+                {categoryMenuOpen === category.name && (
+                  <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gold-100 py-2">
+                    {category.items.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="block px-4 py-2 text-gray-700 hover:bg-gold-50 hover:text-gold-300 transition-colors"
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                    <Link
+                      href={category.href}
+                      className="block px-4 py-2 text-gold-300 hover:bg-gold-50 font-semibold border-t border-gold-100 mt-2"
+                    >
+                      View All {category.name}
+                    </Link>
+                  </div>
+                )}
+              </div>
+            ))}
+            
             <Link
               href="/products"
               className="text-gray-700 hover:text-gold-300 font-medium transition-colors"
             >
-              Products
-            </Link>
-            <Link
-              href="/products?category=idol"
-              className="text-gray-700 hover:text-gold-300 font-medium transition-colors"
-            >
-              Idols
-            </Link>
-            <Link
-              href="/products?category=pooja-item"
-              className="text-gray-700 hover:text-gold-300 font-medium transition-colors"
-            >
-              Pooja Items
-            </Link>
-            <Link
-              href="/products?category=jewellery"
-              className="text-gray-700 hover:text-gold-300 font-medium transition-colors"
-            >
-              Jewellery
+              All Products
             </Link>
           </nav>
 
           {/* Mobile menu button */}
           <button
             type="button"
-            className="md:hidden text-gray-700 hover:text-gold-300 transition-colors"
+            className="lg:hidden text-gray-700 hover:text-gold-300 transition-colors"
             aria-label="Menu"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
@@ -71,7 +119,7 @@ export default function Header() {
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-gold-200 py-4">
+          <div className="lg:hidden border-t border-gold-200 py-4">
             <nav className="flex flex-col space-y-4">
               <Link
                 href="/"
@@ -80,33 +128,35 @@ export default function Header() {
               >
                 Home
               </Link>
+              {categories.map((category) => (
+                <div key={category.name}>
+                  <Link
+                    href={category.href}
+                    className="text-gray-700 hover:text-gold-300 font-medium transition-colors block mb-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {category.name}
+                  </Link>
+                  <div className="pl-4 space-y-2">
+                    {category.items.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="block text-sm text-gray-600 hover:text-gold-300 transition-colors"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ))}
               <Link
                 href="/products"
                 className="text-gray-700 hover:text-gold-300 font-medium transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Products
-              </Link>
-              <Link
-                href="/products?category=idol"
-                className="text-gray-700 hover:text-gold-300 font-medium transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Idols
-              </Link>
-              <Link
-                href="/products?category=pooja-item"
-                className="text-gray-700 hover:text-gold-300 font-medium transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Pooja Items
-              </Link>
-              <Link
-                href="/products?category=jewellery"
-                className="text-gray-700 hover:text-gold-300 font-medium transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Jewellery
+                All Products
               </Link>
             </nav>
           </div>

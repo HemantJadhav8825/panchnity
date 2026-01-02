@@ -14,7 +14,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group block bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gold-100 hover:border-gold-300"
+      className="group block bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gold-100 hover:border-gold-300 transform hover:-translate-y-1"
     >
       <div className="relative aspect-square overflow-hidden bg-gray-50">
         {product.images[0] && !imageError && (
