@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { BRAND_NAME, BRAND_SUBTITLE, WHATSAPP_NUMBER } from '@/lib/constants'
 import { Menu, X, ChevronDown, Phone, Eye, MapPin, Search } from 'lucide-react'
@@ -8,7 +8,22 @@ import { Menu, X, ChevronDown, Phone, Eye, MapPin, Search } from 'lucide-react'
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [categoryMenuOpen, setCategoryMenuOpen] = useState<string | null>(null)
-  const [searchOpen, setSearchOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) { // Adjust scroll threshold as needed
+        setIsScrolled(true)
+      } else {
+        setIsScrolled(false)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   const categories = [
     {
@@ -40,27 +55,39 @@ export default function Header() {
   return (
     <header className="relative z-50">
       {/* Top Bar */}
-      <div className="bg-gray-100 py-2 text-xs text-gray-700 hidden md:block">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-end items-center space-x-6">
+      <div 
+        className={`bg-gray-100 py-2 text-xs text-gray-700 transition-all duration-300 ease-in-out ${
+          isScrolled ? 'md:h-0 md:py-0 md:opacity-0 md:overflow-hidden' : 'md:block'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-end items-center space-x-4 md:space-x-6">
           <a href={`tel:${WHATSAPP_NUMBER}`} className="flex items-center gap-1 hover:text-gold-300 transition-colors">
             <Phone className="w-3 h-3" />
-            <span>{WHATSAPP_NUMBER}</span>
+            <span className="hidden sm:inline">{WHATSAPP_NUMBER}</span>
           </a>
           <Link href="#" className="flex items-center gap-1 hover:text-gold-300 transition-colors">
             <Eye className="w-3 h-3" />
-            <span>Recently Viewed</span>
+            <span className="hidden sm:inline">Recently Viewed</span>
           </Link>
           <Link href="#" className="flex items-center gap-1 hover:text-gold-300 transition-colors">
             <MapPin className="w-3 h-3" />
-            <span>Locate Our Store</span>
+            <span className="hidden sm:inline">Locate Our Store</span>
           </Link>
         </div>
       </div>
 
       {/* Main Header */}
-      <div className="bg-white/95 backdrop-blur-md border-b border-gold-200 shadow-sm transition-shadow duration-300">
+      <div 
+        className={`sticky top-0 w-full bg-white/95 backdrop-blur-md border-b border-gold-200 transition-all duration-300 ease-in-out ${
+          isScrolled ? 'shadow-lg py-2' : 'shadow-sm py-4'
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+          <div 
+            className={`flex items-center justify-between transition-all duration-300 ease-in-out ${
+              isScrolled ? 'h-16' : 'h-20'
+            }`}
+          >
             <Link 
               href="/" 
               className="flex flex-col group transition-transform duration-300 hover:scale-105"
@@ -73,8 +100,8 @@ export default function Header() {
               </p>
             </Link>
             
-            {/* Search Input */}
-            <div className="hidden md:block flex-grow max-w-md mx-8">
+            {/* Search Input - Always visible on Mobile (BlueStone style) */}
+            <div className="flex-grow max-w-md mx-4 md:mx-8">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
@@ -85,64 +112,49 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Utility Icons (Mobile Search, Mobile Menu) */}
-            <div className="flex items-center gap-4">
-              <button
-                type="button"
-                className="md:hidden text-gray-700 hover:text-gold-300 transition-all duration-300 p-2 rounded-lg hover:bg-gold-50 active:scale-95"
-                aria-label="Search"
-                onClick={() => setSearchOpen(!searchOpen)}
-              >
-                <Search className="h-6 w-6" />
-              </button>
-
-              {/* Mobile menu button */}
-              <button
-                type="button"
-                className="lg:hidden text-gray-700 hover:text-gold-300 transition-all duration-300 p-2 rounded-lg hover:bg-gold-50 active:scale-95"
-                aria-label="Menu"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              >
-                <div className="relative w-6 h-6">
-                  <Menu 
-                    className={`absolute inset-0 w-6 h-6 transition-all duration-300 ${
-                      mobileMenuOpen ? 'opacity-0 rotate-90' : 'opacity-100 rotate-0'
-                    }`} 
-                  />
-                  <X 
-                    className={`absolute inset-0 w-6 h-6 transition-all duration-300 ${
-                      mobileMenuOpen ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-90'
-                    }`} 
-                  />
-                </div>
-              </button>
+            {/* Utility Icons (Desktop) - Keep them hidden on mobile */}
+            {/* Utility Icons (Desktop) - Keep them hidden on mobile */}
+            <div className="hidden md:flex items-center gap-4">
+              {/* For consistency with BlueStone, these would be on the right, but we exclude auth/cart */}
             </div>
+
+            {/* Mobile menu button */}
+            <button
+              type="button"
+              className="lg:hidden text-gray-700 hover:text-gold-300 transition-all duration-300 p-2 rounded-lg hover:bg-gold-50 active:scale-95"
+              aria-label="Menu"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <div className="relative w-6 h-6">
+                <Menu 
+                  className={`absolute inset-0 w-6 h-6 transition-all duration-300 ${
+                    mobileMenuOpen ? 'opacity-0 rotate-90' : 'opacity-100 rotate-0'
+                  }`} 
+                />
+                <X 
+                  className={`absolute inset-0 w-6 h-6 transition-all duration-300 ${
+                    mobileMenuOpen ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-90'
+                  }`} 
+                />
+              </div>
+            </button>
           </div>
-
-          {/* Mobile Search Input */}
-          {searchOpen && (
-            <div className="md:hidden pb-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <input
-                  type="text"
-                  placeholder="Search for Jewellery"
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-300 focus:border-gold-300 outline-none"
-                />
-              </div>
-            </div>
-          )}
         </div>
       </div>
 
-      {/* Bottom Navigation Bar (Desktop) */}
-      <nav className="hidden lg:block bg-gold-50 border-b border-gold-200 py-3">
+      {/* Bottom Navigation Bar (Desktop and Mobile) */}
+      {/* Bottom Navigation Bar (Desktop Only) */}
+      <nav 
+        className={`bg-gray-800 py-3 transition-all duration-300 ease-in-out hidden lg:block ${
+          isScrolled ? 'hidden' : 'block'
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ul className="flex justify-center space-x-8">
+          <ul className="flex justify-center space-x-4 md:space-x-8 overflow-x-auto whitespace-nowrap scrollbar-hide">
             <li>
               <Link
                 href="/"
-                className="relative text-gray-700 hover:text-gold-300 font-medium transition-all duration-300 group py-2 block"
+                className="relative text-gray-200 hover:text-gold-300 font-medium transition-all duration-300 group py-2 px-2 md:px-0 block"
               >
                 <span className="relative z-10">Home</span>
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gold-300 group-hover:w-full transition-all duration-300"></span>
@@ -158,11 +170,11 @@ export default function Header() {
               >
                 <Link
                   href={category.href}
-                  className="flex items-center gap-1 text-gray-700 hover:text-gold-300 font-medium transition-all duration-300 group relative py-2 block"
+                  className="flex items-center gap-1 text-gray-200 hover:text-gold-300 font-medium transition-all duration-300 group relative py-2 px-2 md:px-0 block"
                 >
                   <span className="relative z-10">{category.name}</span>
                   <ChevronDown 
-                    className={`w-4 h-4 transition-transform duration-300 ${
+                    className={`w-4 h-4 text-gray-400 transition-transform duration-300 ${
                       categoryMenuOpen === category.name ? 'rotate-180' : ''
                     }`} 
                   />
@@ -211,7 +223,7 @@ export default function Header() {
             <li>
               <Link
                 href="/products"
-                className="relative text-gray-700 hover:text-gold-300 font-medium transition-all duration-300 group py-2 block"
+                className="relative text-gray-200 hover:text-gold-300 font-medium transition-all duration-300 group py-2 px-2 md:px-0 block"
               >
                 <span className="relative z-10">All Products</span>
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gold-300 group-hover:w-full transition-all duration-300"></span>
@@ -220,7 +232,6 @@ export default function Header() {
           </ul>
         </div>
       </nav>
-
       {/* Mobile menu */}
       <div 
         className={`lg:hidden border-t border-gold-200 overflow-hidden transition-all duration-300 ${
