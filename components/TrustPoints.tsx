@@ -3,8 +3,8 @@ import { Shield, Award, Heart, Sparkles } from 'lucide-react'
 const trustPoints = [
   {
     icon: Shield,
-    title: 'Authentic Gold & Silver',
-    description: 'Certified 22K gold and 925 pure silver, guaranteed authenticity',
+    title: 'Authentic Silver',
+    description: 'Certified 925 pure silver, guaranteed authenticity and quality',
   },
   {
     icon: Award,
