@@ -70,7 +70,7 @@ export function generateProductsMetadata(): Metadata {
 
 export function generateProductMetadata(product: Product): Metadata {
   const title = `${product.name} - ${BRAND_NAME}`
-  const description = `${product.description} ${product.material === 'gold' ? '22K' : '925'} ${product.material}, ${product.weight}. Handcrafted with devotion.`
+  const description = `${product.description} 925 ${product.material}, ${product.weight}. Handcrafted with devotion.`
   
   return {
     title,

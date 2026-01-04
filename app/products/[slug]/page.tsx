@@ -168,7 +168,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                 </h3>
                 <p className="text-gray-700 text-sm">
                   This piece is handcrafted with traditional techniques and made from authentic{' '}
-                  {product.material === 'gold' ? '22K gold' : '925 pure silver'}. Each item is
+                  925 pure silver. Each item is
                   created with devotion and care, ensuring it meets our high standards of quality
                   and craftsmanship.
                 </p>

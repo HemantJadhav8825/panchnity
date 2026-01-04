@@ -62,7 +62,7 @@ export default function NewsletterSection() {
             </div>
             {submitted && (
               <p className="text-center text-green-600 text-sm mt-3">
-                Thank you for subscribing! We'll keep you updated.
+                Thank you for subscribing! We&apos;ll keep you updated.
               </p>
             )}
             <p className="text-center text-gray-500 text-xs mt-4">
