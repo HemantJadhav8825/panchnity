@@ -1,6 +1,6 @@
 # PANChNITY JEWELLERS - E-commerce Website
 
-A production-ready Next.js e-commerce website for PANChNITY JEWELLERS / KARIGAR, specializing in gold and silver temple idols, pooja items, and bhakti jewellery.
+A production-ready Next.js e-commerce website for PANChNITY JEWELLERS / KARIGAR, specializing in silver temple idols, pooja items, and bhakti jewellery.
 
 ## Features
 
@@ -16,7 +16,7 @@ A production-ready Next.js e-commerce website for PANChNITY JEWELLERS / KARIGAR,
 
 - **Next.js 14** (App Router)
 - **TypeScript**
-- **Tailwind CSS** with custom gold theme
+- **Tailwind CSS** with custom theme
 - **Three.js / React Three Fiber** for 3D product viewing
 - **Lucide React** for icons
 

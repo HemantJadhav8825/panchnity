@@ -9,14 +9,14 @@ IMAGE PLACEHOLDERS
 2. Product Images:
    - Path: public/images/products/
    - Add product images matching the paths specified in lib/products.ts
-   - Example: /images/products/gold-ganesh-1.jpg
+   - Example: /images/products/silver-ganesh-1.jpg
    - Recommended size: 1200x1200px or larger (square)
    - If images are missing, a placeholder will be shown
 
 3. 3D Models (Optional):
    - Path: public/models/
    - Add .glb or .gltf files matching the paths in lib/products.ts
-   - Example: /models/gold-ganesh.glb
+   - Example: /models/silver-ganesh.glb
    - If 3D models are not provided, the product detail page will show images only
 
 4. Open Graph Images (Optional):

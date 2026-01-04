@@ -10,8 +10,8 @@ export const INSTAGRAM_URL = 'https://www.instagram.com/panchnity'
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://panchnityjewellers.com'
 
 export const SEO_KEYWORDS = [
-  'gold idol',
   'silver murti',
+  'silver idol',
   'pooja jewellery',
   'temple jewellery',
   'hindu religious items',
@@ -20,5 +20,6 @@ export const SEO_KEYWORDS = [
   'karigar',
   'religious jewellery',
   'temple idols',
+  '925 silver',
 ]
 

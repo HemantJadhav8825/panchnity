@@ -4,7 +4,7 @@ const badges = [
   {
     icon: Shield,
     title: '100% Certified',
-    description: 'Authentic Gold & Silver',
+    description: 'Authentic Silver',
   },
   {
     icon: Award,

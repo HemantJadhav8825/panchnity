@@ -33,7 +33,7 @@ export default function HeroSection() {
         </h1>
         
         <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto leading-relaxed animate-slide-down animate-delay-700">
-          Exquisite gold and silver temple idols, pooja items, and bhakti jewellery
+          Exquisite silver temple idols, pooja items, and bhakti jewellery
           <br />
           crafted with traditional techniques and spiritual devotion
         </p>
@@ -60,7 +60,7 @@ export default function HeroSection() {
           </div>
           <div className="flex items-center gap-2">
             <Heart className="w-5 h-5 text-gold-300" />
-            <span>Authentic Gold & Silver</span>
+            <span>Authentic Silver</span>
           </div>
           <div className="flex items-center gap-2">
             <Heart className="w-5 h-5 text-gold-300" />

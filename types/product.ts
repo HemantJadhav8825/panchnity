@@ -1,5 +1,5 @@
 export type ProductCategory = 'idol' | 'pooja-item' | 'jewellery'
-export type ProductMaterial = 'gold' | 'silver'
+export type ProductMaterial = 'silver'
 
 export interface Product {
   id: string

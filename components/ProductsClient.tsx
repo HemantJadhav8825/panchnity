@@ -57,7 +57,7 @@ export default function ProductsClient() {
             Our Products
           </h1>
           <p className="text-gray-600 text-lg">
-            Discover our exquisite collection of gold and silver temple idols, pooja items, and bhakti jewellery
+            Discover our exquisite collection of silver temple idols, pooja items, and bhakti jewellery
           </p>
         </div>
 
@@ -101,7 +101,6 @@ export default function ProductsClient() {
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-300 focus:border-gold-300 outline-none bg-white"
             >
               <option value="all">All Materials</option>
-              <option value="gold">Gold</option>
               <option value="silver">Silver</option>
             </select>
 

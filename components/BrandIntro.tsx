@@ -39,7 +39,7 @@ export default function BrandIntro() {
               {TAGLINE}
             </p>
             <p className="text-gray-700 text-lg leading-relaxed max-w-2xl">
-              We are dedicated to creating exquisite gold and silver temple idols, pooja items, 
+              We are dedicated to creating exquisite silver temple idols, pooja items, 
               and bhakti jewellery that embody the essence of devotion and spiritual beauty. 
               Each piece is handcrafted with traditional techniques, ensuring authenticity and 
               timeless elegance for your home temple.

@@ -7,8 +7,8 @@ const testimonials = [
     name: 'Priya Sharma',
     location: 'Mumbai',
     rating: 5,
-    text: 'I bought a gold Ganesh idol from PANChNITY and it\'s absolutely beautiful. The craftsmanship is exceptional and it has become the centerpiece of my home temple. Highly recommended!',
-    product: '22K Gold Ganesh Idol',
+    text: 'I bought a silver Ganesh idol from PANChNITY and it\'s absolutely beautiful. The craftsmanship is exceptional and it has become the centerpiece of my home temple. Highly recommended!',
+    product: '925 Silver Ganesh Idol',
   },
   {
     name: 'Rajesh Kumar',
@@ -22,14 +22,14 @@ const testimonials = [
     location: 'Ahmedabad',
     rating: 5,
     text: 'My Lakshmi coin pendant is stunning! The quality is authentic and the design is timeless. I wear it every day and receive so many compliments. Thank you PANChNITY!',
-    product: '22K Gold Lakshmi Coin Pendant',
+    product: '925 Silver Lakshmi Coin Pendant',
   },
   {
     name: 'Vikram Singh',
     location: 'Bangalore',
     rating: 5,
-    text: 'Purchased a Krishna idol for my temple. The attention to detail is remarkable. The gold purity is exactly as stated. This is a trusted brand for religious jewellery.',
-    product: '22K Gold Krishna Idol',
+    text: 'Purchased a Krishna idol for my temple. The attention to detail is remarkable. The silver purity is exactly as stated. This is a trusted brand for religious jewellery.',
+    product: '925 Silver Krishna Idol',
   },
 ]
 

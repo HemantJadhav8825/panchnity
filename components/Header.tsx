@@ -67,7 +67,6 @@ export default function Header() {
       name: 'Idols',
       href: '/products?category=idol',
       items: [
-        { name: 'Gold Idols', href: '/products?category=idol&material=gold' },
         { name: 'Silver Idols', href: '/products?category=idol&material=silver' },
       ],
     },
@@ -75,7 +74,6 @@ export default function Header() {
       name: 'Pooja Items',
       href: '/products?category=pooja-item',
       items: [
-        { name: 'Gold Pooja Items', href: '/products?category=pooja-item&material=gold' },
         { name: 'Silver Pooja Items', href: '/products?category=pooja-item&material=silver' },
       ],
     },
@@ -83,7 +81,6 @@ export default function Header() {
       name: 'Jewellery',
       href: '/products?category=jewellery',
       items: [
-        { name: 'Gold Jewellery', href: '/products?category=jewellery&material=gold' },
         { name: 'Silver Jewellery', href: '/products?category=jewellery&material=silver' },
       ],
     },

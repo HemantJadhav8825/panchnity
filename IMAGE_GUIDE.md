@@ -7,12 +7,12 @@
 For religious jewellery and temple items, you can use:
 
 1. **Unsplash** (https://unsplash.com)
-   - Search: "gold idol", "silver jewellery", "temple items"
+   - Search: "silver idol", "silver jewellery", "temple items"
    - Free, high-quality images
    - No attribution required
 
 2. **Pexels** (https://pexels.com)
-   - Search: "hindu jewellery", "gold pendant", "silver idol"
+   - Search: "hindu jewellery", "silver pendant", "silver idol"
    - Free stock photos
 
 3. **Pixabay** (https://pixabay.com)
@@ -48,17 +48,17 @@ public/
 │   │   ├── pooja.jpg             # Category showcase image
 │   │   └── jewellery.jpg         # Category showcase image
 │   └── products/
-│       ├── gold-ganesh-1.jpg     # Product images
-│       ├── gold-ganesh-2.jpg
-│       ├── gold-lakshmi-1.jpg
+│       ├── silver-ganesh-1.jpg     # Product images
+│       ├── silver-ganesh-2.jpg
+│       ├── silver-lakshmi-1.jpg
 │       └── ... (match paths in lib/products.ts)
 ```
 
 ### Updating Product Images
 
 1. Add images to `public/images/products/` matching the paths in `lib/products.ts`
-2. Example: For product with `images: ['/images/products/gold-ganesh-1.jpg']`
-   - Place file at: `public/images/products/gold-ganesh-1.jpg`
+2. Example: For product with `images: ['/images/products/silver-ganesh-1.jpg']`
+   - Place file at: `public/images/products/silver-ganesh-1.jpg`
 
 ### Image Optimization
 

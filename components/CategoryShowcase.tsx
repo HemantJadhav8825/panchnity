@@ -7,10 +7,10 @@ import { ArrowRight } from 'lucide-react'
 const categories = [
   {
     name: 'Temple Idols',
-    description: 'Divine gold and silver idols',
+    description: 'Divine silver idols',
     href: '/products?category=idol',
     image: '/images/categories/idols.jpg',
-    count: '8+ Designs',
+    count: '3+ Designs',
   },
   {
     name: 'Pooja Items',
