@@ -5,15 +5,22 @@ import { Sparkles, Heart } from 'lucide-react'
 
 export default function HeroSection() {
   return (
-    <section className="relative bg-gradient-to-br from-gold-50 via-white to-gold-50 overflow-hidden flex items-center justify-center min-h-[70vh] py-20">
-      {/* Background elements */}
-      <div className="absolute inset-0 z-0 opacity-30">
-        <div className="absolute inset-0 bg-[url('/images/hero-bg.jpg')] bg-cover bg-center"></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-gold-50 to-white opacity-70"></div>
-      </div>
+    <section className="relative overflow-hidden flex items-center justify-center min-h-[70vh] py-20 bg-gradient-to-br from-gold-50 via-white to-gold-50">
+      {/* Background Video */}
+      <video 
+        autoPlay 
+        loop 
+        muted 
+        playsInline 
+        className="absolute inset-0 w-full h-full object-cover z-0 opacity-50"
+      >
+        <source src="https://kinvid1.bluestone.com/output/mp4/HP_video_1.mp4/HP_video_1.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <div className="absolute inset-0 bg-gradient-to-br from-gold-50/70 to-white/70 z-10"></div>
       
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 text-center flex flex-col items-center justify-center">
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 text-center flex flex-col items-center justify-center">
         <div className="inline-flex items-center gap-2 bg-gold-100/80 backdrop-blur-sm text-gold-700 px-4 py-2 rounded-full text-sm font-medium mb-6 animate-fade-in animate-delay-300">
           <Sparkles className="w-4 h-4" />
           <span>Handcrafted with Devotion</span>
@@ -64,4 +71,3 @@ export default function HeroSection() {
     </section>
   )
 }
-
