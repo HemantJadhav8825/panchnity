@@ -1,33 +1,58 @@
 import HeroSection from '@/components/HeroSection'
 import TrustBadges from '@/components/TrustBadges'
 import CategoryShowcase from '@/components/CategoryShowcase'
-import CollectionSpotlight from '@/components/CollectionSpotlight'
 import FeaturedProducts from '@/components/FeaturedProducts'
+import CollectionSpotlight from '@/components/CollectionSpotlight'
 import TrustPoints from '@/components/TrustPoints'
-import ProcessSection from '@/components/ProcessSection'
-import CraftsmanshipSection from '@/components/CraftsmanshipSection'
 import StatsSection from '@/components/StatsSection'
+import CraftsmanshipSection from '@/components/CraftsmanshipSection'
+import ProcessSection from '@/components/ProcessSection'
 import Testimonials from '@/components/Testimonials'
 import FAQSection from '@/components/FAQSection'
-import NewsletterSection from '@/components/NewsletterSection'
 import InstagramSection from '@/components/InstagramSection'
+import NewsletterSection from '@/components/NewsletterSection'
 
 export default function Home() {
   return (
     <>
+      {/* 1. Hero - First impression, main value proposition */}
       <HeroSection />
+      
+      {/* 2. Trust Badges - Immediate credibility */}
       <TrustBadges />
+      
+      {/* 3. Category Showcase - Help users navigate */}
       <CategoryShowcase />
-      <CollectionSpotlight />
+      
+      {/* 4. Featured Products - Show best products early */}
       <FeaturedProducts />
+      
+      {/* 5. Collection Spotlight - Showcase collections */}
+      <CollectionSpotlight />
+      
+      {/* 6. Why Choose Us - Build trust and differentiate */}
       <TrustPoints />
-      <ProcessSection />
-      <CraftsmanshipSection />
+      
+      {/* 7. Stats - Social proof with numbers */}
       <StatsSection />
+      
+      {/* 8. Craftsmanship - Quality story and brand values */}
+      <CraftsmanshipSection />
+      
+      {/* 9. Process - How it works for new visitors */}
+      <ProcessSection />
+      
+      {/* 10. Testimonials - Social proof from customers */}
       <Testimonials />
+      
+      {/* 11. FAQ - Address common concerns */}
       <FAQSection />
-      <NewsletterSection />
+      
+      {/* 12. Instagram - Social engagement and visual proof */}
       <InstagramSection />
+      
+      {/* 13. Newsletter - Lead capture at the end */}
+      <NewsletterSection />
     </>
   )
 }
