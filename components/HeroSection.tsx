@@ -14,7 +14,7 @@ export default function HeroSection() {
         playsInline 
         className="absolute inset-0 w-full h-full object-cover z-0 opacity-50"
       >
-        <source src="https://kinvid1.bluestone.com/output/mp4/HP_video_1.mp4/HP_video_1.mp4" type="video/mp4" />
+        <source src="/videos/hero-bg.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
       <div className="absolute inset-0 bg-gradient-to-br from-gold-50/70 to-white/70 z-10"></div>
