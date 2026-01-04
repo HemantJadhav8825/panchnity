@@ -16,8 +16,25 @@ export default function Header() {
   const bottomNavRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    let scrollTimeout: NodeJS.Timeout | null = null
+    let rafId: number | null = null
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 200) // Threshold for scroll effect
+      // Clear any existing timeout and animation frame
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout)
+      }
+      if (rafId) {
+        cancelAnimationFrame(rafId)
+      }
+
+      // Use requestAnimationFrame for smooth updates
+      rafId = requestAnimationFrame(() => {
+        // Debounce the state update to reduce frequency
+        scrollTimeout = setTimeout(() => {
+          setIsScrolled(window.scrollY > 150) // Threshold for scroll effect
+        }, 50) // ~16ms debounce (roughly one frame at 60fps)
+      })
     }
 
     const updateHeaderHeights = () => {
@@ -29,13 +46,19 @@ export default function Header() {
       }
     }
 
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     window.addEventListener('resize', updateHeaderHeights) // Recalculate on resize
     updateHeaderHeights() // Initial calculation
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('resize', updateHeaderHeights)
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout)
+      }
+      if (rafId) {
+        cancelAnimationFrame(rafId)
+      }
     }
   }, [])
 
@@ -246,6 +269,14 @@ export default function Header() {
           </ul>
         </div>
       </nav>
+      {/* Spacer to prevent layout shift when navbar becomes fixed */}
+      {isScrolled && (
+        <div 
+          className="hidden lg:block"
+          style={{ height: `${bottomNavHeight}px` }}
+          aria-hidden="true"
+        />
+      )}
       {/* Mobile menu */}
       <div 
         className={`lg:hidden border-t border-gold-200 overflow-hidden transition-all duration-300 ${
