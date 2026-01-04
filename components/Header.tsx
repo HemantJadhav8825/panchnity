@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { BRAND_NAME, BRAND_SUBTITLE, WHATSAPP_NUMBER } from '@/lib/constants'
 import { Menu, X, ChevronDown, Phone, Eye, MapPin, Search } from 'lucide-react'
@@ -9,19 +9,28 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [categoryMenuOpen, setCategoryMenuOpen] = useState<string | null>(null)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [mainHeaderHeight, setMainHeaderHeight] = useState(0)
+
+  const mainHeaderRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) { // Adjust scroll threshold as needed
-        setIsScrolled(true)
-      } else {
-        setIsScrolled(false)
+      setIsScrolled(window.scrollY > 50) // Threshold for scroll effect
+    }
+
+    const updateHeaderHeights = () => {
+      if (mainHeaderRef.current) {
+        setMainHeaderHeight(mainHeaderRef.current.offsetHeight) // Get dynamic height
       }
     }
 
     window.addEventListener('scroll', handleScroll)
+    window.addEventListener('resize', updateHeaderHeights) // Recalculate on resize
+    updateHeaderHeights() // Initial calculation
+
     return () => {
       window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', updateHeaderHeights)
     }
   }, [])
 
@@ -51,7 +60,7 @@ export default function Header() {
       ],
     },
   ]
-
+console.log({isScrolled},mainHeaderHeight)
   return (
     <header className="relative z-50">
       {/* Top Bar */}
@@ -78,7 +87,8 @@ export default function Header() {
 
       {/* Main Header */}
       <div 
-        className={`sticky top-0 w-full bg-white/95 backdrop-blur-md border-b border-gold-200 transition-all duration-300 ease-in-out ${
+        ref={mainHeaderRef} // Attach ref here
+        className={`sticky top-0 w-full bg-white/95 backdrop-blur-md border-b border-gold-200 transition-all duration-300 ease-in-out z-40 ${
           isScrolled ? 'shadow-lg py-2' : 'shadow-sm py-4'
         }`}
       >
@@ -142,12 +152,12 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Bottom Navigation Bar (Desktop and Mobile) */}
       {/* Bottom Navigation Bar (Desktop Only) */}
       <nav 
-        className={`bg-gray-800 py-3 transition-all duration-300 ease-in-out hidden lg:block ${
-          isScrolled ? 'hidden' : 'block'
+        className={`bg-gray-800 py-3 transition-all duration-300 ease-in-out z-30 hidden lg:block ${
+          isScrolled ? 'fixed w-full border-t border-gold-200 shadow-lg' : ''
         }`}
+        style={isScrolled ? { top: `${mainHeaderHeight}px` } : {}} // Dynamic top for fixed
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ul className="flex justify-center space-x-4 md:space-x-8 overflow-x-auto whitespace-nowrap scrollbar-hide">
