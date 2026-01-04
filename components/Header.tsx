@@ -10,17 +10,22 @@ export default function Header() {
   const [categoryMenuOpen, setCategoryMenuOpen] = useState<string | null>(null)
   const [isScrolled, setIsScrolled] = useState(false)
   const [mainHeaderHeight, setMainHeaderHeight] = useState(0)
+  const [bottomNavHeight, setBottomNavHeight] = useState(0)
 
   const mainHeaderRef = useRef<HTMLDivElement>(null)
+  const bottomNavRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50) // Threshold for scroll effect
+      setIsScrolled(window.scrollY > 200) // Threshold for scroll effect
     }
 
     const updateHeaderHeights = () => {
       if (mainHeaderRef.current) {
         setMainHeaderHeight(mainHeaderRef.current.offsetHeight) // Get dynamic height
+      }
+      if (bottomNavRef.current) {
+        setBottomNavHeight(bottomNavRef.current.offsetHeight) // Get dynamic height
       }
     }
 
@@ -60,7 +65,6 @@ export default function Header() {
       ],
     },
   ]
-console.log({isScrolled},mainHeaderHeight)
   return (
     <header className="relative z-50">
       {/* Top Bar */}
@@ -88,7 +92,7 @@ console.log({isScrolled},mainHeaderHeight)
       {/* Main Header */}
       <div 
         ref={mainHeaderRef} // Attach ref here
-        className={`sticky top-0 w-full bg-white/95 backdrop-blur-md border-b border-gold-200 transition-all duration-300 ease-in-out z-40 ${
+        className={`w-full bg-white/95 backdrop-blur-md border-b border-gold-200 transition-all duration-300 ease-in-out z-40 ${
           isScrolled ? 'shadow-lg py-2' : 'shadow-sm py-4'
         }`}
       >
@@ -154,10 +158,10 @@ console.log({isScrolled},mainHeaderHeight)
 
       {/* Bottom Navigation Bar (Desktop Only) */}
       <nav 
-        className={`bg-gray-800 py-3 transition-all duration-300 ease-in-out z-30 hidden lg:block ${
-          isScrolled ? 'fixed w-full border-t border-gold-200 shadow-lg' : ''
+        ref={bottomNavRef} // Attach ref here
+        className={`bg-gray-800 py-3 w-full border-t border-gold-200 shadow-lg z-50 transition-all duration-300 ease-in-out hidden lg:block ${
+          isScrolled ? 'fixed top-0' : 'relative'
         }`}
-        style={isScrolled ? { top: `${mainHeaderHeight}px` } : {}} // Dynamic top for fixed
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ul className="flex justify-center space-x-4 md:space-x-8 overflow-x-auto whitespace-nowrap scrollbar-hide">
