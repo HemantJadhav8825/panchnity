@@ -17,7 +17,7 @@ export default function HeroSection() {
         <source src="/videos/hero-bg.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-      <div className="absolute inset-0 bg-gradient-to-br from-gold-50/70 to-white/70 z-10"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white/80 via-gold-50/60 to-transparent z-10"></div>
       
       {/* Content */}
       <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 text-center flex flex-col items-center justify-center">
