@@ -21,30 +21,23 @@ export default function HeroSection() {
         className="absolute inset-0 z-10"
         style={{
           clipPath: 'inset(0 0 0 0)',
-          WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 100%)',
-          maskImage: 'linear-gradient(to top, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 100%)',
-          background: 'rgba(255, 255, 255, 0.85)'
+          WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 50%)',
+          maskImage: 'linear-gradient(to top, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 50%)',
+          background: 'rgba(255, 255, 255, 0.6)'
         }}
       ></div>
       {/* Content */}
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16 text-center flex flex-col items-center justify-center">
-        <div className="inline-flex items-center gap-2 bg-gold-100/90 backdrop-blur-sm text-gold-700 px-4 py-2 rounded-full text-sm font-medium mb-6 animate-fade-in animate-delay-300">
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-20 text-center flex flex-col items-center justify-center">
+        <div className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-md text-gray-900 px-4 py-2 rounded-full text-sm font-medium mb-6 animate-fade-in animate-delay-300 shadow-lg">
           <Sparkles className="w-4 h-4" />
           <span>Handcrafted with Devotion</span>
         </div>
         
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-gray-900 mb-4 leading-tight animate-slide-down animate-delay-500">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-4 leading-tight animate-slide-down animate-delay-500" style={{WebkitTextStroke: '1px rgba(0,0,0,0.8)', textShadow: '2px 2px 4px rgba(0,0,0,0.8)'}}>
           The Art of
           <br />
-          <span className="text-gold-300">Bhakti & Shakti</span>
+          <span className="text-gold-200" style={{WebkitTextStroke: '1px rgba(0,0,0,0.6)', textShadow: '2px 2px 4px rgba(0,0,0,0.8), 0 0 10px rgba(255,215,0,0.5)'}}>Bhakti & Shakti</span>
         </h1>
-
-        <p className="text-lg md:text-xl text-gray-700 mb-6 max-w-3xl mx-auto leading-relaxed animate-slide-down animate-delay-700">
-          Exquisite silver temple idols, pooja items, and bhakti jewellery
-          <br />
-          crafted with traditional techniques and spiritual devotion
-        </p>
-        
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8 animate-fade-in animate-delay-900">
           <Link
             href="/products"
@@ -60,7 +53,7 @@ export default function HeroSection() {
           </Link>
         </div>
         
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-8 text-sm text-gray-700 animate-fade-in animate-delay-1100">
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-8 text-sm text-white animate-fade-in animate-delay-1100" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.8)'}}>
           <div className="flex items-center gap-2">
             <Heart className="w-5 h-5 text-gold-300" />
             <span>100% Certified</span>
