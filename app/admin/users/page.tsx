@@ -1,98 +1,117 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { useAuth, useUsers, User as ApiUser } from '@/lib/hooks/useApi'
-import { User, Mail, Calendar, Shield, Plus, Edit, Trash2, Search, Loader2 } from 'lucide-react'
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth, useUsers, User as ApiUser } from "@/lib/hooks/useApi";
+import {
+  User,
+  Mail,
+  Calendar,
+  Shield,
+  Plus,
+  Edit,
+  Trash2,
+  Search,
+  Loader2,
+} from "lucide-react";
 
 export default function AdminUsersPage() {
-  const { user: currentUser, loading: authLoading } = useAuth()
-  const { users, loading, error, fetchUsers, createUser, updateUser, deleteUser } = useUsers()
-  const [searchTerm, setSearchTerm] = useState('')
-  const [showCreateModal, setShowCreateModal] = useState(false)
-  const [editingUser, setEditingUser] = useState<ApiUser | null>(null)
+  const { user: currentUser, loading: authLoading } = useAuth();
+  const {
+    users,
+    loading,
+    error,
+    fetchUsers,
+    createUser,
+    updateUser,
+    deleteUser,
+  } = useUsers();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [editingUser, setEditingUser] = useState<ApiUser | null>(null);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    role: 'user' as 'user' | 'admin',
-  })
-  const router = useRouter()
+    name: "",
+    email: "",
+    password: "",
+    role: "user" as "user" | "admin",
+  });
+  const router = useRouter();
 
   useEffect(() => {
-    if (!authLoading && (!currentUser || currentUser.role !== 'admin')) {
-      router.push('/dashboard')
-      return
+    if (!authLoading && (!currentUser || currentUser.role !== "admin")) {
+      router.push("/dashboard");
+      return;
     }
 
-    if (currentUser?.role === 'admin') {
-      fetchUsers()
+    if (currentUser?.role === "admin") {
+      fetchUsers();
     }
-  }, [currentUser, authLoading, router, fetchUsers])
+  }, [currentUser, authLoading, router, fetchUsers]);
 
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const filteredUsers = users.filter(
+    (user) =>
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleCreateUser = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
       await createUser({
         name: formData.name,
         email: formData.email,
         password: formData.password,
         role: formData.role,
-      })
-      setShowCreateModal(false)
-      setFormData({ name: '', email: '', password: '', role: 'user' })
+      });
+      setShowCreateModal(false);
+      setFormData({ name: "", email: "", password: "", role: "user" });
     } catch (err) {
       // Error handled by hook
     }
-  }
+  };
 
   const handleUpdateUser = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!editingUser) return
+    e.preventDefault();
+    if (!editingUser) return;
 
     try {
       await updateUser(editingUser.id, {
         name: formData.name,
         email: formData.email,
         role: formData.role,
-      })
-      setEditingUser(null)
-      setFormData({ name: '', email: '', password: '', role: 'user' })
+      });
+      setEditingUser(null);
+      setFormData({ name: "", email: "", password: "", role: "user" });
     } catch (err) {
       // Error handled by hook
     }
-  }
+  };
 
   const handleDeleteUser = async (userId: string) => {
-    if (confirm('Are you sure you want to delete this user?')) {
+    if (confirm("Are you sure you want to delete this user?")) {
       try {
-        await deleteUser(userId)
+        await deleteUser(userId);
       } catch (err) {
         // Error handled by hook
       }
     }
-  }
+  };
 
   const openEditModal = (user: ApiUser) => {
-    setEditingUser(user)
+    setEditingUser(user);
     setFormData({
-      name: user.name || '',
-      email: user.email || '',
-      password: '',
-      role: (user.role as 'user' | 'admin') || 'user',
-    })
-  }
+      name: user.name || "",
+      email: user.email || "",
+      password: "",
+      role: (user.role as "user" | "admin") || "user",
+    });
+  };
 
   const closeModals = () => {
-    setShowCreateModal(false)
-    setEditingUser(null)
-    setFormData({ name: '', email: '', password: '', role: 'user' })
-  }
+    setShowCreateModal(false);
+    setEditingUser(null);
+    setFormData({ name: "", email: "", password: "", role: "user" });
+  };
 
   if (authLoading || loading) {
     return (
@@ -102,11 +121,11 @@ export default function AdminUsersPage() {
           <p className="text-gray-600">Loading...</p>
         </div>
       </div>
-    )
+    );
   }
 
-  if (!currentUser || currentUser.role !== 'admin') {
-    return null
+  if (!currentUser || currentUser.role !== "admin") {
+    return null;
   }
 
   return (
@@ -115,8 +134,12 @@ export default function AdminUsersPage() {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-serif font-bold text-gray-900 mb-2">User Management</h1>
-            <p className="text-gray-600">Manage user accounts and permissions.</p>
+            <h1 className="text-3xl font-serif font-bold text-gray-900 mb-2">
+              User Management
+            </h1>
+            <p className="text-gray-600">
+              Manage user accounts and permissions.
+            </p>
           </div>
           <button
             onClick={() => setShowCreateModal(true)}
@@ -180,7 +203,9 @@ export default function AdminUsersPage() {
                           <User className="w-5 h-5 text-white" />
                         </div>
                         <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">{user.name}</div>
+                          <div className="text-sm font-medium text-gray-900">
+                            {user.name}
+                          </div>
                           <div className="text-sm text-gray-500 flex items-center gap-1">
                             <Mail className="w-3 h-3" />
                             {user.email}
@@ -189,28 +214,34 @@ export default function AdminUsersPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        user.role === 'admin'
-                          ? 'bg-purple-100 text-purple-800'
-                          : 'bg-gray-100 text-gray-800'
-                      }`}>
+                      <span
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          user.role === "admin"
+                            ? "bg-purple-100 text-purple-800"
+                            : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
                         <Shield className="w-3 h-3 mr-1" />
-                        {user.role || 'user'}
+                        {user.role || "user"}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        user.isActive !== false
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-red-100 text-red-800'
-                      }`}>
-                        {user.isActive !== false ? 'Active' : 'Inactive'}
+                      <span
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          user.isActive !== false
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
+                        }`}
+                      >
+                        {user.isActive !== false ? "Active" : "Inactive"}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <div className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
-                        {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
+                        {user.createdAt
+                          ? new Date(user.createdAt).toLocaleDateString()
+                          : "N/A"}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -240,9 +271,13 @@ export default function AdminUsersPage() {
           {filteredUsers.length === 0 && (
             <div className="text-center py-12">
               <User className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-sm font-medium text-gray-900 mb-1">No users found</h3>
+              <h3 className="text-sm font-medium text-gray-900 mb-1">
+                No users found
+              </h3>
               <p className="text-sm text-gray-500">
-                {searchTerm ? 'Try adjusting your search terms.' : 'Get started by adding a new user.'}
+                {searchTerm
+                  ? "Try adjusting your search terms."
+                  : "Get started by adding a new user."}
               </p>
             </div>
           )}
@@ -253,33 +288,49 @@ export default function AdminUsersPage() {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                {editingUser ? 'Edit User' : 'Create New User'}
+                {editingUser ? "Edit User" : "Create New User"}
               </h2>
 
-              <form onSubmit={editingUser ? handleUpdateUser : handleCreateUser} className="space-y-4">
+              <form
+                onSubmit={editingUser ? handleUpdateUser : handleCreateUser}
+                className="space-y-4"
+              >
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Full Name
                   </label>
                   <input
                     id="name"
                     type="text"
                     value={formData.name}
-                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({ ...prev, name: e.target.value }))
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gold-300 focus:border-transparent"
                     required
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Email Address
                   </label>
                   <input
                     id="email"
                     type="email"
                     value={formData.email}
-                    onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gold-300 focus:border-transparent"
                     required
                   />
@@ -287,14 +338,22 @@ export default function AdminUsersPage() {
 
                 {!editingUser && (
                   <div>
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label
+                      htmlFor="password"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
                       Password
                     </label>
                     <input
                       id="password"
                       type="password"
                       value={formData.password}
-                      onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          password: e.target.value,
+                        }))
+                      }
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gold-300 focus:border-transparent"
                       required={!editingUser}
                     />
@@ -302,13 +361,21 @@ export default function AdminUsersPage() {
                 )}
 
                 <div>
-                  <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="role"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Role
                   </label>
                   <select
                     id="role"
                     value={formData.role}
-                    onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value as 'user' | 'admin' }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        role: e.target.value as "user" | "admin",
+                      }))
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gold-300 focus:border-transparent"
                   >
                     <option value="user">User</option>
@@ -330,7 +397,7 @@ export default function AdminUsersPage() {
                     className="flex-1 bg-gold-400 hover:bg-gold-500 disabled:bg-gold-300 text-white font-semibold py-2 px-4 rounded-md transition-colors flex items-center justify-center gap-2"
                   >
                     {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-                    {editingUser ? 'Update User' : 'Create User'}
+                    {editingUser ? "Update User" : "Create User"}
                   </button>
                 </div>
               </form>
@@ -339,6 +406,5 @@ export default function AdminUsersPage() {
         )}
       </div>
     </div>
-  )
+  );
 }
-
