@@ -1,123 +1,142 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { useAuth } from '@/lib/hooks/useApi'
-import { User, Mail, Lock, Eye, EyeOff, Save, Loader2, AlertTriangle } from 'lucide-react'
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/hooks/useApi";
+import {
+  User,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  Save,
+  Loader2,
+  AlertTriangle,
+} from "lucide-react";
 
 export default function SettingsPage() {
-  const { user, loading: authLoading, updateProfile, updatePassword, deleteAccount } = useAuth()
-  const [activeTab, setActiveTab] = useState<'profile' | 'password' | 'danger'>('profile')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
-  const router = useRouter()
+  const {
+    user,
+    loading: authLoading,
+    updateProfile,
+    updatePassword,
+    deleteAccount,
+  } = useAuth();
+  const [activeTab, setActiveTab] = useState<"profile" | "password" | "danger">(
+    "profile"
+  );
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const router = useRouter();
 
   // Profile form state
   const [profileData, setProfileData] = useState({
-    name: '',
-    email: '',
-  })
+    name: "",
+    email: "",
+  });
 
   // Password form state
   const [passwordData, setPasswordData] = useState({
-    passwordCurrent: '',
-    password: '',
-    passwordConfirm: '',
-  })
+    passwordCurrent: "",
+    password: "",
+    passwordConfirm: "",
+  });
 
   const [showPasswords, setShowPasswords] = useState({
     current: false,
     new: false,
     confirm: false,
-  })
+  });
 
   // Delete account confirmation
-  const [deleteConfirm, setDeleteConfirm] = useState('')
+  const [deleteConfirm, setDeleteConfirm] = useState("");
 
   useEffect(() => {
     if (user) {
       setProfileData({
-        name: user.name || '',
-        email: user.email || '',
-      })
+        name: user.name || "",
+        email: user.email || "",
+      });
     }
-  }, [user])
+  }, [user]);
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push('/login')
+      router.push("/login");
     }
-  }, [user, authLoading, router])
+  }, [user, authLoading, router]);
 
   const handleProfileUpdate = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
-    setSuccess('')
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess("");
 
     try {
       await updateProfile({
         name: profileData.name,
         email: profileData.email,
-      })
-      setSuccess('Profile updated successfully!')
+      });
+      setSuccess("Profile updated successfully!");
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update profile')
+      setError(err instanceof Error ? err.message : "Failed to update profile");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handlePasswordUpdate = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
-    setSuccess('')
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess("");
 
     if (passwordData.password !== passwordData.passwordConfirm) {
-      setError('New passwords do not match')
-      setLoading(false)
-      return
+      setError("New passwords do not match");
+      setLoading(false);
+      return;
     }
 
     try {
       await updatePassword({
         passwordCurrent: passwordData.passwordCurrent,
         password: passwordData.password,
-      })
-      setSuccess('Password updated successfully!')
+      });
+      setSuccess("Password updated successfully!");
       setPasswordData({
-        passwordCurrent: '',
-        password: '',
-        passwordConfirm: '',
-      })
+        passwordCurrent: "",
+        password: "",
+        passwordConfirm: "",
+      });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update password')
+      setError(
+        err instanceof Error ? err.message : "Failed to update password"
+      );
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleDeleteAccount = async () => {
-    if (deleteConfirm !== 'DELETE') {
-      setError('Please type DELETE to confirm')
-      return
+    if (deleteConfirm !== "DELETE") {
+      setError("Please type DELETE to confirm");
+      return;
     }
 
-    setLoading(true)
-    setError('')
-    setSuccess('')
+    setLoading(true);
+    setError("");
+    setSuccess("");
 
     try {
-      await deleteAccount()
-      router.push('/login')
+      await deleteAccount();
+      router.push("/login");
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete account')
+      setError(err instanceof Error ? err.message : "Failed to delete account");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   if (authLoading) {
     return (
@@ -127,11 +146,11 @@ export default function SettingsPage() {
           <p className="text-gray-600">Loading settings...</p>
         </div>
       </div>
-    )
+    );
   }
 
   if (!user) {
-    return null
+    return null;
   }
 
   return (
@@ -139,8 +158,12 @@ export default function SettingsPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-serif font-bold text-gray-900 mb-2">Account Settings</h1>
-          <p className="text-gray-600">Manage your account preferences and security settings.</p>
+          <h1 className="text-3xl font-serif font-bold text-gray-900 mb-2">
+            Account Settings
+          </h1>
+          <p className="text-gray-600">
+            Manage your account preferences and security settings.
+          </p>
         </div>
 
         {/* Tabs */}
@@ -148,31 +171,31 @@ export default function SettingsPage() {
           <div className="border-b border-gray-200">
             <nav className="flex">
               <button
-                onClick={() => setActiveTab('profile')}
+                onClick={() => setActiveTab("profile")}
                 className={`px-6 py-4 text-sm font-medium border-b-2 ${
-                  activeTab === 'profile'
-                    ? 'border-gold-400 text-gold-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  activeTab === "profile"
+                    ? "border-gold-400 text-gold-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`}
               >
                 Profile Information
               </button>
               <button
-                onClick={() => setActiveTab('password')}
+                onClick={() => setActiveTab("password")}
                 className={`px-6 py-4 text-sm font-medium border-b-2 ${
-                  activeTab === 'password'
-                    ? 'border-gold-400 text-gold-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  activeTab === "password"
+                    ? "border-gold-400 text-gold-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`}
               >
                 Change Password
               </button>
               <button
-                onClick={() => setActiveTab('danger')}
+                onClick={() => setActiveTab("danger")}
                 className={`px-6 py-4 text-sm font-medium border-b-2 ${
-                  activeTab === 'danger'
-                    ? 'border-red-400 text-red-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  activeTab === "danger"
+                    ? "border-red-400 text-red-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`}
               >
                 Danger Zone
@@ -181,9 +204,11 @@ export default function SettingsPage() {
           </div>
 
           {/* Profile Tab */}
-          {activeTab === 'profile' && (
+          {activeTab === "profile" && (
             <div className="p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Update Profile Information</h2>
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                Update Profile Information
+              </h2>
 
               {error && (
                 <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
@@ -199,7 +224,10 @@ export default function SettingsPage() {
 
               <form onSubmit={handleProfileUpdate} className="space-y-4">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Full Name
                   </label>
                   <div className="relative">
@@ -208,7 +236,12 @@ export default function SettingsPage() {
                       id="name"
                       type="text"
                       value={profileData.name}
-                      onChange={(e) => setProfileData(prev => ({ ...prev, name: e.target.value }))}
+                      onChange={(e) =>
+                        setProfileData((prev) => ({
+                          ...prev,
+                          name: e.target.value,
+                        }))
+                      }
                       className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gold-300 focus:border-transparent"
                       placeholder="Enter your full name"
                       required
@@ -217,7 +250,10 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Email Address
                   </label>
                   <div className="relative">
@@ -226,7 +262,12 @@ export default function SettingsPage() {
                       id="email"
                       type="email"
                       value={profileData.email}
-                      onChange={(e) => setProfileData(prev => ({ ...prev, email: e.target.value }))}
+                      onChange={(e) =>
+                        setProfileData((prev) => ({
+                          ...prev,
+                          email: e.target.value,
+                        }))
+                      }
                       className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gold-300 focus:border-transparent"
                       placeholder="Enter your email address"
                       required
@@ -248,9 +289,11 @@ export default function SettingsPage() {
           )}
 
           {/* Password Tab */}
-          {activeTab === 'password' && (
+          {activeTab === "password" && (
             <div className="p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Change Password</h2>
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                Change Password
+              </h2>
 
               {error && (
                 <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
@@ -266,76 +309,127 @@ export default function SettingsPage() {
 
               <form onSubmit={handlePasswordUpdate} className="space-y-4">
                 <div>
-                  <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="currentPassword"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Current Password
                   </label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
                       id="currentPassword"
-                      type={showPasswords.current ? 'text' : 'password'}
+                      type={showPasswords.current ? "text" : "password"}
                       value={passwordData.passwordCurrent}
-                      onChange={(e) => setPasswordData(prev => ({ ...prev, passwordCurrent: e.target.value }))}
+                      onChange={(e) =>
+                        setPasswordData((prev) => ({
+                          ...prev,
+                          passwordCurrent: e.target.value,
+                        }))
+                      }
                       className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gold-300 focus:border-transparent"
                       placeholder="Enter current password"
                       required
                     />
                     <button
                       type="button"
-                      onClick={() => setShowPasswords(prev => ({ ...prev, current: !prev.current }))}
+                      onClick={() =>
+                        setShowPasswords((prev) => ({
+                          ...prev,
+                          current: !prev.current,
+                        }))
+                      }
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     >
-                      {showPasswords.current ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      {showPasswords.current ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
                     </button>
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="newPassword"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     New Password
                   </label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
                       id="newPassword"
-                      type={showPasswords.new ? 'text' : 'password'}
+                      type={showPasswords.new ? "text" : "password"}
                       value={passwordData.password}
-                      onChange={(e) => setPasswordData(prev => ({ ...prev, password: e.target.value }))}
+                      onChange={(e) =>
+                        setPasswordData((prev) => ({
+                          ...prev,
+                          password: e.target.value,
+                        }))
+                      }
                       className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gold-300 focus:border-transparent"
                       placeholder="Enter new password"
                       required
                     />
                     <button
                       type="button"
-                      onClick={() => setShowPasswords(prev => ({ ...prev, new: !prev.new }))}
+                      onClick={() =>
+                        setShowPasswords((prev) => ({
+                          ...prev,
+                          new: !prev.new,
+                        }))
+                      }
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     >
-                      {showPasswords.new ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      {showPasswords.new ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
                     </button>
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="confirmPassword"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Confirm New Password
                   </label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
                       id="confirmPassword"
-                      type={showPasswords.confirm ? 'text' : 'password'}
+                      type={showPasswords.confirm ? "text" : "password"}
                       value={passwordData.passwordConfirm}
-                      onChange={(e) => setPasswordData(prev => ({ ...prev, passwordConfirm: e.target.value }))}
+                      onChange={(e) =>
+                        setPasswordData((prev) => ({
+                          ...prev,
+                          passwordConfirm: e.target.value,
+                        }))
+                      }
                       className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gold-300 focus:border-transparent"
                       placeholder="Confirm new password"
                       required
                     />
                     <button
                       type="button"
-                      onClick={() => setShowPasswords(prev => ({ ...prev, confirm: !prev.confirm }))}
+                      onClick={() =>
+                        setShowPasswords((prev) => ({
+                          ...prev,
+                          confirm: !prev.confirm,
+                        }))
+                      }
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     >
-                      {showPasswords.confirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      {showPasswords.confirm ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
                     </button>
                   </div>
                 </div>
@@ -354,11 +448,14 @@ export default function SettingsPage() {
           )}
 
           {/* Danger Zone Tab */}
-          {activeTab === 'danger' && (
+          {activeTab === "danger" && (
             <div className="p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Danger Zone</h2>
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                Danger Zone
+              </h2>
               <p className="text-gray-600 mb-6">
-                Once you delete your account, there is no going back. Please be certain.
+                Once you delete your account, there is no going back. Please be
+                certain.
               </p>
 
               {error && (
@@ -371,14 +468,20 @@ export default function SettingsPage() {
                 <div className="flex items-start gap-3">
                   <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5" />
                   <div className="flex-1">
-                    <h3 className="text-sm font-semibold text-red-900 mb-2">Delete Account</h3>
+                    <h3 className="text-sm font-semibold text-red-900 mb-2">
+                      Delete Account
+                    </h3>
                     <p className="text-sm text-red-700 mb-4">
-                      This action cannot be undone. This will permanently delete your account and remove your data from our servers.
+                      This action cannot be undone. This will permanently delete
+                      your account and remove your data from our servers.
                     </p>
 
                     <div className="space-y-3">
                       <div>
-                        <label htmlFor="deleteConfirm" className="block text-sm font-medium text-red-800 mb-1">
+                        <label
+                          htmlFor="deleteConfirm"
+                          className="block text-sm font-medium text-red-800 mb-1"
+                        >
                           Type &ldquo;DELETE&rdquo; to confirm
                         </label>
                         <input
@@ -393,10 +496,12 @@ export default function SettingsPage() {
 
                       <button
                         onClick={handleDeleteAccount}
-                        disabled={loading || deleteConfirm !== 'DELETE'}
+                        disabled={loading || deleteConfirm !== "DELETE"}
                         className="flex items-center gap-2 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white font-semibold py-2 px-4 rounded-md transition-colors text-sm"
                       >
-                        {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+                        {loading && (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        )}
                         Delete Account
                       </button>
                     </div>
@@ -408,5 +513,5 @@ export default function SettingsPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

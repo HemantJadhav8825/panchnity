@@ -1,128 +1,136 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { apiClient, User, AuthResponse, ApiResponse } from '../api'
+import { useState, useEffect } from "react";
+import { apiClient, User, AuthResponse, ApiResponse } from "../api";
 
 // Re-export types for convenience
-export type { User, AuthResponse, ApiResponse }
+export type { User, AuthResponse, ApiResponse };
 
 export function useAuth() {
-  const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    checkAuthStatus()
-  }, [])
+    checkAuthStatus();
+  }, []);
 
   const checkAuthStatus = async () => {
     try {
-      const response = await apiClient.getCurrentUser()
-      setUser(response.data?.user || null)
+      const response = await apiClient.getCurrentUser();
+      setUser(response.data?.user || null);
     } catch (err) {
-      setUser(null)
+      setUser(null);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  const login = async (email: string, password: string): Promise<AuthResponse> => {
-    setLoading(true)
-    setError(null)
+  const login = async (
+    email: string,
+    password: string
+  ): Promise<AuthResponse> => {
+    setLoading(true);
+    setError(null);
     try {
-      const response = await apiClient.login({ email, password })
-      setUser(response.data.user)
-      return response
+      const response = await apiClient.login({ email, password });
+      setUser(response.data.user);
+      return response;
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Login failed'
-      setError(errorMessage)
-      throw err
+      const errorMessage = err instanceof Error ? err.message : "Login failed";
+      setError(errorMessage);
+      throw err;
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const signup = async (userData: {
-    name: string
-    email: string
-    password: string
-    passwordConfirm: string
+    name: string;
+    email: string;
+    password: string;
+    passwordConfirm: string;
   }): Promise<AuthResponse> => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
-      const response = await apiClient.signup(userData)
-      setUser(response.data.user)
-      return response
+      const response = await apiClient.signup(userData);
+      setUser(response.data.user);
+      return response;
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Signup failed'
-      setError(errorMessage)
-      throw err
+      const errorMessage = err instanceof Error ? err.message : "Signup failed";
+      setError(errorMessage);
+      throw err;
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const logout = async (): Promise<void> => {
     try {
-      await apiClient.logout()
-      setUser(null)
+      await apiClient.logout();
+      setUser(null);
     } catch (err) {
-      console.error('Logout error:', err)
+      console.error("Logout error:", err);
       // Still clear user state even if API call fails
-      setUser(null)
+      setUser(null);
     }
-  }
+  };
 
-  const updateProfile = async (userData: { name?: string; email?: string }): Promise<User> => {
-    setLoading(true)
-    setError(null)
+  const updateProfile = async (userData: {
+    name?: string;
+    email?: string;
+  }): Promise<User> => {
+    setLoading(true);
+    setError(null);
     try {
-      const response = await apiClient.updateCurrentUser(userData)
-      setUser(response.data?.user || null)
-      return response.data!.user
+      const response = await apiClient.updateCurrentUser(userData);
+      setUser(response.data?.user || null);
+      return response.data!.user;
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Update failed'
-      setError(errorMessage)
-      throw err
+      const errorMessage = err instanceof Error ? err.message : "Update failed";
+      setError(errorMessage);
+      throw err;
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const updatePassword = async (passwordData: {
-    passwordCurrent: string
-    password: string
+    passwordCurrent: string;
+    password: string;
   }): Promise<User> => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
-      const response = await apiClient.updatePassword(passwordData)
-      setUser(response.data?.user || null)
-      return response.data!.user
+      const response = await apiClient.updatePassword(passwordData);
+      setUser(response.data?.user || null);
+      return response.data!.user;
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Password update failed'
-      setError(errorMessage)
-      throw err
+      const errorMessage =
+        err instanceof Error ? err.message : "Password update failed";
+      setError(errorMessage);
+      throw err;
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const deleteAccount = async (): Promise<void> => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
-      await apiClient.deleteCurrentUser()
-      setUser(null)
+      await apiClient.deleteCurrentUser();
+      setUser(null);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Account deletion failed'
-      setError(errorMessage)
-      throw err
+      const errorMessage =
+        err instanceof Error ? err.message : "Account deletion failed";
+      setError(errorMessage);
+      throw err;
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return {
     user,
@@ -135,81 +143,90 @@ export function useAuth() {
     updatePassword,
     deleteAccount,
     checkAuthStatus,
-  }
+  };
 }
 
 export function useUsers() {
-  const [users, setUsers] = useState<User[]>([])
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchUsers = async (): Promise<void> => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
-      const response = await apiClient.getAllUsers()
-      setUsers(response.data?.users || [])
+      const response = await apiClient.getAllUsers();
+      setUsers(response.data?.users || []);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch users'
-      setError(errorMessage)
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to fetch users";
+      setError(errorMessage);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const createUser = async (userData: {
-    name: string
-    email: string
-    password: string
-    role?: string
+    name: string;
+    email: string;
+    password: string;
+    role?: string;
   }): Promise<User> => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
-      const response = await apiClient.createUser(userData)
-      const newUser = response.data!.user
-      setUsers(prev => [...prev, newUser])
-      return newUser
+      const response = await apiClient.createUser(userData);
+      const newUser = response.data!.user;
+      setUsers((prev) => [...prev, newUser]);
+      return newUser;
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to create user'
-      setError(errorMessage)
-      throw err
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to create user";
+      setError(errorMessage);
+      throw err;
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  const updateUser = async (id: string, userData: Partial<User>): Promise<User> => {
-    setLoading(true)
-    setError(null)
+  const updateUser = async (
+    id: string,
+    userData: Partial<User>
+  ): Promise<User> => {
+    setLoading(true);
+    setError(null);
     try {
-      const response = await apiClient.updateUser(id, userData)
-      const updatedUser = response.data!.user
-      setUsers(prev => prev.map(user => user.id === id ? updatedUser : user))
-      return updatedUser
+      const response = await apiClient.updateUser(id, userData);
+      const updatedUser = response.data!.user;
+      setUsers((prev) =>
+        prev.map((user) => (user.id === id ? updatedUser : user))
+      );
+      return updatedUser;
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to update user'
-      setError(errorMessage)
-      throw err
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to update user";
+      setError(errorMessage);
+      throw err;
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const deleteUser = async (id: string): Promise<void> => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
-      await apiClient.deleteUser(id)
-      setUsers(prev => prev.filter(user => user.id !== id))
+      await apiClient.deleteUser(id);
+      setUsers((prev) => prev.filter((user) => user.id !== id));
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to delete user'
-      setError(errorMessage)
-      throw err
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to delete user";
+      setError(errorMessage);
+      throw err;
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return {
     users,
@@ -219,5 +236,5 @@ export function useUsers() {
     createUser,
     updateUser,
     deleteUser,
-  }
+  };
 }
