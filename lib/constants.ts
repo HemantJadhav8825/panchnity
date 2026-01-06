@@ -1,5 +1,5 @@
 export const BRAND_NAME = 'PANCHANITY JEWELLERS'
-export const BRAND_SUBTITLE = 'KARIGAR'
+export const BRAND_SUBTITLE = ''
 export const TAGLINE = 'The art of bhakti and shakti'
 
 // WhatsApp number - UPDATE THIS with actual business number
