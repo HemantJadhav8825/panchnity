@@ -19,12 +19,21 @@ export default async function Navbar() {
             
             {/* Logo */}
             <Link href="/" aria-label="Go to homepage" className="leading-tight">
-              <h1 className="text-2xl font-serif font-bold text-gold-400">
-                {BRAND_NAME}
-              </h1>
-              <p className="text-xs tracking-wide text-gold-600">
-                {BRAND_SUBTITLE}
-              </p>
+              {/* Mobile: Short logo */}
+              <div className="block sm:hidden">
+                <h1 className="text-2xl font-serif font-bold text-gold-400">
+                  {BRAND_NAME.charAt(0)}{BRAND_NAME.split(' ')[1]?.charAt(0) || 'J'}
+                </h1>
+              </div>
+              {/* Desktop: Full logo */}
+              <div className="hidden sm:block">
+                <h1 className="text-2xl font-serif font-bold text-gold-400">
+                  {BRAND_NAME}
+                </h1>
+                <p className="text-xs tracking-wide text-gold-600">
+                  {BRAND_SUBTITLE}
+                </p>
+              </div>
             </Link>
 
             {/* Interactive Area */}
