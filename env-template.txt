@@ -49,6 +49,15 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 # ============================================
+# Backend API Configuration
+# ============================================
+
+# Backend API URL - for communicating with the backend services
+# For development: http://localhost:5000/api/v1
+# For production: https://your-api-domain.com/api/v1
+NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1
+
+# ============================================
 # Optional: Database Configuration (if using database adapter)
 # ============================================
 #

@@ -1,20 +1,49 @@
-import { getServerSession } from "next-auth"
-import { redirect } from "next/navigation"
-import { authOptions } from "@/lib/auth"
+'use client'
+
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@/lib/hooks/useApi"
 import Link from "next/link"
 import Image from "next/image"
+import { LogOut, User, Mail, Calendar, Settings, Package, Heart, Eye, HeadphonesIcon, Gift } from "lucide-react"
 import { Metadata } from "next"
 
-export const metadata: Metadata = {
-  title: 'Dashboard | PANCHANITY JEWELLERS',
-  description: 'Your personal dashboard for managing orders and preferences.',
-}
+export default function DashboardPage() {
+  const { user, loading, logout, error } = useAuth()
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+  const router = useRouter()
 
-export default async function DashboardPage() {
-  const session = await getServerSession(authOptions)
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login')
+    }
+  }, [user, loading, router])
 
-  if (!session) {
-    redirect('/auth/signin')
+  const handleLogout = async () => {
+    setIsLoggingOut(true)
+    try {
+      await logout()
+      router.push('/login')
+    } catch (err) {
+      console.error('Logout failed:', err)
+    } finally {
+      setIsLoggingOut(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-gold-200 border-t-gold-400 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading your dashboard...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return null // Will redirect in useEffect
   }
 
   return (
@@ -32,23 +61,39 @@ export default async function DashboardPage() {
 
         {/* User Info Card */}
         <div className="bg-gradient-to-r from-gold-50 to-gold-100 border border-gold-200 rounded-lg p-8 mb-8">
-          <div className="flex items-center gap-6">
-            {session.user?.image && (
-              <Image
-                src={session.user.image}
-                alt={session.user.name || 'User'}
-                width={64}
-                height={64}
-                className="w-16 h-16 rounded-full border-2 border-white shadow-md"
-              />
-            )}
-            <div>
-              <h2 className="text-2xl font-serif font-bold text-gray-900">
-                Hello, {session.user?.name}!
-              </h2>
-              <p className="text-gray-600">{session.user?.email}</p>
-              <p className="text-sm text-gold-600 mt-1">Member since today</p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-6">
+              <div className="w-16 h-16 bg-gradient-to-br from-gold-400 to-gold-600 rounded-full flex items-center justify-center shadow-md">
+                <User className="w-8 h-8 text-white" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-serif font-bold text-gray-900">
+                  Hello, {user.name}!
+                </h2>
+                <div className="flex items-center gap-4 text-gray-600">
+                  <div className="flex items-center gap-1">
+                    <Mail className="w-4 h-4" />
+                    <span>{user.email}</span>
+                  </div>
+                  {user.role && (
+                    <span className="px-2 py-1 bg-gold-200 text-gold-800 rounded-full text-xs font-medium">
+                      {user.role}
+                    </span>
+                  )}
+                </div>
+                <p className="text-sm text-gold-600 mt-1">
+                  Member since {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'today'}
+                </p>
+              </div>
             </div>
+            <button
+              onClick={handleLogout}
+              disabled={isLoggingOut}
+              className="flex items-center gap-2 px-4 py-2 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg transition-colors disabled:opacity-50"
+            >
+              <LogOut className="w-4 h-4" />
+              {isLoggingOut ? 'Signing out...' : 'Sign Out'}
+            </button>
           </div>
         </div>
 
@@ -121,6 +166,25 @@ export default async function DashboardPage() {
               View Items →
             </Link>
           </div>
+
+          {/* Admin Panel - Only for admins */}
+          {user.role === 'admin' && (
+            <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                  🛡️
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900">Admin Panel</h3>
+              </div>
+              <p className="text-gray-600 mb-4">Manage users, orders, and system settings.</p>
+              <Link
+                href="/admin/users"
+                className="text-gold-600 hover:text-gold-700 font-medium text-sm"
+              >
+                Admin Dashboard →
+              </Link>
+            </div>
+          )}
 
           {/* Support */}
           <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
