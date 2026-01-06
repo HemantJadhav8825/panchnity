@@ -7,7 +7,12 @@ import { getAllProducts, getProductsByCategory, getProductsByMaterial } from '@/
 import { ProductCategory, ProductMaterial } from '@/types/product'
 import { Filter, Search } from 'lucide-react'
 
-export default function ProductsClient() {
+interface ProductsClientProps {
+  products?: any[]
+  showFilters?: boolean
+}
+
+export default function ProductsClient({ products: initialProducts, title, showFilters = true }: ProductsClientProps = {}) {
   const searchParams = useSearchParams()
   const categoryParam = searchParams.get('category') as ProductCategory | null
   const materialParam = searchParams.get('material') as ProductMaterial | null
@@ -20,7 +25,7 @@ export default function ProductsClient() {
     materialParam || 'all'
   )
 
-  const allProducts = getAllProducts()
+  const allProducts = initialProducts || getAllProducts()
 
   const filteredProducts = useMemo(() => {
     let filtered = allProducts
