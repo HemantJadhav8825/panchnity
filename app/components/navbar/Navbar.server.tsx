@@ -12,7 +12,7 @@ export default async function Navbar() {
       <nav
         role="navigation"
         aria-label="Main navigation"
-        className="border-b"
+        className="border-b relative"
       >
         <div className="mx-auto max-w-7xl px-4">
           <div className="flex h-16 items-center justify-between">

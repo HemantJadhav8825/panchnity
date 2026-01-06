@@ -83,19 +83,22 @@ export default function NavbarClient({ categories }: NavbarClientProps) {
 
       {/* Mobile Search Bar */}
       {mobileSearchOpen && (
-        <div className="sm:hidden bg-white border-b shadow-lg">
-          <div className="flex items-center gap-4 p-4">
-            <button
-              onClick={() => setMobileSearchOpen(false)}
-              className="text-gray-500 hover:text-gray-700"
-              aria-label="Close search"
-            >
-              ✕
-            </button>
+        <div className="sm:hidden absolute top-full left-0 right-0 bg-white border-b shadow-lg z-30">
+          <div className="p-4">
+            <div className="flex items-center gap-3 mb-3">
+              <button
+                onClick={() => setMobileSearchOpen(false)}
+                className="text-gray-500 hover:text-gray-700 p-1"
+                aria-label="Close search"
+              >
+                ✕
+              </button>
+              <span className="text-sm font-medium text-gray-700">Search Products</span>
+            </div>
             <input
               type="search"
               placeholder="Search rings, diamonds, occasions…"
-              className="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-gold-300 focus:outline-none"
+              className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-gold-300 focus:outline-none text-base"
               autoFocus
             />
           </div>
