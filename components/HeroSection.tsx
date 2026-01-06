@@ -5,7 +5,7 @@ import { Sparkles, Heart } from 'lucide-react'
 
 export default function HeroSection() {
   return (
-    <section className="relative overflow-hidden flex items-center justify-center min-h-[50vh] py-12 bg-gradient-to-br from-gold-50 via-white to-gold-50">
+    <section className="relative overflow-hidden flex items-center justify-center min-h-screen bg-gradient-to-br from-gold-50 via-white to-gold-50">
       {/* Background Video */}
       <video
         autoPlay
