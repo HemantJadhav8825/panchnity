@@ -1,204 +1,197 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import {
+  Menu,
+  X,
+  ChevronDown,
+  Phone,
+  Eye,
+  MapPin,
+  Search,
+} from 'lucide-react'
 import { BRAND_NAME, BRAND_SUBTITLE, WHATSAPP_NUMBER } from '@/lib/constants'
-import { Menu, X, ChevronDown, Phone, Eye, MapPin, Search } from 'lucide-react'
 
 export default function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [categoryMenuOpen, setCategoryMenuOpen] = useState<string | null>(null)
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [mainHeaderHeight, setMainHeaderHeight] = useState(0)
-  const [bottomNavHeight, setBottomNavHeight] = useState(0)
+  const [scrolled, setScrolled] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
 
-  const mainHeaderRef = useRef<HTMLDivElement>(null)
-  const bottomNavRef = useRef<HTMLDivElement>(null)
-
+  /* ---------------- Scroll (visual only) ---------------- */
   useEffect(() => {
-    let scrollTimeout: NodeJS.Timeout | null = null
-    let rafId: number | null = null
-
-    const handleScroll = () => {
-      if (scrollTimeout) clearTimeout(scrollTimeout)
-      if (rafId) cancelAnimationFrame(rafId)
-
-      rafId = requestAnimationFrame(() => {
-        scrollTimeout = setTimeout(() => {
-          setIsScrolled(window.scrollY > 50)
-        }, 50)
-      })
-    }
-
-    const updateHeaderHeights = () => {
-      if (mainHeaderRef.current) {
-        setMainHeaderHeight(mainHeaderRef.current.offsetHeight)
-      }
-      if (bottomNavRef.current) {
-        setBottomNavHeight(bottomNavRef.current.offsetHeight)
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    window.addEventListener('resize', updateHeaderHeights)
-    updateHeaderHeights()
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('resize', updateHeaderHeights)
-      if (scrollTimeout) clearTimeout(scrollTimeout)
-      if (rafId) cancelAnimationFrame(rafId)
-    }
+    const onScroll = () => setScrolled(window.scrollY > 60)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   const categories = [
     {
-      name: 'Idols',
+      label: 'Idols',
       href: '/products?category=idol',
       items: [
-        { name: 'Silver Idols', href: '/products?category=idol&material=silver' },
+        { label: 'Silver Idols', href: '/products?category=idol&material=silver' },
       ],
     },
     {
-      name: 'Pooja Items',
+      label: 'Pooja Items',
       href: '/products?category=pooja-item',
       items: [
-        { name: 'Silver Pooja Items', href: '/products?category=pooja-item&material=silver' },
+        { label: 'Silver Pooja Items', href: '/products?category=pooja-item&material=silver' },
       ],
     },
     {
-      name: 'Jewellery',
+      label: 'Jewellery',
       href: '/products?category=jewellery',
       items: [
-        { name: 'Silver Jewellery', href: '/products?category=jewellery&material=silver' },
+        { label: 'Silver Jewellery', href: '/products?category=jewellery&material=silver' },
       ],
     },
   ]
 
   return (
     <header className="relative z-50">
-      {/* Top Bar */}
-      <div
-        className={`bg-gray-100 py-2 text-xs text-gray-700 transition-all duration-300 ease-in-out ${
-          isScrolled ? 'md:h-0 md:py-0 md:opacity-0 md:overflow-hidden' : 'md:block'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-end items-center space-x-4 md:space-x-6">
-          <a href={`tel:${WHATSAPP_NUMBER}`} className="flex items-center gap-1 hover:text-gold-300">
-            <Phone className="w-3 h-3" />
-            <span className="hidden sm:inline">{WHATSAPP_NUMBER}</span>
+      {/* ================= TOP BAR ================= */}
+      <div className="hidden md:block bg-gray-100 text-xs">
+        <div className="max-w-7xl mx-auto px-6 py-2 flex justify-end gap-6">
+          <a
+            href={`tel:${WHATSAPP_NUMBER}`}
+            className="flex items-center gap-1 hover:text-gold-400"
+          >
+            <Phone size={12} />
+            {WHATSAPP_NUMBER}
           </a>
-          <Link href="#" className="flex items-center gap-1 hover:text-gold-300">
-            <Eye className="w-3 h-3" />
-            <span className="hidden sm:inline">Recently Viewed</span>
+          <Link href="#" className="flex items-center gap-1 hover:text-gold-400">
+            <Eye size={12} /> Recently Viewed
           </Link>
-          <Link href="#" className="flex items-center gap-1 hover:text-gold-300">
-            <MapPin className="w-3 h-3" />
-            <span className="hidden sm:inline">Locate Our Store</span>
+          <Link href="#" className="flex items-center gap-1 hover:text-gold-400">
+            <MapPin size={12} /> Locate Store
           </Link>
         </div>
       </div>
 
-      {/* Main Header */}
+      {/* ================= MAIN HEADER ================= */}
       <div
-        ref={mainHeaderRef}
-        className={`w-full bg-white/95 backdrop-blur-md border-b border-gold-200 transition-all duration-300 ${
-          isScrolled ? 'shadow-lg py-2' : 'shadow-sm'
-        }`}
+        className={`bg-white backdrop-blur border-b transition-shadow ${scrolled ? 'shadow-md' : ''
+          }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`flex items-center justify-between ${isScrolled ? 'h-16' : ''}`}>
-            <Link href="/" className="flex flex-col group hover:scale-105 transition">
-              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-gold-300">
-                {BRAND_NAME}
-              </h1>
-              <p className="text-xs sm:text-sm text-gold-500 tracking-wider opacity-80">
-                {BRAND_SUBTITLE}
-              </p>
-            </Link>
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+          <Link href="/" className="leading-tight">
+            <h1 className="text-2xl font-serif font-bold text-gold-400">
+              {BRAND_NAME}
+            </h1>
+            <p className="text-xs tracking-wide text-gold-600">
+              {BRAND_SUBTITLE}
+            </p>
+          </Link>
 
-            <div className="flex-grow max-w-md mx-4 md:mx-8">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search for Jewellery"
-                  className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-gold-300"
-                />
-              </div>
+          <div className="hidden md:block w-full max-w-md mx-8">
+            <div className="relative">
+              <Search
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                size={18}
+              />
+              <input
+                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-gold-300"
+                placeholder="Search jewellery"
+              />
             </div>
-
-            <button
-              className="lg:hidden p-2"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? <X /> : <Menu />}
-            </button>
           </div>
+
+          <button className="lg:hidden" onClick={() => setMobileOpen(v => !v)}>
+            {mobileOpen ? <X /> : <Menu />}
+          </button>
         </div>
       </div>
 
-      {/* Bottom Navigation */}
-      <nav
-        ref={bottomNavRef}
-        className={`bg-gray-800 py-3 w-full border-t border-gold-200 shadow-lg hidden lg:block overflow-visible ${
-          isScrolled ? 'fixed top-0' : 'relative'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4">
-          <ul className="flex justify-center space-x-8 overflow-x-auto overflow-y-visible whitespace-nowrap">
+      {/* ================= DESKTOP NAV (CSS ONLY) ================= */}
+      <nav className="hidden lg:block sticky top-0 bg-gray-900 z-40">
+        <ul className="max-w-7xl mx-auto px-6 flex justify-center gap-10 py-3">
+          <li>
+            <Link href="/" className="text-gray-200 hover:text-gold-400">
+              Home
+            </Link>
+          </li>
+
+          {categories.map(cat => (
+            <li className="relative group">
+              {/* Trigger */}
+              <Link
+                href={cat.href}
+                className="flex items-center gap-1 text-gray-200 hover:text-gold-400"
+              >
+                {cat.label}
+                <ChevronDown
+                  size={16}
+                  className="transition-transform group-hover:rotate-180"
+                />
+              </Link>
+
+              {/* Hover buffer */}
+              <div className="absolute left-1/2 top-full -translate-x-1/2 pt-2">
+                {/* Dropdown */}
+                <div
+                  className="
+                 w-56 bg-white rounded-xl shadow-xl
+                 opacity-0 translate-y-2
+                 pointer-events-none
+                 transition-all duration-200
+                 group-hover:opacity-100
+                 group-hover:translate-y-0
+                 group-hover:pointer-events-auto
+               "
+                >
+                  {cat.items.map(item => (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      className="block px-4 py-2 text-sm hover:bg-gold-50"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </li>
+
+          ))}
+        </ul>
+      </nav>
+
+      {/* ================= MOBILE MENU ================= */}
+      {mobileOpen && (
+        <div className="lg:hidden bg-white border-t shadow-md">
+          <ul className="flex flex-col p-4 gap-4">
             <li>
-              <Link href="/" className="text-gray-200 hover:text-gold-300">
+              <Link href="/" onClick={() => setMobileOpen(false)}>
                 Home
               </Link>
             </li>
 
-            {categories.map(category => (
-              <li
-                key={category.name}
-                className="relative"
-                onMouseEnter={() => setCategoryMenuOpen(category.name)}
-                onMouseLeave={() => setCategoryMenuOpen(null)}
-              >
+            {categories.map(cat => (
+              <li key={cat.label}>
                 <Link
-                  href={category.href}
-                  className="flex items-center gap-1 text-gray-200 hover:text-gold-300"
+                  href={cat.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="font-medium"
                 >
-                  {category.name}
-                  <ChevronDown
-                    className={`w-4 h-4 transition ${
-                      categoryMenuOpen === category.name ? 'rotate-180' : ''
-                    }`}
-                  />
+                  {cat.label}
                 </Link>
-
-                <div
-                  className={`absolute top-full left-1/2 -translate-x-1/2 z-50 transition ${
-                    categoryMenuOpen === category.name
-                      ? 'opacity-100 translate-y-0'
-                      : 'opacity-0 -translate-y-2 pointer-events-none'
-                  }`}
-                >
-                  <div className="w-56 bg-white rounded-xl shadow-2xl py-2">
-                    {category.items.map(item => (
+                <ul className="ml-4 mt-2 space-y-1 text-sm">
+                  {cat.items.map(item => (
+                    <li key={item.label}>
                       <Link
-                        key={item.name}
                         href={item.href}
-                        className="block px-4 py-2 hover:bg-gold-50"
+                        onClick={() => setMobileOpen(false)}
                       >
-                        {item.name}
+                        {item.label}
                       </Link>
-                    ))}
-                  </div>
-                </div>
+                    </li>
+                  ))}
+                </ul>
               </li>
             ))}
           </ul>
         </div>
-      </nav>
-
-      {isScrolled && (
-        <div className="hidden lg:block" style={{ height: bottomNavHeight }} />
       )}
     </header>
   )
