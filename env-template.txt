@@ -1,0 +1,96 @@
+# ============================================
+# Next.js Environment Variables Configuration
+# ============================================
+#
+# Copy this file to .env.local and fill in your actual values
+# Never commit .env.local to version control
+#
+
+# ============================================
+# NextAuth.js Authentication Configuration
+# ============================================
+
+# The canonical URL of your site - used for OAuth callbacks
+# For development: http://localhost:3000
+# For production: https://yourdomain.com
+NEXTAUTH_URL=http://localhost:3000
+
+# A random string used to hash tokens, sign/encrypt cookies and generate cryptographic keys
+# Generate with: openssl rand -base64 32
+# Must be at least 32 characters long
+NEXTAUTH_SECRET=your-super-secret-key-here-at-least-32-characters-long-replace-with-actual-secret
+
+# Optional: Enable debug logging for NextAuth.js
+# NEXTAUTH_DEBUG=true
+
+# ============================================
+# Google OAuth Configuration
+# ============================================
+#
+# Get these from: https://console.cloud.google.com/
+# 1. Create/select a project
+# 2. Enable Google+ API
+# 3. Create OAuth 2.0 Client ID credentials
+# 4. Set authorized redirect URI: http://localhost:3000/api/auth/callback/google
+# 5. Set authorized JavaScript origin: http://localhost:3000
+
+# Google OAuth Client ID (ends with .googleusercontent.com)
+GOOGLE_CLIENT_ID=your-google-client-id.googleusercontent.com
+
+# Google OAuth Client Secret
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+
+# ============================================
+# Site Configuration
+# ============================================
+
+# Public site URL - used in SEO, meta tags, and WhatsApp links
+# Must match your domain exactly
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
+# ============================================
+# Optional: Database Configuration (if using database adapter)
+# ============================================
+#
+# If you want to persist sessions/users in a database, uncomment and configure:
+#
+# DATABASE_URL="postgresql://username:password@localhost:5432/database_name"
+# Or for SQLite (simpler for development):
+# DATABASE_URL="file:./dev.db"
+
+# ============================================
+# Optional: Email Configuration (if using email provider)
+# ============================================
+#
+# EMAIL_SERVER_HOST=smtp.gmail.com
+# EMAIL_SERVER_PORT=587
+# EMAIL_SERVER_USER=your-email@gmail.com
+# EMAIL_SERVER_PASSWORD=your-app-password
+# EMAIL_FROM=your-email@gmail.com
+
+# ============================================
+# Optional: Redis Configuration (for session storage)
+# ============================================
+#
+# REDIS_URL=redis://localhost:6379
+
+# ============================================
+# Development & Debugging
+# ============================================
+
+# Enable React strict mode (default: true)
+# NEXT_PUBLIC_STRICT_MODE=true
+
+# Enable React concurrent features (default: true)
+# NEXT_PUBLIC_CONCURRENT_FEATURES=true
+
+# ============================================
+# Production Environment Variables
+# ============================================
+#
+# For production deployment, update these values:
+#
+# NEXTAUTH_URL=https://yourdomain.com
+# NEXT_PUBLIC_SITE_URL=https://yourdomain.com
+#
+# And configure your hosting platform's environment variables

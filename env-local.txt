@@ -1,0 +1,46 @@
+# ============================================
+# Development Environment Variables (.env.local)
+# ============================================
+# Copy this content to .env.local file
+#
+
+# NextAuth.js Configuration
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=dev-secret-replace-with-actual-generated-secret-32-chars-minimum
+
+# Google OAuth Credentials (Development)
+GOOGLE_CLIENT_ID=your-dev-google-client-id.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your-dev-google-client-secret
+
+# Site Configuration
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
+# ============================================
+# Development Configurations
+# ============================================
+
+# Enable NextAuth debug logging for development
+NEXTAUTH_DEBUG=true
+
+# Development database (optional - file-based for simplicity)
+# DATABASE_URL="file:./dev.db"
+
+# Development email settings (optional)
+# EMAIL_SERVER_HOST=smtp.mailtrap.io
+# EMAIL_SERVER_PORT=2525
+# EMAIL_SERVER_USER=your-mailtrap-user
+# EMAIL_SERVER_PASSWORD=your-mailtrap-password
+# EMAIL_FROM=test@localhost
+
+# ============================================
+# Development Features
+# ============================================
+
+# Enable React DevTools
+NEXT_PUBLIC_ENABLE_DEVTOOLS=true
+
+# Mock data for development
+NEXT_PUBLIC_USE_MOCK_DATA=false
+
+# Development logging
+LOG_LEVEL=debug
