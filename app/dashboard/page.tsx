@@ -2,27 +2,38 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { useSession, signOut } from "next-auth/react"
 import { useAuth } from "@/lib/hooks/useApi"
 import Link from "next/link"
 import Image from "next/image"
 import { LogOut, User, Mail, Calendar, Settings, Package, Heart, Eye, HeadphonesIcon, Gift } from "lucide-react"
-import { Metadata } from "next"
 
 export default function DashboardPage() {
-  const { user, loading, logout, error } = useAuth()
+  const { user: jwtUser, loading: jwtLoading, logout: jwtLogout } = useAuth()
+  const { data: session, status } = useSession()
   const [isLoggingOut, setIsLoggingOut] = useState(false)
   const router = useRouter()
 
+  // Check if user is authenticated via either method
+  const isAuthenticated = jwtUser || session
+  const isLoading = jwtLoading || status === 'loading'
+
   useEffect(() => {
-    if (!loading && !user) {
+    if (!isLoading && !isAuthenticated) {
       router.push('/login')
     }
-  }, [user, loading, router])
+  }, [isAuthenticated, isLoading, router])
 
   const handleLogout = async () => {
     setIsLoggingOut(true)
     try {
-      await logout()
+      // Logout from both authentication methods
+      if (session) {
+        await signOut({ callbackUrl: '/login' })
+      }
+      if (jwtUser) {
+        await jwtLogout()
+      }
       router.push('/login')
     } catch (err) {
       console.error('Logout failed:', err)
@@ -31,7 +42,7 @@ export default function DashboardPage() {
     }
   }
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
@@ -42,7 +53,7 @@ export default function DashboardPage() {
     )
   }
 
-  if (!user) {
+  if (!isAuthenticated) {
     return null // Will redirect in useEffect
   }
 
@@ -63,26 +74,46 @@ export default function DashboardPage() {
         <div className="bg-gradient-to-r from-gold-50 to-gold-100 border border-gold-200 rounded-lg p-8 mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
-              <div className="w-16 h-16 bg-gradient-to-br from-gold-400 to-gold-600 rounded-full flex items-center justify-center shadow-md">
-                <User className="w-8 h-8 text-white" />
-              </div>
+              {session?.user?.image ? (
+                <Image
+                  src={session.user.image}
+                  alt={session.user.name || 'User'}
+                  width={64}
+                  height={64}
+                  className="w-16 h-16 rounded-full border-2 border-white shadow-md"
+                />
+              ) : (
+                <div className="w-16 h-16 bg-gradient-to-br from-gold-400 to-gold-600 rounded-full flex items-center justify-center shadow-md">
+                  <User className="w-8 h-8 text-white" />
+                </div>
+              )}
               <div>
                 <h2 className="text-2xl font-serif font-bold text-gray-900">
-                  Hello, {user.name}!
+                  Hello, {session?.user?.name || jwtUser?.name}!
                 </h2>
                 <div className="flex items-center gap-4 text-gray-600">
                   <div className="flex items-center gap-1">
                     <Mail className="w-4 h-4" />
-                    <span>{user.email}</span>
+                    <span>{session?.user?.email || jwtUser?.email}</span>
                   </div>
-                  {user.role && (
+                  {jwtUser?.role && (
                     <span className="px-2 py-1 bg-gold-200 text-gold-800 rounded-full text-xs font-medium">
-                      {user.role}
+                      {jwtUser.role}
+                    </span>
+                  )}
+                  {session && !jwtUser && (
+                    <span className="px-2 py-1 bg-blue-200 text-blue-800 rounded-full text-xs font-medium">
+                      Google Account
                     </span>
                   )}
                 </div>
                 <p className="text-sm text-gold-600 mt-1">
-                  Member since {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'today'}
+                  {jwtUser?.createdAt
+                    ? `Member since ${new Date(jwtUser.createdAt).toLocaleDateString()}`
+                    : session
+                      ? 'Signed in with Google'
+                      : 'Member since today'
+                  }
                 </p>
               </div>
             </div>
@@ -167,8 +198,8 @@ export default function DashboardPage() {
             </Link>
           </div>
 
-          {/* Admin Panel - Only for admins */}
-          {user.role === 'admin' && (
+          {/* Admin Panel - Only for JWT authenticated admins */}
+          {jwtUser?.role === 'admin' && (
             <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
