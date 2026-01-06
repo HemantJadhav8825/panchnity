@@ -4,6 +4,7 @@ import './globals.css'
 import { generateHomeMetadata, generateOrganizationJsonLd } from '@/lib/seo'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import Providers from '@/components/providers'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -35,9 +36,11 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-grow">{children}</main>
-        <Footer />
+        <Providers>
+          <Header />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   )

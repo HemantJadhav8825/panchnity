@@ -7,6 +7,7 @@ import SearchBar from "./SearchBar.client";
 import MegaMenu from "./MegaMenu.client";
 import MobileMenu from "./MobileMenu.client";
 import CartPreview from "./CartPreview.client";
+import SignInButton from "@/components/SignInButton";
 import { Heart, Menu, Search } from "lucide-react";
 
 interface NavbarClientProps {
@@ -46,6 +47,9 @@ export default function NavbarClient({ categories }: NavbarClientProps) {
 
         {/* Cart */}
         <CartPreview />
+
+        {/* Sign In Button */}
+        <SignInButton />
 
         {/* Mobile Search Button */}
         <button

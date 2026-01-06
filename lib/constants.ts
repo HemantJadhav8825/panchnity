@@ -7,7 +7,7 @@ export const WHATSAPP_NUMBER = '+919579477013' // Placeholder - update with real
 
 export const INSTAGRAM_URL = 'https://www.instagram.com/panchnity'
 
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://panchnity.com'
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
 export const SEO_KEYWORDS = [
   'silver murti',
