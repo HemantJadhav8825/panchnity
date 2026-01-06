@@ -73,7 +73,7 @@ export default function BridalPage() {
               </svg>
             </div>
             <h3 className="text-lg font-medium text-gray-900 mb-2">Bridal collection coming soon</h3>
-            <p className="text-gray-600">We're curating special pieces for your special occasions.</p>
+            <p className="text-gray-600">We&apos;re curating special pieces for your special occasions.</p>
           </div>
         )}
       </div>

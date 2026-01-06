@@ -12,7 +12,7 @@ interface ProductsClientProps {
   showFilters?: boolean
 }
 
-export default function ProductsClient({ products: initialProducts, title, showFilters = true }: ProductsClientProps = {}) {
+export default function ProductsClient({ products: initialProducts, showFilters = true }: ProductsClientProps = {}) {
   const searchParams = useSearchParams()
   const categoryParam = searchParams.get('category') as ProductCategory | null
   const materialParam = searchParams.get('material') as ProductMaterial | null
@@ -47,7 +47,7 @@ export default function ProductsClient({ products: initialProducts, title, showF
         (p) =>
           p.name.toLowerCase().includes(query) ||
           p.description.toLowerCase().includes(query) ||
-          p.seoKeywords.some((keyword) => keyword.toLowerCase().includes(query))
+          p.seoKeywords.some((keyword: string) => keyword.toLowerCase().includes(query))
       )
     }
 

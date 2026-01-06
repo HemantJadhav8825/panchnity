@@ -1,15 +1,15 @@
 import { Suspense } from 'react'
 import { getAllProducts } from '@/lib/products'
 import ProductsClient from '@/components/ProductsClient'
-import Loading from '@/app/products/loading'
+import Loading from '../../products/loading'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 
 interface BraceletsSubcategoryPageProps {
-  params: {
+  params: Promise<{
     subcategory: string
-  }
+  }>
 }
 
 // Convert URL slug back to readable name
@@ -40,7 +40,8 @@ function getSubcategoryProducts(subcategory: string) {
 }
 
 export async function generateMetadata({ params }: BraceletsSubcategoryPageProps): Promise<Metadata> {
-  const subcategoryName = slugToName(params.subcategory)
+  const { subcategory } = await params
+  const subcategoryName = slugToName(subcategory)
 
   return {
     title: `${subcategoryName} | Bracelets | PANCHANITY JEWELLERS`,
@@ -70,9 +71,10 @@ export async function generateStaticParams() {
   }))
 }
 
-export default function BraceletsSubcategoryPage({ params }: BraceletsSubcategoryPageProps) {
-  const subcategoryName = slugToName(params.subcategory)
-  const subcategoryProducts = getSubcategoryProducts(params.subcategory)
+export default async function BraceletsSubcategoryPage({ params }: BraceletsSubcategoryPageProps) {
+  const { subcategory } = await params
+  const subcategoryName = slugToName(subcategory)
+  const subcategoryProducts = getSubcategoryProducts(subcategory)
 
   return (
     <div className="min-h-screen bg-white">
