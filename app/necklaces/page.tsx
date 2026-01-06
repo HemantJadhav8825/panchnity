@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { getAllProducts } from '@/lib/products'
 import ProductsClient from '@/components/ProductsClient'
 import Loading from '@/app/products/loading'
+import WhatsAppButton from '@/components/WhatsAppButton'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -53,6 +54,17 @@ export default function NecklacesPage() {
             showFilters={true}
           />
         </Suspense>
+
+        {/* WhatsApp CTA */}
+        {necklaceProducts.length > 0 && (
+          <div className="text-center mt-12">
+            <WhatsAppButton
+              category="Necklaces"
+              buttonText="Inquire About Necklaces"
+              className="mx-auto"
+            />
+          </div>
+        )}
 
         {necklaceProducts.length === 0 && (
           <div className="text-center py-12">

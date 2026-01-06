@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { getAllProducts } from '@/lib/products'
 import ProductsClient from '@/components/ProductsClient'
 import Loading from '../../products/loading'
+import WhatsAppButton from '@/components/WhatsAppButton'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
@@ -132,6 +133,17 @@ export default async function BridalSubcategoryPage({ params }: BridalSubcategor
             showFilters={true}
           />
         </Suspense>
+
+        {/* WhatsApp CTA */}
+        {subcategoryProducts.length > 0 && (
+          <div className="text-center mt-12">
+            <WhatsAppButton
+              category={`${subcategoryName} Bridal Collection`}
+              buttonText={`Plan Your ${subcategoryName}`}
+              className="mx-auto"
+            />
+          </div>
+        )}
 
         {subcategoryProducts.length === 0 && (
           <div className="text-center py-12">

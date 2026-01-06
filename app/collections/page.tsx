@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { getAllProducts, getProductsByCategory } from '@/lib/products'
 import ProductsClient from '@/components/ProductsClient'
 import Loading from '@/app/products/loading'
+import WhatsAppButton from '@/components/WhatsAppButton'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Metadata } from 'next'
@@ -114,6 +115,15 @@ export default function CollectionsPage() {
               showFilters={true}
             />
           </Suspense>
+
+          {/* WhatsApp CTA */}
+          <div className="text-center mt-12">
+            <WhatsAppButton
+              customMessage="Hello, I would like to explore your complete silver jewelry collection. Can you help me find the perfect pieces?"
+              buttonText="Get Personalized Recommendations"
+              className="mx-auto"
+            />
+          </div>
         </div>
       </div>
     </div>
