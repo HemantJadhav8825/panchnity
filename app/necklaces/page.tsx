@@ -1,41 +1,52 @@
 // Force dynamic rendering to prevent prerendering issues
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
-import { Suspense } from 'react'
-import { getAllProducts } from '@/lib/products'
-import ProductsClient from '@/components/ProductsClient'
-import Loading from '@/app/products/loading'
-import WhatsAppButton from '@/components/WhatsAppButton'
-import { Metadata } from 'next'
-
+import { Suspense } from "react";
+import { getAllProducts } from "@/lib/products";
+import ProductsClient from "@/components/ProductsClient";
+import Loading from "@/app/products/loading";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Necklaces | PANCHANITY JEWELLERS',
-  description: 'Explore our stunning collection of necklaces including gold chains, diamond pendants, and silver necklaces. Handcrafted with traditional techniques and made from authentic 925 pure silver.',
-  keywords: ['necklaces', 'gold chains', 'diamond pendants', 'silver necklaces', 'pendants', 'chains', '925 silver', 'panchnity jewellers'],
+  title: "Necklaces | PANCHANITY JEWELLERS",
+  description:
+    "Explore our stunning collection of necklaces including gold chains, diamond pendants, and silver necklaces. Handcrafted with traditional techniques and made from authentic 925 pure silver.",
+  keywords: [
+    "necklaces",
+    "gold chains",
+    "diamond pendants",
+    "silver necklaces",
+    "pendants",
+    "chains",
+    "925 silver",
+    "panchnity jewellers",
+  ],
   openGraph: {
-    title: 'Necklaces Collection | PANCHANITY JEWELLERS',
-    description: 'Discover our beautiful collection of handcrafted necklaces made from pure silver.',
-    type: 'website',
+    title: "Necklaces Collection | PANCHANITY JEWELLERS",
+    description:
+      "Discover our beautiful collection of handcrafted necklaces made from pure silver.",
+    type: "website",
   },
-}
+};
 
 // Filter products that might be necklaces based on name or description
 async function getNecklaceProducts() {
-  const allProducts = await getAllProducts()
-  return allProducts.filter(product =>
-    product.name.toLowerCase().includes('necklace') ||
-    product.name.toLowerCase().includes('chain') ||
-    product.name.toLowerCase().includes('pendant') ||
-    product.description.toLowerCase().includes('necklace') ||
-    product.description.toLowerCase().includes('chain') ||
-    product.description.toLowerCase().includes('pendant') ||
-    product.category === 'jewellery' // Include jewellery category as fallback
-  )
+  const allProducts = await getAllProducts();
+  return allProducts.filter(
+    (product) =>
+      product.name.toLowerCase().includes("necklace") ||
+      product.name.toLowerCase().includes("chain") ||
+      product.name.toLowerCase().includes("pendant") ||
+      product.description.toLowerCase().includes("necklace") ||
+      product.description.toLowerCase().includes("chain") ||
+      product.description.toLowerCase().includes("pendant") ||
+      product.category === "jewellery" // Include jewellery category as fallback
+  );
 }
 
 export default async function NecklacesPage() {
-  const necklaceProducts = await getNecklaceProducts()
+  const necklaceProducts = await getNecklaceProducts();
 
   return (
     <div className="min-h-screen bg-white">
@@ -46,17 +57,15 @@ export default async function NecklacesPage() {
             Necklaces Collection
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover our elegant collection of necklaces, from delicate chains to stunning pendants.
-            Each piece is handcrafted with traditional techniques and made from authentic 925 pure silver.
+            Discover our elegant collection of necklaces, from delicate chains
+            to stunning pendants. Each piece is handcrafted with traditional
+            techniques and made from authentic 925 pure silver.
           </p>
         </div>
 
         {/* Products Grid */}
         <Suspense fallback={<Loading />}>
-          <ProductsClient
-            products={necklaceProducts}
-            showFilters={true}
-          />
+          <ProductsClient products={necklaceProducts} showFilters={true} />
         </Suspense>
 
         {/* WhatsApp CTA */}
@@ -73,15 +82,29 @@ export default async function NecklacesPage() {
         {necklaceProducts.length === 0 && (
           <div className="text-center py-12">
             <div className="text-gray-500 mb-4">
-              <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              <svg
+                className="mx-auto h-12 w-12"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1}
+                  d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No necklaces available</h3>
-            <p className="text-gray-600">Check back soon for our latest necklace collection.</p>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              No necklaces available
+            </h3>
+            <p className="text-gray-600">
+              Check back soon for our latest necklace collection.
+            </p>
           </div>
         )}
       </div>
     </div>
-  )
+  );
 }
