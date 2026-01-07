@@ -1,3 +1,6 @@
+// Force dynamic rendering for not-found pages
+export const dynamic = 'force-dynamic';
+
 import Link from 'next/link'
 
 export default function NotFound() {

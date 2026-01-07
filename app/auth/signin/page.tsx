@@ -1,20 +1,23 @@
-import { getServerSession } from "next-auth"
-import { redirect } from "next/navigation"
-import { authOptions } from "@/lib/auth"
-import SignInButton from "@/components/SignInButton"
-import { Metadata } from "next"
+// Force dynamic rendering for auth pages
+export const dynamic = "force-dynamic";
 
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "@/lib/auth";
+import SignInButton from "@/components/SignInButton";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Sign In | PANCHANITY JEWELLERS',
-  description: 'Sign in to your PANCHANITY JEWELLERS account to access exclusive features.',
-}
+  title: "Sign In | PANCHANITY JEWELLERS",
+  description:
+    "Sign in to your PANCHANITY JEWELLERS account to access exclusive features.",
+};
 
 export default async function SignInPage() {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions);
 
   if (session) {
-    redirect('/dashboard')
+    redirect("/dashboard");
   }
 
   return (
@@ -34,14 +37,16 @@ export default async function SignInPage() {
             Welcome Back
           </h2>
           <p className="text-gray-600 mb-8">
-            Sign in to access your dashboard, track orders, and manage your preferences.
+            Sign in to access your dashboard, track orders, and manage your
+            preferences.
           </p>
 
           <div className="space-y-4">
             <SignInButton />
 
             <div className="text-sm text-gray-500">
-              By signing in, you agree to our Terms of Service and Privacy Policy.
+              By signing in, you agree to our Terms of Service and Privacy
+              Policy.
             </div>
           </div>
         </div>
@@ -51,7 +56,9 @@ export default async function SignInPage() {
           <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4">
             <div className="text-2xl mb-2">📦</div>
             <h3 className="font-semibold text-gray-900 mb-1">Order Tracking</h3>
-            <p className="text-sm text-gray-600">Monitor your jewelry orders in real-time</p>
+            <p className="text-sm text-gray-600">
+              Monitor your jewelry orders in real-time
+            </p>
           </div>
           <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4">
             <div className="text-2xl mb-2">❤️</div>
@@ -61,5 +68,5 @@ export default async function SignInPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

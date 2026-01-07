@@ -1,4 +1,7 @@
-import Link from 'next/link'
+// Force dynamic rendering for error pages
+export const dynamic = "force-dynamic";
+
+import Link from "next/link";
 
 export default function NotFound() {
   return (
@@ -21,7 +24,8 @@ export default function NotFound() {
           </h2>
 
           <p className="text-gray-600 mb-8">
-            The page you&apos;re looking for doesn&apos;t exist. It might have been moved or deleted.
+            The page you&apos;re looking for doesn&apos;t exist. It might have
+            been moved or deleted.
           </p>
 
           <div className="space-y-4">
@@ -46,7 +50,7 @@ export default function NotFound() {
         {/* Help */}
         <div className="mt-8 text-center">
           <p className="text-sm text-gray-600">
-            Need help? Contact our support team at{' '}
+            Need help? Contact our support team at{" "}
             <a
               href="mailto:support@panchnityjewellers.com"
               className="text-gold-600 hover:text-gold-700"
@@ -57,5 +61,5 @@ export default function NotFound() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,3 +1,6 @@
+// Force dynamic rendering to prevent prerendering issues
+export const dynamic = 'force-dynamic';
+
 import { Suspense } from 'react'
 import { getAllProducts } from '@/lib/products'
 import ProductsClient from '@/components/ProductsClient'

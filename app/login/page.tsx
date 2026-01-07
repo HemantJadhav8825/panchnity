@@ -1,5 +1,7 @@
 "use client";
 
+// Force dynamic rendering for auth pages
+export const dynamic = "force-dynamic";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";

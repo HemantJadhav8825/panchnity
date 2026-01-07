@@ -1,82 +1,99 @@
-import { Suspense } from 'react'
-import { getAllProducts } from '@/lib/products'
-import ProductsClient from '@/components/ProductsClient'
-import Loading from '../../products/loading'
-import WhatsAppButton from '@/components/WhatsAppButton'
-import { Metadata } from 'next'
-import Link from 'next/link'
-import { ChevronRight } from 'lucide-react'
+// Force dynamic rendering to prevent prerendering issues
+export const dynamic = "force-dynamic";
 
+import { Suspense } from "react";
+import { getAllProducts } from "@/lib/products";
+import ProductsClient from "@/components/ProductsClient";
+import Loading from "../../products/loading";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import { Metadata } from "next";
+import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 
 interface RingsSubcategoryPageProps {
   params: Promise<{
-    subcategory: string
-  }>
+    subcategory: string;
+  }>;
 }
 
 // Convert URL slug back to readable name
 function slugToName(slug: string): string {
   return slug
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ')
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }
 
 // Filter products for the specific subcategory
 async function getSubcategoryProducts(subcategory: string) {
-  const allProducts = await getAllProducts()
-  const subcategoryName = slugToName(subcategory)
+  const allProducts = await getAllProducts();
+  const subcategoryName = slugToName(subcategory);
 
-  return allProducts.filter(product => {
-    const productName = product.name.toLowerCase()
-    const productDesc = product.description.toLowerCase()
-    const subcategoryLower = subcategory.toLowerCase()
+  return allProducts.filter((product) => {
+    const productName = product.name.toLowerCase();
+    const productDesc = product.description.toLowerCase();
+    const subcategoryLower = subcategory.toLowerCase();
 
     // Check if subcategory keywords appear in product name or description
-    return productName.includes(subcategoryLower) ||
-           productDesc.includes(subcategoryLower) ||
-           subcategoryName.toLowerCase().split(' ').every(word =>
-             productName.includes(word) || productDesc.includes(word)
-           )
-  })
+    return (
+      productName.includes(subcategoryLower) ||
+      productDesc.includes(subcategoryLower) ||
+      subcategoryName
+        .toLowerCase()
+        .split(" ")
+        .every(
+          (word) => productName.includes(word) || productDesc.includes(word)
+        )
+    );
+  });
 }
 
-export async function generateMetadata({ params }: RingsSubcategoryPageProps): Promise<Metadata> {
-  const { subcategory } = await params
-  const subcategoryName = slugToName(subcategory)
+export async function generateMetadata({
+  params,
+}: RingsSubcategoryPageProps): Promise<Metadata> {
+  const { subcategory } = await params;
+  const subcategoryName = slugToName(subcategory);
 
   return {
     title: `${subcategoryName} | Rings | PANCHANITY JEWELLERS`,
     description: `Discover our exquisite collection of ${subcategoryName.toLowerCase()} made from authentic 925 pure silver. Handcrafted with traditional techniques.`,
-    keywords: [`${subcategoryName.toLowerCase()}`, 'rings', 'silver rings', '925 silver', 'panchnity jewellers'],
+    keywords: [
+      `${subcategoryName.toLowerCase()}`,
+      "rings",
+      "silver rings",
+      "925 silver",
+      "panchnity jewellers",
+    ],
     openGraph: {
       title: `${subcategoryName} | Rings Collection | PANCHANITY JEWELLERS`,
       description: `Explore our ${subcategoryName.toLowerCase()} collection made from pure silver.`,
-      type: 'website',
+      type: "website",
     },
-  }
+  };
 }
 
 export async function generateStaticParams() {
   // Generate static params for all ring subcategories
   const subcategories = [
-    'engagement-rings',
-    'wedding-rings',
-    'diamond-rings',
-    'gold-rings',
-    'silver-rings',
-    'cocktail-rings'
-  ]
+    "engagement-rings",
+    "wedding-rings",
+    "diamond-rings",
+    "gold-rings",
+    "silver-rings",
+    "cocktail-rings",
+  ];
 
   return subcategories.map((subcategory) => ({
     subcategory,
-  }))
+  }));
 }
 
-export default async function RingsSubcategoryPage({ params }: RingsSubcategoryPageProps) {
-  const { subcategory } = await params
-  const subcategoryName = slugToName(subcategory)
-  const subcategoryProducts = await getSubcategoryProducts(subcategory)
+export default async function RingsSubcategoryPage({
+  params,
+}: RingsSubcategoryPageProps) {
+  const { subcategory } = await params;
+  const subcategoryName = slugToName(subcategory);
+  const subcategoryProducts = await getSubcategoryProducts(subcategory);
 
   return (
     <div className="min-h-screen bg-white">
@@ -100,16 +117,15 @@ export default async function RingsSubcategoryPage({ params }: RingsSubcategoryP
             {subcategoryName}
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover our exquisite collection of {subcategoryName.toLowerCase()} crafted with traditional techniques and made from authentic 925 pure silver.
+            Discover our exquisite collection of {subcategoryName.toLowerCase()}{" "}
+            crafted with traditional techniques and made from authentic 925 pure
+            silver.
           </p>
         </div>
 
         {/* Products Grid */}
         <Suspense fallback={<Loading />}>
-          <ProductsClient
-            products={subcategoryProducts}
-            showFilters={true}
-          />
+          <ProductsClient products={subcategoryProducts} showFilters={true} />
         </Suspense>
 
         {/* WhatsApp CTA */}
@@ -126,12 +142,26 @@ export default async function RingsSubcategoryPage({ params }: RingsSubcategoryP
         {subcategoryProducts.length === 0 && (
           <div className="text-center py-12">
             <div className="text-gray-500 mb-4">
-              <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              <svg
+                className="mx-auto h-12 w-12"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1}
+                  d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No {subcategoryName.toLowerCase()} available</h3>
-            <p className="text-gray-600">Check back soon for our latest collection.</p>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              No {subcategoryName.toLowerCase()} available
+            </h3>
+            <p className="text-gray-600">
+              Check back soon for our latest collection.
+            </p>
             <Link
               href="/rings"
               className="inline-block mt-4 px-6 py-3 bg-gold-300 text-white rounded-lg hover:bg-gold-400 transition-colors"
@@ -142,5 +172,5 @@ export default async function RingsSubcategoryPage({ params }: RingsSubcategoryP
         )}
       </div>
     </div>
-  )
+  );
 }

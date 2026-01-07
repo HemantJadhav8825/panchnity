@@ -1,4 +1,7 @@
-import Link from 'next/link'
+// Force dynamic rendering for error pages
+export const dynamic = "force-dynamic";
+
+import Link from "next/link";
 
 export default function InternalServerError() {
   return (
@@ -21,7 +24,8 @@ export default function InternalServerError() {
           </h2>
 
           <p className="text-gray-600 mb-8">
-            We&apos;re experiencing some technical difficulties. Our team has been notified and is working to fix the issue.
+            We&apos;re experiencing some technical difficulties. Our team has
+            been notified and is working to fix the issue.
           </p>
 
           <div className="space-y-4">
@@ -46,7 +50,7 @@ export default function InternalServerError() {
         {/* Help */}
         <div className="mt-8 text-center">
           <p className="text-sm text-gray-600">
-            Need help? Contact our support team at{' '}
+            Need help? Contact our support team at{" "}
             <a
               href="mailto:support@panchnityjewellers.com"
               className="text-gold-600 hover:text-gold-700"
@@ -57,5 +61,5 @@ export default function InternalServerError() {
         </div>
       </div>
     </div>
-  )
+  );
 }

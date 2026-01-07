@@ -1,3 +1,6 @@
+// Force dynamic rendering to prevent static generation of database-driven routes
+export const dynamic = "force-dynamic";
+
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,24 +20,6 @@ interface ProductPageProps {
   params: {
     slug: string;
   };
-}
-
-export async function generateStaticParams() {
-  // During build time, API might not be available
-  // Return empty array to generate pages dynamically
-  try {
-    const products = await getAllProducts();
-    return products.map((product) => ({
-      slug: product.slug,
-    }));
-  } catch (error) {
-    console.warn(
-      "API not available during build, generating pages dynamically:",
-      error
-    );
-    // Return empty array to let Next.js handle routing dynamically
-    return [];
-  }
 }
 
 export async function generateMetadata({ params }: ProductPageProps) {
