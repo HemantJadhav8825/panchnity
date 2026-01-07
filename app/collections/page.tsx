@@ -1,35 +1,46 @@
-import { Suspense } from 'react'
-import { getAllProducts } from '@/lib/products'
-import { getCategories } from '@/lib/categories'
-import ProductsClient from '@/components/ProductsClient'
-import Loading from '@/app/products/loading'
-import WhatsAppButton from '@/components/WhatsAppButton'
-import Link from 'next/link'
-import Image from 'next/image'
-import { Metadata } from 'next'
+import { Suspense } from "react";
+import { getAllProducts } from "@/lib/products";
+import { getCategories } from "@/lib/categories";
+import ProductsClient from "@/components/ProductsClient";
+import Loading from "@/app/products/loading";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import Link from "next/link";
+import Image from "next/image";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Collections | PANCHANITY JEWELLERS',
-  description: 'Explore our complete collection of handcrafted silver jewelry and religious items. From idols to pooja items, discover pieces made with traditional techniques and authentic 925 pure silver.',
-  keywords: ['collections', 'silver jewelry', 'religious items', 'pooja items', 'idols', 'traditional jewelry', '925 silver', 'panchnity jewellers'],
+  title: "Collections | PANCHANITY JEWELLERS",
+  description:
+    "Explore our complete collection of handcrafted silver jewelry and religious items. From idols to pooja items, discover pieces made with traditional techniques and authentic 925 pure silver.",
+  keywords: [
+    "collections",
+    "silver jewelry",
+    "religious items",
+    "pooja items",
+    "idols",
+    "traditional jewelry",
+    "925 silver",
+    "panchnity jewellers",
+  ],
   openGraph: {
-    title: 'Complete Collections | PANCHANITY JEWELLERS',
-    description: 'Browse our entire collection of handcrafted silver jewelry and religious items.',
-    type: 'website',
+    title: "Complete Collections | PANCHANITY JEWELLERS",
+    description:
+      "Browse our entire collection of handcrafted silver jewelry and religious items.",
+    type: "website",
   },
-}
+};
 
 export default async function CollectionsPage() {
-  let allProducts: any[] = []
-  let categories: any[] = []
+  let allProducts: any[] = [];
+  let categories: any[] = [];
 
   try {
     [allProducts, categories] = await Promise.all([
       getAllProducts(),
-      getCategories()
-    ])
+      getCategories(),
+    ]);
   } catch (error) {
-    console.error('Error fetching data:', error)
+    console.error("Error fetching data:", error);
     // Continue with empty arrays
   }
 
@@ -42,8 +53,9 @@ export default async function CollectionsPage() {
             Our Collections
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Explore our complete range of handcrafted silver jewelry and religious items.
-            Each collection represents the finest traditional craftsmanship and devotion.
+            Explore our complete range of handcrafted silver jewelry and
+            religious items. Each collection represents the finest traditional
+            craftsmanship and devotion.
           </p>
         </div>
 
@@ -91,10 +103,7 @@ export default async function CollectionsPage() {
           </h2>
 
           <Suspense fallback={<Loading />}>
-            <ProductsClient
-              products={allProducts}
-              showFilters={true}
-            />
+            <ProductsClient products={allProducts} showFilters={true} />
           </Suspense>
 
           {/* WhatsApp CTA */}
@@ -108,5 +117,5 @@ export default async function CollectionsPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

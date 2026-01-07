@@ -1,14 +1,14 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import { ArrowRight } from 'lucide-react'
-import { getCategories, Category } from '@/lib/categories'
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowRight } from "lucide-react";
+import { getCategories, Category } from "@/lib/categories";
 
-function CategoryCard({ category }: { category: typeof categories[0] }) {
-  const [imageError, setImageError] = useState(false)
-  
+function CategoryCard({ category }: { category: (typeof categories)[0] }) {
+  const [imageError, setImageError] = useState(false);
+
   return (
     <Link
       href={category.href}
@@ -17,18 +17,18 @@ function CategoryCard({ category }: { category: typeof categories[0] }) {
       {/* Image with overlay */}
       {!imageError && (
         <div className="absolute inset-0 z-0">
-          <Image 
-            src={category.image} 
-            alt={category.name} 
-            fill 
-            className="object-cover transition-transform duration-350 group-hover:scale-105" 
+          <Image
+            src={category.image}
+            alt={category.name}
+            fill
+            className="object-cover transition-transform duration-350 group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, 33vw"
             onError={() => setImageError(true)}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent z-10"></div>
         </div>
       )}
-      
+
       {/* Placeholder if image not found */}
       {imageError && (
         <div className="absolute inset-0 flex items-center justify-center z-0 bg-gradient-to-br from-gray-200 to-gray-300">
@@ -50,37 +50,37 @@ function CategoryCard({ category }: { category: typeof categories[0] }) {
         </div>
       </div>
     </Link>
-  )
+  );
 }
 
 export default function CategoryShowcase() {
-  const [categories, setCategories] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+  const [categories, setCategories] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const cats = await getCategories()
+        const cats = await getCategories();
         // Transform to expected format
-        const transformedCategories = cats.map(cat => ({
+        const transformedCategories = cats.map((cat) => ({
           name: cat.name,
           description: cat.description,
           href: `/products?category=${cat.id}`,
           image: cat.image,
           count: `${cat.itemCount}+ Designs`,
-        }))
-        setCategories(transformedCategories)
+        }));
+        setCategories(transformedCategories);
       } catch (error) {
-        console.error('Error fetching categories:', error)
+        console.error("Error fetching categories:", error);
         // Fallback to empty array
-        setCategories([])
+        setCategories([]);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
 
-    fetchCategories()
-  }, [])
+    fetchCategories();
+  }, []);
 
   if (loading) {
     return (
@@ -91,17 +91,21 @@ export default function CategoryShowcase() {
               Shop by Category
             </h2>
             <p className="text-gray-600 text-lg">
-              Discover our curated collections of religious jewellery and temple items
+              Discover our curated collections of religious jewellery and temple
+              items
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="aspect-[4/3] bg-gray-200 rounded-2xl animate-pulse"></div>
+              <div
+                key={i}
+                className="aspect-[4/3] bg-gray-200 rounded-2xl animate-pulse"
+              ></div>
             ))}
           </div>
         </div>
       </section>
-    )
+    );
   }
 
   return (
@@ -112,7 +116,8 @@ export default function CategoryShowcase() {
             Shop by Category
           </h2>
           <p className="text-gray-600 text-lg">
-            Discover our curated collections of religious jewellery and temple items
+            Discover our curated collections of religious jewellery and temple
+            items
           </p>
         </div>
 
@@ -123,6 +128,5 @@ export default function CategoryShowcase() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-

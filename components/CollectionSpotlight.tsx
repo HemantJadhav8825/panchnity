@@ -1,31 +1,31 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { useState, useEffect } from 'react'
-import { getProductsByMaterial } from '@/lib/products'
-import ProductCard from './ProductCard'
-import { ArrowRight } from 'lucide-react'
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { getProductsByMaterial } from "@/lib/products";
+import ProductCard from "./ProductCard";
+import { ArrowRight } from "lucide-react";
 
 export default function CollectionSpotlight() {
-  const [silverProducts, setSilverProducts] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [silverProducts, setSilverProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchSilverProducts() {
       try {
-        const products = await getProductsByMaterial('silver')
-        setSilverProducts(products.slice(0, 4))
+        const products = await getProductsByMaterial("silver");
+        setSilverProducts(products.slice(0, 4));
       } catch (err) {
-        console.error('Error fetching silver products:', err)
-        setError('Failed to load silver products')
+        console.error("Error fetching silver products:", err);
+        setError("Failed to load silver products");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
 
-    fetchSilverProducts()
-  }, [])
+    fetchSilverProducts();
+  }, []);
 
   if (loading) {
     return (
@@ -56,7 +56,7 @@ export default function CollectionSpotlight() {
           </div>
         </section>
       </>
-    )
+    );
   }
 
   if (error) {
@@ -68,7 +68,7 @@ export default function CollectionSpotlight() {
           </div>
         </section>
       </>
-    )
+    );
   }
 
   return (
@@ -112,6 +112,5 @@ export default function CollectionSpotlight() {
         </div>
       </section>
     </>
-  )
+  );
 }
-

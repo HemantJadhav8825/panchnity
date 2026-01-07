@@ -1,74 +1,83 @@
-import { notFound } from 'next/navigation'
-import Image from 'next/image'
-import Link from 'next/link'
-import { getProductBySlug, getAllProducts } from '@/lib/products'
-import { notFound } from 'next/navigation'
-import Product3DViewer from '@/components/Product3DViewer'
-import WhatsAppButton from '@/components/WhatsAppButton'
-import { generateProductMetadata, generateProductJsonLd, generateBreadcrumbJsonLd } from '@/lib/seo'
-import { SITE_URL } from '@/lib/constants'
-import { ChevronRight, Package, Scale, Sparkles } from 'lucide-react'
+import { notFound } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { getProductBySlug, getAllProducts } from "@/lib/products";
+import { notFound } from "next/navigation";
+import Product3DViewer from "@/components/Product3DViewer";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import {
+  generateProductMetadata,
+  generateProductJsonLd,
+  generateBreadcrumbJsonLd,
+} from "@/lib/seo";
+import { SITE_URL } from "@/lib/constants";
+import { ChevronRight, Package, Scale, Sparkles } from "lucide-react";
 
 interface ProductPageProps {
   params: {
-    slug: string
-  }
+    slug: string;
+  };
 }
 
 export async function generateStaticParams() {
   // During build time, API might not be available
   // Return empty array to generate pages dynamically
   try {
-    const products = await getAllProducts()
+    const products = await getAllProducts();
     return products.map((product) => ({
       slug: product.slug,
-    }))
+    }));
   } catch (error) {
-    console.warn('API not available during build, generating pages dynamically:', error)
+    console.warn(
+      "API not available during build, generating pages dynamically:",
+      error
+    );
     // Return empty array to let Next.js handle routing dynamically
-    return []
+    return [];
   }
 }
 
 export async function generateMetadata({ params }: ProductPageProps) {
   try {
-    const product = await getProductBySlug(params.slug)
+    const product = await getProductBySlug(params.slug);
     if (!product) {
-      return {}
+      return {};
     }
-    return generateProductMetadata(product)
+    return generateProductMetadata(product);
   } catch (error) {
-    console.error('Error generating metadata:', error)
-    return {}
+    console.error("Error generating metadata:", error);
+    return {};
   }
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  let product
-  let relatedProducts = []
+  let product;
+  let relatedProducts = [];
 
   try {
-    product = await getProductBySlug(params.slug)
+    product = await getProductBySlug(params.slug);
     if (!product) {
-      notFound()
+      notFound();
     }
 
     // Fetch related products
-    const allProducts = await getAllProducts()
+    const allProducts = await getAllProducts();
     relatedProducts = allProducts
-      .filter((p: any) => p.id !== product.id && p.category === product.category)
-      .slice(0, 4)
+      .filter(
+        (p: any) => p.id !== product.id && p.category === product.category
+      )
+      .slice(0, 4);
   } catch (error) {
-    console.error('Error fetching product data:', error)
-    notFound()
+    console.error("Error fetching product data:", error);
+    notFound();
   }
 
-  const productJsonLd = generateProductJsonLd(product)
+  const productJsonLd = generateProductJsonLd(product);
   const breadcrumbJsonLd = generateBreadcrumbJsonLd([
-    { name: 'Home', url: SITE_URL },
-    { name: 'Products', url: `${SITE_URL}/products` },
+    { name: "Home", url: SITE_URL },
+    { name: "Products", url: `${SITE_URL}/products` },
     { name: product.name, url: `${SITE_URL}/products/${product.slug}` },
-  ])
+  ]);
 
   return (
     <>
@@ -89,7 +98,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
               Home
             </Link>
             <ChevronRight className="w-4 h-4" />
-            <Link href="/products" className="hover:text-gold-300 transition-colors">
+            <Link
+              href="/products"
+              className="hover:text-gold-300 transition-colors"
+            >
               Products
             </Link>
             <ChevronRight className="w-4 h-4" />
@@ -102,7 +114,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
               {product.model3d ? (
                 <Product3DViewer product={product} className="mb-6" />
               ) : (
-                <div className="bg-gray-100 rounded-lg overflow-hidden mb-6" style={{ minHeight: '500px' }}>
+                <div
+                  className="bg-gray-100 rounded-lg overflow-hidden mb-6"
+                  style={{ minHeight: "500px" }}
+                >
                   {product.images[0] && (
                     <Image
                       src={product.images[0]}
@@ -142,7 +157,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <div className="mb-6">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="px-3 py-1 bg-gold-50 text-gold-600 rounded-full text-sm font-medium capitalize">
-                    {product.category.replace('-', ' ')}
+                    {product.category.replace("-", " ")}
                   </span>
                   {product.featured && (
                     <span className="px-3 py-1 bg-gold-300 text-white rounded-full text-sm font-semibold">
@@ -165,27 +180,36 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     <Package className="w-5 h-5" />
                     <span className="font-medium">Material:</span>
                   </div>
-                  <span className="text-gray-900 font-semibold capitalize">{product.material}</span>
+                  <span className="text-gray-900 font-semibold capitalize">
+                    {product.material}
+                  </span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2 text-gray-600">
                     <Sparkles className="w-5 h-5" />
                     <span className="font-medium">Purity:</span>
                   </div>
-                  <span className="text-gray-900 font-semibold">{product.purity}</span>
+                  <span className="text-gray-900 font-semibold">
+                    {product.purity}
+                  </span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2 text-gray-600">
                     <Scale className="w-5 h-5" />
                     <span className="font-medium">Weight:</span>
                   </div>
-                  <span className="text-gray-900 font-semibold">{product.weight}</span>
+                  <span className="text-gray-900 font-semibold">
+                    {product.weight}
+                  </span>
                 </div>
               </div>
 
               {/* WhatsApp CTA */}
               <div className="mb-8">
-                <WhatsAppButton product={product} className="w-full md:w-auto" />
+                <WhatsAppButton
+                  product={product}
+                  className="w-full md:w-auto"
+                />
               </div>
 
               {/* Trust Message */}
@@ -194,10 +218,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   Authentic & Handcrafted
                 </h3>
                 <p className="text-gray-700 text-sm">
-                  This piece is handcrafted with traditional techniques and made from authentic{' '}
-                  925 pure silver. Each item is
-                  created with devotion and care, ensuring it meets our high standards of quality
-                  and craftsmanship.
+                  This piece is handcrafted with traditional techniques and made
+                  from authentic 925 pure silver. Each item is created with
+                  devotion and care, ensuring it meets our high standards of
+                  quality and craftsmanship.
                 </p>
               </div>
             </div>
@@ -238,6 +262,5 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
       </div>
     </>
-  )
+  );
 }
-

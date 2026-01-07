@@ -1,78 +1,88 @@
-'use client'
+"use client";
 
-import { useState, useMemo, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
-import ProductCard from '@/components/ProductCard'
-import { getAllProducts, getProductsByCategory, getProductsByMaterial } from '@/lib/products'
-import { ProductCategory, ProductMaterial } from '@/types/product'
-import { Filter, Search } from 'lucide-react'
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import ProductCard from "@/components/ProductCard";
+import {
+  getAllProducts,
+  getProductsByCategory,
+  getProductsByMaterial,
+} from "@/lib/products";
+import { ProductCategory, ProductMaterial } from "@/types/product";
+import { Filter, Search } from "lucide-react";
 
 interface ProductsClientProps {
-  products?: any[]
-  showFilters?: boolean
+  products?: any[];
+  showFilters?: boolean;
 }
 
-export default function ProductsClient({ products: initialProducts, showFilters = true }: ProductsClientProps = {}) {
-  const searchParams = useSearchParams()
-  const categoryParam = searchParams.get('category') as ProductCategory | null
-  const materialParam = searchParams.get('material') as ProductMaterial | null
+export default function ProductsClient({
+  products: initialProducts,
+  showFilters = true,
+}: ProductsClientProps = {}) {
+  const searchParams = useSearchParams();
+  const categoryParam = searchParams.get("category") as ProductCategory | null;
+  const materialParam = searchParams.get("material") as ProductMaterial | null;
 
-  const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState<ProductCategory | 'all'>(
-    categoryParam || 'all'
-  )
-  const [selectedMaterial, setSelectedMaterial] = useState<ProductMaterial | 'all'>(
-    materialParam || 'all'
-  )
-  const [allProducts, setAllProducts] = useState<any[]>(initialProducts || [])
-  const [loading, setLoading] = useState(!initialProducts)
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<
+    ProductCategory | "all"
+  >(categoryParam || "all");
+  const [selectedMaterial, setSelectedMaterial] = useState<
+    ProductMaterial | "all"
+  >(materialParam || "all");
+  const [allProducts, setAllProducts] = useState<any[]>(initialProducts || []);
+  const [loading, setLoading] = useState(!initialProducts);
 
   useEffect(() => {
     async function fetchProducts() {
-      if (initialProducts) return // Don't fetch if products were passed as props
+      if (initialProducts) return; // Don't fetch if products were passed as props
 
       try {
-        const products = await getAllProducts()
-        setAllProducts(products)
+        const products = await getAllProducts();
+        setAllProducts(products);
       } catch (error) {
-        console.error('Error fetching products:', error)
-        setAllProducts([])
+        console.error("Error fetching products:", error);
+        setAllProducts([]);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
 
-    fetchProducts()
-  }, [initialProducts])
+    fetchProducts();
+  }, [initialProducts]);
 
   const filteredProducts = useMemo(() => {
-    if (loading || allProducts.length === 0) return []
+    if (loading || allProducts.length === 0) return [];
 
-    let filtered = allProducts
+    let filtered = allProducts;
 
     // Filter by category
-    if (selectedCategory !== 'all') {
-      filtered = filtered.filter((p) => p.category === selectedCategory)
+    if (selectedCategory !== "all") {
+      filtered = filtered.filter((p) => p.category === selectedCategory);
     }
 
     // Filter by material
-    if (selectedMaterial !== 'all') {
-      filtered = filtered.filter((p) => p.material === selectedMaterial)
+    if (selectedMaterial !== "all") {
+      filtered = filtered.filter((p) => p.material === selectedMaterial);
     }
 
     // Filter by search query
     if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase()
+      const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
         (p) =>
           p.name.toLowerCase().includes(query) ||
           p.description.toLowerCase().includes(query) ||
-          (p.seoKeywords && p.seoKeywords.some((keyword: string) => keyword.toLowerCase().includes(query)))
-      )
+          (p.seoKeywords &&
+            p.seoKeywords.some((keyword: string) =>
+              keyword.toLowerCase().includes(query)
+            ))
+      );
     }
 
-    return filtered
-  }, [selectedCategory, selectedMaterial, searchQuery, allProducts, loading])
+    return filtered;
+  }, [selectedCategory, selectedMaterial, searchQuery, allProducts, loading]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -82,7 +92,8 @@ export default function ProductsClient({ products: initialProducts, showFilters 
             Our Products
           </h1>
           <p className="text-gray-600 text-lg">
-            Discover our exquisite collection of silver temple idols, pooja items, and bhakti jewellery
+            Discover our exquisite collection of silver temple idols, pooja
+            items, and bhakti jewellery
           </p>
         </div>
 
@@ -104,13 +115,17 @@ export default function ProductsClient({ products: initialProducts, showFilters 
           <div className="flex flex-wrap gap-4 items-center">
             <div className="flex items-center gap-2">
               <Filter className="w-5 h-5 text-gray-600" />
-              <span className="text-sm font-medium text-gray-700">Filters:</span>
+              <span className="text-sm font-medium text-gray-700">
+                Filters:
+              </span>
             </div>
 
             {/* Category Filter */}
             <select
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value as ProductCategory | 'all')}
+              onChange={(e) =>
+                setSelectedCategory(e.target.value as ProductCategory | "all")
+              }
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-300 focus:border-gold-300 outline-none bg-white"
             >
               <option value="all">All Categories</option>
@@ -122,7 +137,9 @@ export default function ProductsClient({ products: initialProducts, showFilters 
             {/* Material Filter */}
             <select
               value={selectedMaterial}
-              onChange={(e) => setSelectedMaterial(e.target.value as ProductMaterial | 'all')}
+              onChange={(e) =>
+                setSelectedMaterial(e.target.value as ProductMaterial | "all")
+              }
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-300 focus:border-gold-300 outline-none bg-white"
             >
               <option value="all">All Materials</option>
@@ -130,12 +147,14 @@ export default function ProductsClient({ products: initialProducts, showFilters 
             </select>
 
             {/* Clear Filters */}
-            {(selectedCategory !== 'all' || selectedMaterial !== 'all' || searchQuery) && (
+            {(selectedCategory !== "all" ||
+              selectedMaterial !== "all" ||
+              searchQuery) && (
               <button
                 onClick={() => {
-                  setSelectedCategory('all')
-                  setSelectedMaterial('all')
-                  setSearchQuery('')
+                  setSelectedCategory("all");
+                  setSelectedMaterial("all");
+                  setSearchQuery("");
                 }}
                 className="px-4 py-2 text-sm text-gray-600 hover:text-gold-300 transition-colors"
               >
@@ -157,7 +176,8 @@ export default function ProductsClient({ products: initialProducts, showFilters 
         {!loading && (
           <div className="mb-6">
             <p className="text-gray-600">
-              Showing {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''}
+              Showing {filteredProducts.length} product
+              {filteredProducts.length !== 1 ? "s" : ""}
             </p>
           </div>
         )}
@@ -179,6 +199,5 @@ export default function ProductsClient({ products: initialProducts, showFilters 
         )}
       </div>
     </div>
-  )
+  );
 }
-
