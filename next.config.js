@@ -40,5 +40,4 @@ try {
     pathname: "/uploads/**",
   });
 }
-console.log(JSON.stringify(nextConfig, null, 2));
 module.exports = nextConfig;
