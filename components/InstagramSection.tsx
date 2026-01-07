@@ -1,17 +1,42 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { INSTAGRAM_URL } from '@/lib/constants'
-import { Instagram } from 'lucide-react'
+import Link from "next/link";
+import Image from "next/image";
+import { INSTAGRAM_URL } from "@/lib/constants";
+import { BACKEND_BASE_URL } from "@/lib/api";
+import { Instagram } from "lucide-react";
 
 // Placeholder for Instagram feed - you can integrate with Instagram API later
 const instagramPosts = [
-  { id: 1, image: '/images/products/silver-ganesh-idol-1.jpg', alt: 'Silver Ganesh Idol' },
-  { id: 2, image: '/images/products/silver-lakshmi-idol-1.jpg', alt: 'Silver Lakshmi Idol' },
-  { id: 3, image: '/images/products/silver-om-pendant-1.jpg', alt: 'Silver Om Pendant' },
-  { id: 4, image: '/images/products/silver-pooja-thali-1.jpg', alt: 'Silver Pooja Thali' },
-  { id: 5, image: '/images/products/silver-krishna-idol-1.jpg', alt: 'Silver Krishna Idol' },
-  { id: 6, image: '/images/products/silver-diya-set-1.jpg', alt: 'Silver Diya Set' },
-]
+  {
+    id: 1,
+    image: `${BACKEND_BASE_URL}/uploads/images/products/silver-ganesh-idol-1.jpg`,
+    alt: "Silver Ganesh Idol",
+  },
+  {
+    id: 2,
+    image: `${BACKEND_BASE_URL}/uploads/images/products/silver-lakshmi-idol-1.jpg`,
+    alt: "Silver Lakshmi Idol",
+  },
+  {
+    id: 3,
+    image: `${BACKEND_BASE_URL}/uploads/images/products/silver-om-pendant-1.jpg`,
+    alt: "Silver Om Pendant",
+  },
+  {
+    id: 4,
+    image: `${BACKEND_BASE_URL}/uploads/images/products/silver-pooja-thali-1.jpg`,
+    alt: "Silver Pooja Thali",
+  },
+  {
+    id: 5,
+    image: `${BACKEND_BASE_URL}/uploads/images/products/silver-krishna-idol-1.jpg`,
+    alt: "Silver Krishna Idol",
+  },
+  {
+    id: 6,
+    image: `${BACKEND_BASE_URL}/uploads/images/products/silver-diya-set-1.jpg`,
+    alt: "Silver Diya Set",
+  },
+];
 
 export default function InstagramSection() {
   return (
@@ -37,7 +62,7 @@ export default function InstagramSection() {
             <Instagram className="w-5 h-5" />
           </Link>
         </div>
-        
+
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
           {instagramPosts.map((post) => (
             <Link
@@ -60,7 +85,7 @@ export default function InstagramSection() {
             </Link>
           ))}
         </div>
-        
+
         <div className="text-center mt-8">
           <Link
             href={INSTAGRAM_URL}
@@ -74,6 +99,5 @@ export default function InstagramSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-

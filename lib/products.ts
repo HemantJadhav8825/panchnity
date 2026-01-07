@@ -26,11 +26,147 @@ function transformApiProduct(apiProduct: Product): any {
       }
       return img.url;
     }),
-    model3d: apiProduct.model3d?.url,
+    model3d: apiProduct.model3d?.url
+      ? `${BACKEND_BASE_URL}${apiProduct.model3d.url}`
+      : null,
     featured: apiProduct.isFeatured,
     seoKeywords: apiProduct.tags,
   };
 }
+
+// Static fallback data for when API is not available
+const fallbackProducts = [
+  {
+    id: "1",
+    name: "925 Silver Ganesh Idol",
+    slug: "925-silver-ganesh-idol",
+    description:
+      "Beautiful handcrafted silver Ganesh idol made from pure 925 silver.",
+    category: "idols",
+    material: "silver",
+    purity: "925",
+    weight: "500g",
+    images: [
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-ganesh-idol-1.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-ganesh-idol-2.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-ganesh-idol-3.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-ganesh-idol-4.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-ganesh-idol-5.jpg`,
+    ],
+    model3d: null,
+    featured: true,
+    seoKeywords: ["silver idol", "ganesh", "925 silver", "handcrafted"],
+  },
+  {
+    id: "2",
+    name: "925 Silver Lakshmi Idol",
+    slug: "925-silver-lakshmi-idol",
+    description:
+      "Elegant Lakshmi idol crafted from pure 925 silver with intricate detailing.",
+    category: "idols",
+    material: "silver",
+    purity: "925",
+    weight: "450g",
+    images: [
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-lakshmi-idol-1.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-lakshmi-idol-2.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-lakshmi-idol-3.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-lakshmi-idol-4.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-lakshmi-idol-5.jpg`,
+    ],
+    model3d: null,
+    featured: true,
+    seoKeywords: ["silver idol", "lakshmi", "925 silver", "goddess"],
+  },
+  {
+    id: "3",
+    name: "925 Silver Krishna Idol",
+    slug: "925-silver-krishna-idol",
+    description:
+      "Divine Krishna idol made from pure 925 silver with traditional craftsmanship.",
+    category: "idols",
+    material: "silver",
+    purity: "925",
+    weight: "400g",
+    images: [
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-krishna-idol-1.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-krishna-idol-2.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-krishna-idol-3.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-krishna-idol-4.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-krishna-idol-5.jpg`,
+    ],
+    model3d: null,
+    featured: true,
+    seoKeywords: ["silver idol", "krishna", "925 silver", "divine"],
+  },
+  {
+    id: "4",
+    name: "925 Silver Om Pendant",
+    slug: "925-silver-om-pendant",
+    description: "Sacred Om symbol pendant crafted in pure 925 silver.",
+    category: "necklaces",
+    material: "silver",
+    purity: "925",
+    weight: "25g",
+    images: [
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-om-pendant-1.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-om-pendant-2.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-om-pendant-3.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-om-pendant-4.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-om-pendant-5.jpg`,
+    ],
+    model3d: null,
+    featured: false,
+    seoKeywords: [
+      "om pendant",
+      "silver pendant",
+      "sacred symbol",
+      "925 silver",
+    ],
+  },
+  {
+    id: "5",
+    name: "925 Silver Pooja Thali",
+    slug: "925-silver-pooja-thali",
+    description:
+      "Traditional pooja thali made from pure 925 silver for religious ceremonies.",
+    category: "pooja-items",
+    material: "silver",
+    purity: "925",
+    weight: "300g",
+    images: [
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-pooja-thali-1.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-pooja-thali-2.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-pooja-thali-3.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-pooja-thali-4.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-pooja-thali-5.jpg`,
+    ],
+    model3d: null,
+    featured: false,
+    seoKeywords: ["pooja thali", "silver thali", "religious", "ceremony"],
+  },
+  {
+    id: "6",
+    name: "925 Silver Diya Set",
+    slug: "925-silver-diya-set",
+    description:
+      "Beautiful silver diya set for lighting lamps during festivals and ceremonies.",
+    category: "pooja-items",
+    material: "silver",
+    purity: "925",
+    weight: "200g",
+    images: [
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-diya-set-1.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-diya-set-2.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-diya-set-3.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-diya-set-4.jpg`,
+      `${BACKEND_BASE_URL}/uploads/images/products/silver-diya-set-5.jpg`,
+    ],
+    model3d: null,
+    featured: false,
+    seoKeywords: ["diya set", "silver diya", "festival", "lighting"],
+  },
+];
 
 // Helper function to get products from API with caching
 async function fetchProducts(): Promise<any[]> {
@@ -45,10 +181,14 @@ async function fetchProducts(): Promise<any[]> {
       return productsCache.map(transformApiProduct);
     }
   } catch (error) {
-    console.error("Failed to fetch products:", error);
+    console.warn(
+      "Failed to fetch products from API, using fallback data:",
+      error
+    );
   }
 
-  return [];
+  // Return fallback static data if API fails
+  return fallbackProducts;
 }
 
 // Helper function to get featured products from API with caching
@@ -64,10 +204,14 @@ async function fetchFeaturedProducts(): Promise<any[]> {
       return featuredProductsCache.map(transformApiProduct);
     }
   } catch (error) {
-    console.error("Failed to fetch featured products:", error);
+    console.warn(
+      "Failed to fetch featured products from API, using fallback data:",
+      error
+    );
   }
 
-  return [];
+  // Return featured products from fallback data
+  return fallbackProducts.filter((product) => product.featured);
 }
 
 // Async function to get product by slug
