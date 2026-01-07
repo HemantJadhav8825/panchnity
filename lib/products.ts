@@ -19,7 +19,13 @@ function transformApiProduct(apiProduct: Product): any {
     material: apiProduct.materials[0] || "silver",
     purity: "925",
     weight: `${apiProduct.weight || 0}g`,
-    images: apiProduct.images.map((img) => img.url),
+    images: apiProduct.images.map((img) => {
+      // Convert relative URLs to full backend URLs
+      if (img.url.startsWith("/uploads/")) {
+        return `http://localhost:5001${img.url}`;
+      }
+      return img.url;
+    }),
     model3d: apiProduct.model3d?.url,
     featured: apiProduct.isFeatured,
     seoKeywords: apiProduct.tags,
