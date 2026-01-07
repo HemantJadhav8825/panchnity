@@ -22,8 +22,8 @@ function slugToName(slug: string): string {
 }
 
 // Filter products for the specific subcategory
-function getSubcategoryProducts(subcategory: string) {
-  const allProducts = getAllProducts()
+async function getSubcategoryProducts(subcategory: string) {
+  const allProducts = await getAllProducts()
   const subcategoryName = slugToName(subcategory)
 
   return allProducts.filter(product => {
@@ -86,7 +86,7 @@ export async function generateStaticParams() {
 export default async function BridalSubcategoryPage({ params }: BridalSubcategoryPageProps) {
   const { subcategory } = await params
   const subcategoryName = slugToName(subcategory)
-  const subcategoryProducts = getSubcategoryProducts(subcategory)
+  const subcategoryProducts = await getSubcategoryProducts(subcategory)
 
   return (
     <div className="min-h-screen bg-white">

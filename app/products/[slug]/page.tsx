@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { getProductBySlug, getAllProducts } from "@/lib/products";
-import { notFound } from "next/navigation";
 import Product3DViewer from "@/components/Product3DViewer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import {
@@ -12,6 +11,7 @@ import {
 } from "@/lib/seo";
 import { SITE_URL } from "@/lib/constants";
 import { ChevronRight, Package, Scale, Sparkles } from "lucide-react";
+import { Product } from "@/types/product";
 
 interface ProductPageProps {
   params: {
@@ -51,8 +51,8 @@ export async function generateMetadata({ params }: ProductPageProps) {
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  let product;
-  let relatedProducts = [];
+  let product: Product | undefined;
+  let relatedProducts: Product[] = [];
 
   try {
     product = await getProductBySlug(params.slug);
@@ -64,7 +64,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     const allProducts = await getAllProducts();
     relatedProducts = allProducts
       .filter(
-        (p: any) => p.id !== product.id && p.category === product.category
+        (p: any) => p.id !== product!.id && p.category === product!.category
       )
       .slice(0, 4);
   } catch (error) {
@@ -141,7 +141,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     >
                       <Image
                         src={image}
-                        alt={`${product.name} - View ${index + 2}`}
+                        alt={`${product!.name} - View ${index + 2}`}
                         fill
                         className="object-cover"
                         sizes="(max-width: 768px) 50vw, 200px"

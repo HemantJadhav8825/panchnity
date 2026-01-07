@@ -17,8 +17,8 @@ export const metadata: Metadata = {
 }
 
 // Filter products suitable for bridal/wedding occasions
-function getBridalProducts() {
-  const allProducts = getAllProducts()
+async function getBridalProducts() {
+  const allProducts = await getAllProducts()
   return allProducts.filter(product =>
     product.featured || // Featured products
     product.name.toLowerCase().includes('bridal') ||
@@ -30,8 +30,8 @@ function getBridalProducts() {
   )
 }
 
-export default function BridalPage() {
-  const bridalProducts = getBridalProducts()
+export default async function BridalPage() {
+  const bridalProducts = await getBridalProducts()
 
   return (
     <div className="min-h-screen bg-white">

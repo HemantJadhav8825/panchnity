@@ -6,12 +6,12 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { getCategories, Category } from "@/lib/categories";
 
-function CategoryCard({ category }: { category: (typeof categories)[0] }) {
+function CategoryCard({ category }: { category: Category }) {
   const [imageError, setImageError] = useState(false);
 
   return (
     <Link
-      href={category.href}
+      href={`/categories/${category.slug}`}
       className="group relative overflow-hidden rounded-2xl bg-gray-100 aspect-[4/3] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
     >
       {/* Image with overlay */}
@@ -45,7 +45,7 @@ function CategoryCard({ category }: { category: (typeof categories)[0] }) {
         </h3>
         <p className="text-gold-100 text-sm mb-3">{category.description}</p>
         <div className="flex items-center gap-2 text-white group-hover:text-gold-200 transition-colors transform group-hover:translate-x-1 duration-300">
-          <span className="text-sm font-medium">{category.count}</span>
+          <span className="text-sm font-medium">{category.itemCount}</span>
           <ArrowRight className="w-4 h-4" />
         </div>
       </div>

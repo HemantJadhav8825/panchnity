@@ -17,8 +17,8 @@ export const metadata: Metadata = {
 }
 
 // Filter products that might be bracelets based on name or description
-function getBraceletProducts() {
-  const allProducts = getAllProducts()
+async function getBraceletProducts() {
+  const allProducts = await getAllProducts()
   return allProducts.filter(product =>
     product.name.toLowerCase().includes('bracelet') ||
     product.name.toLowerCase().includes('bangle') ||
@@ -30,8 +30,8 @@ function getBraceletProducts() {
   )
 }
 
-export default function BraceletsPage() {
-  const braceletProducts = getBraceletProducts()
+export default async function BraceletsPage() {
+  const braceletProducts = await getBraceletProducts()
 
   return (
     <div className="min-h-screen bg-white">

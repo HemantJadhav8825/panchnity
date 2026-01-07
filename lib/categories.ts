@@ -18,7 +18,7 @@ const categoriesData: Omit<Category, "itemCount">[] = [
     name: "Silver Idols",
     description:
       "Beautiful handcrafted idols of Hindu deities made from pure silver",
-    image: `${BACKEND_BASE_URL}/uploads/images/idols.jpg`,
+    image: `${BACKEND_BASE_URL}/uploads/images/products/idols.jpg`,
   },
   {
     id: "pooja-item",
@@ -26,7 +26,7 @@ const categoriesData: Omit<Category, "itemCount">[] = [
     name: "Pooja Items",
     description:
       "Traditional pooja items and accessories for religious ceremonies",
-    image: `${BACKEND_BASE_URL}/uploads/images/pooja.jpg`,
+    image: `${BACKEND_BASE_URL}/uploads/images/products/pooja.jpg`,
   },
   {
     id: "jewellery",
@@ -34,7 +34,7 @@ const categoriesData: Omit<Category, "itemCount">[] = [
     name: "Silver Jewelry",
     description:
       "Elegant silver jewelry pieces including rings, necklaces, and more",
-    image: `${BACKEND_BASE_URL}/uploads/images/jewellery.jpg`,
+    image: `${BACKEND_BASE_URL}/uploads/images/products/jewellery.jpg`,
   },
 ];
 
@@ -101,5 +101,6 @@ export function getCategoryByIdSync(id: string): Category | undefined {
   console.warn(
     "getCategoryByIdSync is deprecated, use getCategoryById instead"
   );
-  return categoriesData.find((cat) => cat.id === id);
+  const category = categoriesData.find((cat) => cat.id === id);
+  return category ? { ...category, itemCount: 0 } : undefined;
 }

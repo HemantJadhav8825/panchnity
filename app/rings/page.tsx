@@ -17,8 +17,8 @@ export const metadata: Metadata = {
 }
 
 // Filter products that might be rings based on name or description
-function getRingProducts() {
-  const allProducts = getAllProducts()
+async function getRingProducts() {
+  const allProducts = await getAllProducts()
   return allProducts.filter(product =>
     product.name.toLowerCase().includes('ring') ||
     product.description.toLowerCase().includes('ring') ||
@@ -26,8 +26,8 @@ function getRingProducts() {
   )
 }
 
-export default function RingsPage() {
-  const ringProducts = getRingProducts()
+export default async function RingsPage() {
+  const ringProducts = await getRingProducts()
 
   return (
     <div className="min-h-screen bg-white">
