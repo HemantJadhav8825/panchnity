@@ -21,7 +21,7 @@ const nextConfig = {
 // Dynamically add backend image domain if API URL is available
 try {
   const apiUrl =
-    process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api/v1";
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api/v1";
   const url = new URL(apiUrl);
 
   nextConfig.images.remotePatterns.push({
@@ -36,7 +36,7 @@ try {
   nextConfig.images.remotePatterns.push({
     protocol: "http",
     hostname: "localhost",
-    port: "5001",
+    port: "4000",
     pathname: "/uploads/**",
   });
 }

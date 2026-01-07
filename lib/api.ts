@@ -1,6 +1,6 @@
 // API client for backend communication
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api/v1";
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api/v1";
 
 // Backend base URL for image URLs (without /api/v1)
 const BACKEND_BASE_URL = API_BASE_URL.replace("/api/v1", "");
