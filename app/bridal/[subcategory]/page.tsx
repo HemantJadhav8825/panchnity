@@ -7,6 +7,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 
+
 interface BridalSubcategoryPageProps {
   params: Promise<{
     subcategory: string

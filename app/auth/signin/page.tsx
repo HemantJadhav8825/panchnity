@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth"
 import SignInButton from "@/components/SignInButton"
 import { Metadata } from "next"
 
+
 export const metadata: Metadata = {
   title: 'Sign In | PANCHANITY JEWELLERS',
   description: 'Sign in to your PANCHANITY JEWELLERS account to access exclusive features.',

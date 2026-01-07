@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Metadata } from "next"
 
+
 export const metadata: Metadata = {
   title: 'Authentication Error | PANCHANITY JEWELLERS',
   description: 'There was an error during authentication.',

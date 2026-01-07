@@ -1,13 +1,28 @@
 'use client'
 
 import { signIn, signOut, useSession } from 'next-auth/react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { LogOut, User } from 'lucide-react'
 
 export default function SignInButton() {
+  const [mounted, setMounted] = useState(false)
   const { data: session, status } = useSession()
   const [showDropdown, setShowDropdown] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Don't render anything during SSR to avoid context issues
+  if (!mounted) {
+    return (
+      <div className="flex items-center justify-center gap-2 px-4 py-2">
+        <div className="w-5 h-5 bg-gray-200 rounded-full animate-pulse"></div>
+        <div className="w-16 h-4 bg-gray-200 rounded animate-pulse hidden sm:block"></div>
+      </div>
+    )
+  }
 
   if (status === 'loading') {
     return (

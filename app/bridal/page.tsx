@@ -5,6 +5,7 @@ import Loading from '@/app/products/loading'
 import WhatsAppButton from '@/components/WhatsAppButton'
 import { Metadata } from 'next'
 
+
 export const metadata: Metadata = {
   title: 'Bridal Collection | PANCHANITY JEWELLERS',
   description: 'Discover our exquisite bridal collection featuring traditional and modern silver jewelry perfect for weddings and special occasions. Handcrafted with devotion and made from authentic 925 pure silver.',

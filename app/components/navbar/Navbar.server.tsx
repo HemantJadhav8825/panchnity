@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { NAV_CATEGORIES } from "./nav.config";
-import NavbarClient from "./Navbar.client";
+import dynamic from 'next/dynamic'
+
+const NavbarClient = dynamic(() => import('./Navbar.client'), {
+  ssr: false,
+  loading: () => <div className="flex items-center gap-4"></div>
+})
 import TrustBar from "./TrustBar.server";
 import { BRAND_NAME, BRAND_SUBTITLE } from "@/lib/constants";
 

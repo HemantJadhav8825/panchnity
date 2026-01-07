@@ -3,4 +3,7 @@ import { authOptions } from "@/lib/auth"
 
 const handler = NextAuth(authOptions)
 
+// Prevent static generation for API routes
+export const dynamic = 'force-dynamic'
+
 export { handler as GET, handler as POST }
