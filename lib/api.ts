@@ -1,6 +1,6 @@
 // API client for backend communication
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api/v1";
 
 export interface ApiResponse<T = any> {
   status: string;
@@ -29,6 +29,70 @@ export interface AuthResponse {
 export interface AuthApiResponse extends ApiResponse<{ user: User }> {
   token: string;
 }
+
+// Product interfaces
+export interface ProductImage {
+  url: string;
+  publicId: string;
+  alt: string;
+  isPrimary: boolean;
+  order: number;
+}
+
+export interface ProductVideo {
+  url: string;
+  publicId: string;
+  title: string;
+  duration?: number;
+  order?: number;
+}
+
+export interface ProductModel3d {
+  url: string;
+  publicId: string;
+  fileName: string;
+  fileSize: number;
+  fileType: string;
+}
+
+export interface Product {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  subcategory?: string;
+  price?: number;
+  weight?: number;
+  materials: string[];
+  images: ProductImage[];
+  videos?: ProductVideo[];
+  model3d?: ProductModel3d;
+  tags: string[];
+  isActive: boolean;
+  isFeatured: boolean;
+  stock: number;
+  sku?: string;
+  createdBy?: User;
+  createdAt: string;
+  updatedAt: string;
+  hasImages?: boolean;
+  hasVideos?: boolean;
+  hasModel3d?: boolean;
+}
+
+export interface ProductsResponse
+  extends ApiResponse<{
+    products: Product[];
+    total: number;
+    page: number;
+    totalPages: number;
+    results: number;
+  }> {}
+
+export interface ProductResponse
+  extends ApiResponse<{
+    product: Product;
+  }> {}
 
 // API client class
 class ApiClient {
@@ -245,6 +309,43 @@ class ApiClient {
     return this.request(`/users/${id}`, {
       method: "DELETE",
     });
+  }
+
+  // Product methods
+  async getProducts(params?: {
+    page?: number;
+    limit?: number;
+    category?: string;
+    subcategory?: string;
+    search?: string;
+    featured?: boolean;
+  }): Promise<ProductsResponse> {
+    const searchParams = new URLSearchParams();
+    if (params?.page) searchParams.set("page", params.page.toString());
+    if (params?.limit) searchParams.set("limit", params.limit.toString());
+    if (params?.category) searchParams.set("category", params.category);
+    if (params?.subcategory)
+      searchParams.set("subcategory", params.subcategory);
+    if (params?.search) searchParams.set("search", params.search);
+    if (params?.featured !== undefined)
+      searchParams.set("featured", params.featured.toString());
+
+    const query = searchParams.toString();
+    const endpoint = `/products${query ? `?${query}` : ""}`;
+
+    return this.request(endpoint);
+  }
+
+  async getProduct(id: string): Promise<ProductResponse> {
+    return this.request(`/products/${id}`);
+  }
+
+  async getFeaturedProducts(): Promise<ProductsResponse> {
+    return this.request("/products/featured");
+  }
+
+  async getProductsByCategory(category: string): Promise<ProductsResponse> {
+    return this.request(`/products/category/${category}`);
   }
 }
 

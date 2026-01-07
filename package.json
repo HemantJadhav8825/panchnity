@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "PORT=3000 next dev",
     "build": "next build",
     "postbuild": "lsof -ti:3000 | xargs kill -9 2>/dev/null || true",
     "start": "next start",

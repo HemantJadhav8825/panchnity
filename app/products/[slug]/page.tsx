@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getProductBySlug, getAllProducts } from '@/lib/products'
+import { notFound } from 'next/navigation'
 import Product3DViewer from '@/components/Product3DViewer'
 import WhatsAppButton from '@/components/WhatsAppButton'
 import { generateProductMetadata, generateProductJsonLd, generateBreadcrumbJsonLd } from '@/lib/seo'
@@ -15,24 +16,47 @@ interface ProductPageProps {
 }
 
 export async function generateStaticParams() {
-  const products = getAllProducts()
-  return products.map((product) => ({
-    slug: product.slug,
-  }))
+  try {
+    const products = await getAllProducts()
+    return products.map((product) => ({
+      slug: product.slug,
+    }))
+  } catch (error) {
+    console.error('Error generating static params:', error)
+    return []
+  }
 }
 
 export async function generateMetadata({ params }: ProductPageProps) {
-  const product = getProductBySlug(params.slug)
-  if (!product) {
+  try {
+    const product = await getProductBySlug(params.slug)
+    if (!product) {
+      return {}
+    }
+    return generateProductMetadata(product)
+  } catch (error) {
+    console.error('Error generating metadata:', error)
     return {}
   }
-  return generateProductMetadata(product)
 }
 
-export default function ProductPage({ params }: ProductPageProps) {
-  const product = getProductBySlug(params.slug)
+export default async function ProductPage({ params }: ProductPageProps) {
+  let product
+  let relatedProducts = []
 
-  if (!product) {
+  try {
+    product = await getProductBySlug(params.slug)
+    if (!product) {
+      notFound()
+    }
+
+    // Fetch related products
+    const allProducts = await getAllProducts()
+    relatedProducts = allProducts
+      .filter((p: any) => p.id !== product.id && p.category === product.category)
+      .slice(0, 4)
+  } catch (error) {
+    console.error('Error fetching product data:', error)
     notFound()
   }
 
@@ -177,15 +201,13 @@ export default function ProductPage({ params }: ProductPageProps) {
           </div>
 
           {/* Related Products Section */}
-          <div className="border-t border-gray-200 pt-12">
-            <h2 className="text-2xl font-serif font-bold text-gray-900 mb-6">
-              You May Also Like
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {getAllProducts()
-                .filter((p) => p.id !== product.id && p.category === product.category)
-                .slice(0, 4)
-                .map((relatedProduct) => (
+          {relatedProducts.length > 0 && (
+            <div className="border-t border-gray-200 pt-12">
+              <h2 className="text-2xl font-serif font-bold text-gray-900 mb-6">
+                You May Also Like
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {relatedProducts.map((relatedProduct: any) => (
                   <Link
                     key={relatedProduct.id}
                     href={`/products/${relatedProduct.slug}`}
@@ -207,8 +229,9 @@ export default function ProductPage({ params }: ProductPageProps) {
                     </p>
                   </Link>
                 ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>
