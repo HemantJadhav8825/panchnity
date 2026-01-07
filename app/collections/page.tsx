@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
-import { getAllProducts, getProductsByCategory } from '@/lib/products'
+import { getAllProducts } from '@/lib/products'
+import { getCategories } from '@/lib/categories'
 import ProductsClient from '@/components/ProductsClient'
 import Loading from '@/app/products/loading'
 import WhatsAppButton from '@/components/WhatsAppButton'
@@ -18,34 +19,19 @@ export const metadata: Metadata = {
   },
 }
 
-function getCategoryInfo(category: string) {
-  const categoryMap: Record<string, { title: string; description: string; image: string }> = {
-    'idol': {
-      title: 'Silver Idols',
-      description: 'Beautiful handcrafted idols of Hindu deities made from pure silver',
-      image: '/images/categories/idols.jpg'
-    },
-    'pooja-item': {
-      title: 'Pooja Items',
-      description: 'Traditional pooja items and accessories for religious ceremonies',
-      image: '/images/categories/pooja.jpg'
-    },
-    'jewellery': {
-      title: 'Silver Jewelry',
-      description: 'Elegant silver jewelry pieces including rings, necklaces, and more',
-      image: '/images/categories/jewellery.jpg'
-    }
-  }
-  return categoryMap[category] || {
-    title: category.charAt(0).toUpperCase() + category.slice(1),
-    description: `Beautiful ${category} collection`,
-    image: '/images/placeholder.jpg'
-  }
-}
+export default async function CollectionsPage() {
+  let allProducts: any[] = []
+  let categories: any[] = []
 
-export default function CollectionsPage() {
-  const allProducts = getAllProducts()
-  const categories = ['idol', 'pooja-item', 'jewellery']
+  try {
+    [allProducts, categories] = await Promise.all([
+      getAllProducts(),
+      getCategories()
+    ])
+  } catch (error) {
+    console.error('Error fetching data:', error)
+    // Continue with empty arrays
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -63,44 +49,39 @@ export default function CollectionsPage() {
 
         {/* Category Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          {categories.map((category) => {
-            const products = getProductsByCategory(category as any)
-            const categoryInfo = getCategoryInfo(category)
-
-            return (
-              <Link
-                key={category}
-                href={`/products?category=${category}`}
-                className="group block"
-              >
-                <div className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-                  <div className="relative aspect-[4/3] bg-gray-100">
-                    <Image
-                      src={categoryInfo.image}
-                      alt={categoryInfo.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform"
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <h3 className="text-xl font-serif font-bold text-white mb-2">
-                        {categoryInfo.title}
-                      </h3>
-                      <p className="text-white/90 text-sm">
-                        {products.length} items
-                      </p>
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <p className="text-gray-600 text-sm">
-                      {categoryInfo.description}
+          {categories.map((category) => (
+            <Link
+              key={category.id}
+              href={`/products?category=${category.id}`}
+              className="group block"
+            >
+              <div className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+                <div className="relative aspect-[4/3] bg-gray-100">
+                  <Image
+                    src={category.image}
+                    alt={category.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <h3 className="text-xl font-serif font-bold text-white mb-2">
+                      {category.name}
+                    </h3>
+                    <p className="text-white/90 text-sm">
+                      {category.itemCount} items
                     </p>
                   </div>
                 </div>
-              </Link>
-            )
-          })}
+                <div className="p-6">
+                  <p className="text-gray-600 text-sm">
+                    {category.description}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
 
         {/* All Products */}

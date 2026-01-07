@@ -2,6 +2,9 @@
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api/v1";
 
+// Backend base URL for image URLs (without /api/v1)
+const BACKEND_BASE_URL = API_BASE_URL.replace("/api/v1", "");
+
 export interface ApiResponse<T = any> {
   status: string;
   data?: T;
@@ -351,6 +354,9 @@ class ApiClient {
 
 // Export singleton instance
 export const apiClient = new ApiClient(API_BASE_URL);
+
+// Export backend base URL for image URLs
+export { BACKEND_BASE_URL };
 
 // Export types
 export default ApiClient;

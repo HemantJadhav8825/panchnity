@@ -16,13 +16,16 @@ interface ProductPageProps {
 }
 
 export async function generateStaticParams() {
+  // During build time, API might not be available
+  // Return empty array to generate pages dynamically
   try {
     const products = await getAllProducts()
     return products.map((product) => ({
       slug: product.slug,
     }))
   } catch (error) {
-    console.error('Error generating static params:', error)
+    console.warn('API not available during build, generating pages dynamically:', error)
+    // Return empty array to let Next.js handle routing dynamically
     return []
   }
 }

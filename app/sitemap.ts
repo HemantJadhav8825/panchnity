@@ -2,9 +2,16 @@ import { MetadataRoute } from 'next'
 import { getAllProducts } from '@/lib/products'
 import { SITE_URL } from '@/lib/constants'
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const products = getAllProducts()
-  
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  let products: any[] = []
+
+  try {
+    products = await getAllProducts()
+  } catch (error) {
+    console.error('Error fetching products for sitemap:', error)
+    // Continue with empty array
+  }
+
   const productEntries = products.map((product) => ({
     url: `${SITE_URL}/products/${product.slug}`,
     lastModified: new Date(),

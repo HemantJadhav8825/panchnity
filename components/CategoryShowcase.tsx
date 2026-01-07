@@ -1,33 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
-
-const categories = [
-  {
-    name: 'Temple Idols',
-    description: 'Divine silver idols',
-    href: '/products?category=idol',
-    image: '/images/categories/idols.jpg',
-    count: '3+ Designs',
-  },
-  {
-    name: 'Pooja Items',
-    description: 'Essential items for worship',
-    href: '/products?category=pooja-item',
-    image: '/images/categories/pooja.jpg',
-    count: '2+ Designs',
-  },
-  {
-    name: 'Bhakti Jewellery',
-    description: 'Spiritual jewellery pieces',
-    href: '/products?category=jewellery',
-    image: '/images/categories/jewellery.jpg',
-    count: '3+ Designs',
-  },
-]
+import { getCategories, Category } from '@/lib/categories'
 
 function CategoryCard({ category }: { category: typeof categories[0] }) {
   const [imageError, setImageError] = useState(false)
@@ -77,6 +54,56 @@ function CategoryCard({ category }: { category: typeof categories[0] }) {
 }
 
 export default function CategoryShowcase() {
+  const [categories, setCategories] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const cats = await getCategories()
+        // Transform to expected format
+        const transformedCategories = cats.map(cat => ({
+          name: cat.name,
+          description: cat.description,
+          href: `/products?category=${cat.id}`,
+          image: cat.image,
+          count: `${cat.itemCount}+ Designs`,
+        }))
+        setCategories(transformedCategories)
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+        // Fallback to empty array
+        setCategories([])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchCategories()
+  }, [])
+
+  if (loading) {
+    return (
+      <section className="py-10 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-4">
+              Shop by Category
+            </h2>
+            <p className="text-gray-600 text-lg">
+              Discover our curated collections of religious jewellery and temple items
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="aspect-[4/3] bg-gray-200 rounded-2xl animate-pulse"></div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section className="py-10 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -88,7 +115,7 @@ export default function CategoryShowcase() {
             Discover our curated collections of religious jewellery and temple items
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {categories.map((category) => (
             <CategoryCard key={category.name} category={category} />

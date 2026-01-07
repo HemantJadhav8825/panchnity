@@ -15,6 +15,9 @@ GOOGLE_CLIENT_SECRET=your-dev-google-client-secret
 # Site Configuration
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
+# Backend API Configuration
+NEXT_PUBLIC_API_URL=http://localhost:5001/api/v1
+
 # ============================================
 # Development Configurations
 # ============================================

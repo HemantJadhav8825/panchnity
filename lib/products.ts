@@ -1,4 +1,4 @@
-import { Product } from "@/lib/api";
+import { Product, BACKEND_BASE_URL } from "@/lib/api";
 import { apiClient } from "@/lib/api";
 
 // Cache for products to avoid repeated API calls
@@ -22,7 +22,7 @@ function transformApiProduct(apiProduct: Product): any {
     images: apiProduct.images.map((img) => {
       // Convert relative URLs to full backend URLs
       if (img.url.startsWith("/uploads/")) {
-        return `http://localhost:5001${img.url}`;
+        return `${BACKEND_BASE_URL}${img.url}`;
       }
       return img.url;
     }),

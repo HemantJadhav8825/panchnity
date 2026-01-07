@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import ProductCard from '@/components/ProductCard'
 import { getAllProducts, getProductsByCategory, getProductsByMaterial } from '@/lib/products'
@@ -24,15 +24,35 @@ export default function ProductsClient({ products: initialProducts, showFilters 
   const [selectedMaterial, setSelectedMaterial] = useState<ProductMaterial | 'all'>(
     materialParam || 'all'
   )
+  const [allProducts, setAllProducts] = useState<any[]>(initialProducts || [])
+  const [loading, setLoading] = useState(!initialProducts)
 
-  const allProducts = initialProducts || getAllProducts()
+  useEffect(() => {
+    async function fetchProducts() {
+      if (initialProducts) return // Don't fetch if products were passed as props
+
+      try {
+        const products = await getAllProducts()
+        setAllProducts(products)
+      } catch (error) {
+        console.error('Error fetching products:', error)
+        setAllProducts([])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchProducts()
+  }, [initialProducts])
 
   const filteredProducts = useMemo(() => {
+    if (loading || allProducts.length === 0) return []
+
     let filtered = allProducts
 
     // Filter by category
     if (selectedCategory !== 'all') {
-      filtered = getProductsByCategory(selectedCategory)
+      filtered = filtered.filter((p) => p.category === selectedCategory)
     }
 
     // Filter by material
@@ -47,12 +67,12 @@ export default function ProductsClient({ products: initialProducts, showFilters 
         (p) =>
           p.name.toLowerCase().includes(query) ||
           p.description.toLowerCase().includes(query) ||
-          p.seoKeywords.some((keyword: string) => keyword.toLowerCase().includes(query))
+          (p.seoKeywords && p.seoKeywords.some((keyword: string) => keyword.toLowerCase().includes(query)))
       )
     }
 
     return filtered
-  }, [selectedCategory, selectedMaterial, searchQuery, allProducts])
+  }, [selectedCategory, selectedMaterial, searchQuery, allProducts, loading])
 
   return (
     <div className="min-h-screen bg-white">
@@ -125,15 +145,25 @@ export default function ProductsClient({ products: initialProducts, showFilters 
           </div>
         </div>
 
+        {/* Loading State */}
+        {loading && (
+          <div className="text-center py-16">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold-300 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading products...</p>
+          </div>
+        )}
+
         {/* Results Count */}
-        <div className="mb-6">
-          <p className="text-gray-600">
-            Showing {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''}
-          </p>
-        </div>
+        {!loading && (
+          <div className="mb-6">
+            <p className="text-gray-600">
+              Showing {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''}
+            </p>
+          </div>
+        )}
 
         {/* Products Grid */}
-        {filteredProducts.length > 0 ? (
+        {!loading && filteredProducts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
