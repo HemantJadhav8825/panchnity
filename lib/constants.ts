@@ -7,13 +7,15 @@ export const WHATSAPP_NUMBER = "+919579477013"; // Placeholder - update with rea
 
 export const INSTAGRAM_URL = "https://www.instagram.com/panchnity";
 
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
-if (!SITE_URL) {
+if (!siteUrl) {
   throw new Error(
     "NEXT_PUBLIC_SITE_URL environment variable is required. Please check your .env.local file."
   );
 }
+
+export const SITE_URL: string = siteUrl;
 
 export const SEO_KEYWORDS = [
   "silver murti",
