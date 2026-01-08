@@ -19,25 +19,26 @@ const nextConfig = {
 };
 
 // Dynamically add backend image domain if API URL is available
-try {
-  const apiUrl =
-    process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api/v1";
-  const url = new URL(apiUrl);
+if (process.env.NEXT_PUBLIC_API_URL) {
+  try {
+    const url = new URL(process.env.NEXT_PUBLIC_API_URL);
 
-  nextConfig.images.remotePatterns.push({
-    protocol: url.protocol.replace(":", ""),
-    hostname: url.hostname,
-    port: url.port || undefined,
-    pathname: "/uploads/**",
-  });
-} catch (error) {
-  console.warn("Could not parse API URL for image domains:", error);
-  // Fallback for localhost development
-  nextConfig.images.remotePatterns.push({
-    protocol: "http",
-    hostname: "localhost",
-    port: "4000",
-    pathname: "/uploads/**",
-  });
+    nextConfig.images.remotePatterns.push({
+      protocol: url.protocol.replace(":", ""),
+      hostname: url.hostname,
+      port: url.port || undefined,
+      pathname: "/uploads/**",
+    });
+  } catch (error) {
+    console.warn(
+      "Could not parse NEXT_PUBLIC_API_URL for image domains:",
+      error.message
+    );
+    // Continue without image domain configuration
+  }
+} else {
+  console.warn(
+    "NEXT_PUBLIC_API_URL not set - image domains will not be configured"
+  );
 }
 module.exports = nextConfig;

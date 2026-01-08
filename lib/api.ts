@@ -1,6 +1,11 @@
 // API client for backend communication
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api/v1";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
+if (!API_BASE_URL) {
+  throw new Error(
+    "NEXT_PUBLIC_API_URL environment variable is required. Please check your .env.local file."
+  );
+}
 
 // Backend base URL for image URLs (without /api/v1)
 const BACKEND_BASE_URL = API_BASE_URL.replace("/api/v1", "");
