@@ -355,6 +355,25 @@ class ApiClient {
   async getProductsByCategory(category: string): Promise<ProductsResponse> {
     return this.request(`/products/category/${category}`);
   }
+
+  // Recently Viewed methods
+  async trackRecentlyViewed(productData: {
+    productId: string;
+    name: string;
+    slug: string;
+    image?: string;
+    price?: number;
+    category?: string;
+  }): Promise<ApiResponse> {
+    return this.request("/recently-viewed", {
+      method: "POST",
+      body: JSON.stringify(productData),
+    });
+  }
+
+  async getRecentlyViewed(): Promise<ApiResponse<{ recentlyViewed: any }>> {
+    return this.request("/recently-viewed");
+  }
 }
 
 // Export singleton instance

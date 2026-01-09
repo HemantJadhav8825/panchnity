@@ -15,6 +15,7 @@ import {
 import { SITE_URL } from "@/lib/constants";
 import { ChevronRight, Package, Scale, Sparkles } from "lucide-react";
 import { Product } from "@/types/product";
+import RecentlyViewedTracker from "@/components/RecentlyViewedTracker";
 
 interface ProductPageProps {
   params: {
@@ -66,6 +67,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <>
+      <RecentlyViewedTracker product={product} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
