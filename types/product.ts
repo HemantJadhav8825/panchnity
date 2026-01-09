@@ -9,6 +9,8 @@ export type ProductCategory =
   | "pooja-item"
   | "jewellery";
 
+export type ProductMaterial = "silver" | "gold" | "diamond";
+
 export interface ProductImage {
   url: string;
   publicId: string;

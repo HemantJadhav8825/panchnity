@@ -1,19 +1,19 @@
-'use client'
+"use client";
 
-import { Suspense, useState } from 'react'
-import Image from 'next/image'
-import { Canvas } from '@react-three/fiber'
-import { OrbitControls, Environment, useGLTF } from '@react-three/drei'
-import { Product } from '@/types/product'
+import { Suspense, useState } from "react";
+import Image from "next/image";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Environment, useGLTF } from "@react-three/drei";
+import { Product } from "@/types/product";
 
 interface Product3DViewerProps {
-  product: Product
-  className?: string
+  product: Product;
+  className?: string;
 }
 
 function Model({ url }: { url: string }) {
-  const { scene } = useGLTF(url)
-  return <primitive object={scene} scale={1} />
+  const { scene } = useGLTF(url);
+  return <primitive object={scene} scale={1} />;
 }
 
 function ViewerContent({ modelUrl }: { modelUrl: string }) {
@@ -34,36 +34,52 @@ function ViewerContent({ modelUrl }: { modelUrl: string }) {
       />
       <Environment preset="sunset" />
     </>
-  )
+  );
 }
 
-export default function Product3DViewer({ product, className = '' }: Product3DViewerProps) {
-  const [show3D, setShow3D] = useState(false)
-  const [error, setError] = useState(false)
+export default function Product3DViewer({
+  product,
+  className = "",
+}: Product3DViewerProps) {
+  const [show3D, setShow3D] = useState(false);
+  const [error, setError] = useState(false);
 
   if (!product.model3d) {
     return (
-      <div className={`bg-gray-100 rounded-lg flex items-center justify-center ${className}`} style={{ minHeight: '400px' }}>
+      <div
+        className={`bg-gray-100 rounded-lg flex items-center justify-center ${className}`}
+        style={{ minHeight: "400px" }}
+      >
         <p className="text-gray-500">3D model not available</p>
       </div>
-    )
+    );
   }
 
   if (error) {
     return (
-      <div className={`bg-gray-100 rounded-lg flex items-center justify-center ${className}`} style={{ minHeight: '400px' }}>
+      <div
+        className={`bg-gray-100 rounded-lg flex items-center justify-center ${className}`}
+        style={{ minHeight: "400px" }}
+      >
         <p className="text-gray-500">Failed to load 3D model</p>
       </div>
-    )
+    );
   }
 
   return (
     <div className={`relative ${className}`}>
       {!show3D ? (
-        <div className="relative bg-gray-100 rounded-lg" style={{ minHeight: '400px' }}>
+        <div
+          className="relative bg-gray-100 rounded-lg"
+          style={{ minHeight: "400px" }}
+        >
           {product.images[0] && (
             <Image
-              src={product.images[0]}
+              src={
+                typeof product.images[0] === "string"
+                  ? product.images[0]
+                  : product.images[0].url
+              }
               alt={product.name}
               fill
               className="object-contain rounded-lg"
@@ -78,13 +94,22 @@ export default function Product3DViewer({ product, className = '' }: Product3DVi
           </button>
         </div>
       ) : (
-        <div className="relative bg-gray-100 rounded-lg" style={{ minHeight: '400px' }}>
+        <div
+          className="relative bg-gray-100 rounded-lg"
+          style={{ minHeight: "400px" }}
+        >
           <Canvas
             camera={{ position: [0, 0, 5], fov: 50 }}
             onError={() => setError(true)}
             className="rounded-lg"
           >
-            <ViewerContent modelUrl={product.model3d} />
+            <ViewerContent
+              modelUrl={
+                typeof product.model3d === "string"
+                  ? product.model3d
+                  : product.model3d.url
+              }
+            />
           </Canvas>
           <button
             onClick={() => setShow3D(false)}
@@ -95,6 +120,5 @@ export default function Product3DViewer({ product, className = '' }: Product3DVi
         </div>
       )}
     </div>
-  )
+  );
 }
-

@@ -82,7 +82,7 @@ export default function CategoryPage() {
 
         {products.length > 0 && (
           <div className="mt-16 text-center border-t border-gray-100 pt-12">
-            <h2 className="text-2xl font-serif font-bold text-gray-900 mb-6 font-serif">
+            <h2 className="text-2xl font-serif font-bold text-gray-900 mb-6">
               Looking for something custom?
             </h2>
             <WhatsAppButton

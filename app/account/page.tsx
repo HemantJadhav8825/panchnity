@@ -74,7 +74,7 @@ export default function AccountOverview() {
           </div>
           <div className="p-4 flex items-center justify-between border-b border-gray-50">
             <span className="text-sm text-gray-600">
-              Added "Sterling Silver Ring" to wishlist
+              Added &quot;Sterling Silver Ring&quot; to wishlist
             </span>
             <span className="text-xs text-gray-400">5 days ago</span>
           </div>

@@ -1,4 +1,5 @@
-import { Product, BACKEND_BASE_URL } from "@/lib/api";
+import { BACKEND_BASE_URL } from "@/lib/api";
+import { Product } from "@/types/product";
 import { apiClient } from "@/lib/api";
 
 // Cache for products to avoid repeated API calls
@@ -20,14 +21,19 @@ function transformApiProduct(apiProduct: Product): any {
     purity: "925",
     weight: `${apiProduct.weight || 0}g`,
     images: apiProduct.images.map((img) => {
+      const url = typeof img === "string" ? img : img.url;
       // Convert relative URLs to full backend URLs
-      if (img.url.startsWith("/uploads/")) {
-        return `${BACKEND_BASE_URL}${img.url}`;
+      if (url.startsWith("/uploads/")) {
+        return `${BACKEND_BASE_URL}${url}`;
       }
-      return img.url;
+      return url;
     }),
-    model3d: apiProduct.model3d?.url
-      ? `${BACKEND_BASE_URL}${apiProduct.model3d.url}`
+    model3d: apiProduct.model3d
+      ? typeof apiProduct.model3d === "string"
+        ? apiProduct.model3d.startsWith("/uploads/")
+          ? `${BACKEND_BASE_URL}${apiProduct.model3d}`
+          : apiProduct.model3d
+        : `${BACKEND_BASE_URL}${apiProduct.model3d.url}`
       : null,
     featured: apiProduct.isFeatured,
     seoKeywords: apiProduct.tags,

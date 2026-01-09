@@ -22,8 +22,10 @@ export default function RecommendationSection({
     const fetchRecommendations = async () => {
       try {
         const response = await apiClient.getRecommendations(limit);
-        if (response.status === "success" && response.data) {
+        if (response.status === "success" && response.data?.products) {
           setProducts(response.data.products);
+        } else {
+          setProducts([]);
         }
       } catch (error) {
         console.error("Error fetching recommendations:", error);
@@ -53,7 +55,7 @@ export default function RecommendationSection({
     );
   }
 
-  if (products.length === 0) return null;
+  if (!products || products.length === 0) return null;
 
   return (
     <section className="py-12">
