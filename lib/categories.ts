@@ -10,8 +10,44 @@ export interface Category {
   itemCount: number;
 }
 
-// Static category data - will be replaced with API call later
+// Static category data
 const categoriesData: Omit<Category, "itemCount">[] = [
+  {
+    id: "necklaces",
+    slug: "necklaces",
+    name: "Necklaces",
+    description:
+      "Elegant silver necklaces and pendants handcrafted to perfection",
+    image: `${BACKEND_BASE_URL}/uploads/images/products/necklaces.jpg`,
+  },
+  {
+    id: "earrings",
+    slug: "earrings",
+    name: "Earrings",
+    description: "Sophisticated earrings in authentic 925 silver",
+    image: `${BACKEND_BASE_URL}/uploads/images/products/earrings.jpg`,
+  },
+  {
+    id: "rings",
+    slug: "rings",
+    name: "Rings",
+    description: "Timeless silver rings for every occasion",
+    image: `${BACKEND_BASE_URL}/uploads/images/products/rings.jpg`,
+  },
+  {
+    id: "bracelets",
+    slug: "bracelets",
+    name: "Bracelets",
+    description: "Beautifully designed silver bracelets and bangles",
+    image: `${BACKEND_BASE_URL}/uploads/images/products/bracelets.jpg`,
+  },
+  {
+    id: "bridal",
+    slug: "bridal",
+    name: "Bridal Collection",
+    description: "Exquisite silver bridal sets for your special day",
+    image: `${BACKEND_BASE_URL}/uploads/images/products/bridal.jpg`,
+  },
   {
     id: "idol",
     slug: "idols",
@@ -28,14 +64,6 @@ const categoriesData: Omit<Category, "itemCount">[] = [
       "Traditional pooja items and accessories for religious ceremonies",
     image: `${BACKEND_BASE_URL}/uploads/images/products/pooja.jpg`,
   },
-  {
-    id: "jewellery",
-    slug: "jewellery",
-    name: "Silver Jewelry",
-    description:
-      "Elegant silver jewelry pieces including rings, necklaces, and more",
-    image: `${BACKEND_BASE_URL}/uploads/images/products/jewellery.jpg`,
-  },
 ];
 
 // Cache for categories with item counts
@@ -48,10 +76,6 @@ export async function getCategories(): Promise<Category[]> {
   }
 
   try {
-    // For now, return static data - later this will come from API
-    // TODO: Replace with API call when backend categories endpoint is ready
-
-    // Get product counts for each category
     const { getAllProducts } = await import("./products");
     const allProducts = await getAllProducts();
 
@@ -64,7 +88,6 @@ export async function getCategories(): Promise<Category[]> {
     return categoriesWithCounts;
   } catch (error) {
     console.error("Error fetching categories:", error);
-    // Return static data as fallback
     return categoriesData.map((category) => ({
       ...category,
       itemCount: 0,
@@ -72,7 +95,6 @@ export async function getCategories(): Promise<Category[]> {
   }
 }
 
-// Get category by ID
 export async function getCategoryById(
   id: string
 ): Promise<Category | undefined> {
@@ -80,27 +102,9 @@ export async function getCategoryById(
   return categories.find((cat) => cat.id === id);
 }
 
-// Get category by slug
 export async function getCategoryBySlug(
   slug: string
 ): Promise<Category | undefined> {
   const categories = await getCategories();
   return categories.find((cat) => cat.slug === slug);
-}
-
-// Legacy synchronous functions for backward compatibility
-export function getCategoriesSync(): Category[] {
-  console.warn("getCategoriesSync is deprecated, use getCategories instead");
-  return categoriesData.map((category) => ({
-    ...category,
-    itemCount: 0,
-  }));
-}
-
-export function getCategoryByIdSync(id: string): Category | undefined {
-  console.warn(
-    "getCategoryByIdSync is deprecated, use getCategoryById instead"
-  );
-  const category = categoriesData.find((cat) => cat.id === id);
-  return category ? { ...category, itemCount: 0 } : undefined;
 }

@@ -16,6 +16,8 @@ import { SITE_URL } from "@/lib/constants";
 import { ChevronRight, Package, Scale, Sparkles } from "lucide-react";
 import { Product } from "@/types/product";
 import RecentlyViewedTracker from "@/components/RecentlyViewedTracker";
+import RecommendationSection from "@/components/RecommendationSection";
+import WishlistButton from "@/components/WishlistButton";
 
 interface ProductPageProps {
   params: {
@@ -67,7 +69,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <>
-      <RecentlyViewedTracker product={product} />
+      <RecentlyViewedTracker
+        product={{
+          ...product,
+          slug: product.slug || params.slug,
+          images: product.images.map((img) =>
+            typeof img === "string" ? img : img.url
+          ),
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
@@ -107,7 +117,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 >
                   {product.images[0] && (
                     <Image
-                      src={product.images[0]}
+                      src={
+                        typeof product.images[0] === "string"
+                          ? product.images[0]
+                          : product.images[0].url
+                      }
                       alt={product.name}
                       width={800}
                       height={800}
@@ -127,7 +141,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                       className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
                     >
                       <Image
-                        src={image}
+                        src={typeof image === "string" ? image : image.url}
                         alt={`${product!.name} - View ${index + 2}`}
                         fill
                         className="object-cover"
@@ -191,12 +205,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </div>
               </div>
 
-              {/* WhatsApp CTA */}
-              <div className="mb-8">
+              {/* WhatsApp CTA & Wishlist */}
+              <div className="flex flex-wrap gap-4 mb-8">
                 <WhatsAppButton
                   product={product}
-                  className="w-full md:w-auto"
+                  className="w-full md:w-auto flex-1"
                 />
+                <div className="flex items-center justify-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                  <WishlistButton
+                    productId={product.id}
+                    className="scale-125"
+                  />
+                  <span className="ml-2 text-sm font-medium text-gray-600">
+                    Save to Wishlist
+                  </span>
+                </div>
               </div>
 
               {/* Trust Message */}
@@ -215,37 +238,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
 
           {/* Related Products Section */}
-          {relatedProducts.length > 0 && (
-            <div className="border-t border-gray-200 pt-12">
-              <h2 className="text-2xl font-serif font-bold text-gray-900 mb-6">
-                You May Also Like
-              </h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {relatedProducts.map((relatedProduct: any) => (
-                  <Link
-                    key={relatedProduct.id}
-                    href={`/products/${relatedProduct.slug}`}
-                    className="group block"
-                  >
-                    <div className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden mb-2">
-                      {relatedProduct.images[0] && (
-                        <Image
-                          src={relatedProduct.images[0]}
-                          alt={relatedProduct.name}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform"
-                          sizes="(max-width: 768px) 50vw, 25vw"
-                        />
-                      )}
-                    </div>
-                    <p className="text-sm font-medium text-gray-900 group-hover:text-gold-300 transition-colors line-clamp-2">
-                      {relatedProduct.name}
-                    </p>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
+          <div className="border-t border-gray-200 pt-12">
+            <RecommendationSection title="You May Also Like" limit={4} />
+          </div>
         </div>
       </div>
     </>

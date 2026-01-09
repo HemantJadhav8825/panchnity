@@ -38,55 +38,12 @@ export interface AuthApiResponse extends ApiResponse<{ user: User }> {
   token: string;
 }
 
-// Product interfaces
-export interface ProductImage {
-  url: string;
-  publicId: string;
-  alt: string;
-  isPrimary: boolean;
-  order: number;
-}
-
-export interface ProductVideo {
-  url: string;
-  publicId: string;
-  title: string;
-  duration?: number;
-  order?: number;
-}
-
-export interface ProductModel3d {
-  url: string;
-  publicId: string;
-  fileName: string;
-  fileSize: number;
-  fileType: string;
-}
-
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  subcategory?: string;
-  price?: number;
-  weight?: number;
-  materials: string[];
-  images: ProductImage[];
-  videos?: ProductVideo[];
-  model3d?: ProductModel3d;
-  tags: string[];
-  isActive: boolean;
-  isFeatured: boolean;
-  stock: number;
-  sku?: string;
-  createdBy?: User;
-  createdAt: string;
-  updatedAt: string;
-  hasImages?: boolean;
-  hasVideos?: boolean;
-  hasModel3d?: boolean;
-}
+import {
+  Product,
+  ProductImage,
+  ProductVideo,
+  ProductModel3d,
+} from "@/types/product";
 
 export interface ProductsResponse
   extends ApiResponse<{
@@ -373,6 +330,49 @@ class ApiClient {
 
   async getRecentlyViewed(): Promise<ApiResponse<{ recentlyViewed: any }>> {
     return this.request("/recently-viewed");
+  }
+
+  // Recommendation methods
+  async getRecommendations(
+    limit?: number
+  ): Promise<ApiResponse<{ products: Product[] }>> {
+    const endpoint = `/recommendations${limit ? `?limit=${limit}` : ""}`;
+    return this.request(endpoint);
+  }
+
+  // Wishlist methods
+  async getWishlist(): Promise<ApiResponse<{ wishlist: any }>> {
+    return this.request("/wishlist");
+  }
+
+  async addToWishlist(productId: string): Promise<ApiResponse> {
+    return this.request("/wishlist", {
+      method: "POST",
+      body: JSON.stringify({ productId }),
+    });
+  }
+
+  async removeFromWishlist(productId: string): Promise<ApiResponse> {
+    return this.request(`/wishlist/${productId}`, {
+      method: "DELETE",
+    });
+  }
+
+  // Order methods
+  async createOrder(orderData: any): Promise<ApiResponse<{ order: any }>> {
+    return this.request("/orders", {
+      method: "POST",
+      body: JSON.stringify(orderData),
+    });
+  }
+
+  async getMyOrders(): Promise<ApiResponse<{ orders: any[] }>> {
+    return this.request("/orders/me");
+  }
+
+  // Inventory insights (Admin)
+  async getInventoryInsights(): Promise<ApiResponse> {
+    return this.request("/inventory/insights");
   }
 }
 
