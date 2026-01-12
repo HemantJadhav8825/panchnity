@@ -16,7 +16,6 @@ import NewsletterSection from "@/components/NewsletterSection";
 export default function Home() {
   return (
     <>
-      <h1>cat is gange..leo is dog hi hello</h1>
       {/* 1. Hero - First impression, main value proposition */}
       <HeroSection />
 
