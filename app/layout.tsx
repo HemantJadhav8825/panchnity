@@ -40,7 +40,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col">
-        <h1>cat is gange..</h1>
+        <h1>cat is gange..leo</h1>
         <Providers>
           <Header />
           <main className="flex-grow">{children}</main>
