@@ -7,7 +7,7 @@
     "build": "next build",
     "build:prod": "NODE_ENV=production npm run build",
     "postbuild": "lsof -ti:3000 | xargs kill -9 2>/dev/null || true",
-    "start": "next start",
+    "start": "PORT=3000 next start",
     "lint": "next lint"
   },
   "dependencies": {
