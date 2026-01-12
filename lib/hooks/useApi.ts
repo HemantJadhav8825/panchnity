@@ -238,3 +238,7 @@ export function useUsers() {
     deleteUser,
   };
 }
+
+export function useApi() {
+  return apiClient;
+}

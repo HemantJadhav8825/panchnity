@@ -378,6 +378,7 @@ class ApiClient {
 
 // Export singleton instance
 export const apiClient = new ApiClient(API_BASE_URL);
+export const api = apiClient;
 
 // Export backend base URL for image URLs
 export { BACKEND_BASE_URL };
