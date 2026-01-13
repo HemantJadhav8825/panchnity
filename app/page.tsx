@@ -16,7 +16,7 @@ import NewsletterSection from "@/components/NewsletterSection";
 export default function Home() {
   return (
     <>
-      <h1>Hemant jadhav developer</h1>
+      <h1>Hemant jadhav developer...</h1>
       {/* 1. Hero - First impression, main value proposition */}
       <HeroSection />
 
